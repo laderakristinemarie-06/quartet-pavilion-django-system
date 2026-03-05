@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quartet Pavilion</title>
+  <link rel="icon" href="img/quartetlogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, 
+  *::before, *::after { 
+    box-sizing: border-box;
+    margin: 0; 
+    padding: 0; 
+    }
+    :root {
+      --green-dark: #1a2e1a;
+      --green-mid: #2d4a2d;
+      --gold: #c9a84c;
+    }
+    body {
+      font-family: 'Jost', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    /* LEFT – IMAGE */
+    .login-image {
+      flex: 0 0 58%;
+      position: relative; overflow: hidden;
+    }
+    .login-image img {
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover;
+      filter: brightness(0.9);
+      transition: transform 12s ease;
+    }
+    .login-image:hover img { transform: scale(1.04); }
+
+    /* Subtle gradient overlay on right edge of image */
+    .login-image::after {
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      right: 0; 
+      bottom: 0; 
+      width: 120px;
+      background: linear-gradient(to right, transparent, #fff);
+    }
+
+    /* TOP-LEFT BRAND on image */
+    .image-brand {
+      position: absolute; 
+      top: 2rem; 
+      left: 2.5rem; 
+      z-index: 2;
+      color: var(--green-mid); 
+      text-decoration: none;
+    }
+    .image-brand .ib-top { 
+      font-size: 0.55rem; 
+      letter-spacing: 0.4em; 
+      text-transform: uppercase; 
+      opacity: 0.75; 
+    }
+
+    .image-brand .ib-main { 
+      font-family: 'Cormorant Garamond', serif; 
+      font-size: 1.6rem; 
+      font-weight: 300; 
+      letter-spacing: 0.1em; 
+      display: block; 
+    }
+
+    .image-brand .ib-sub { 
+      font-size: 0.55rem; 
+      letter-spacing: 0.45em; 
+      text-transform: uppercase; 
+    }
+
+    /* RIGHT – FORM PANEL */
+    .login-panel {
+      flex: 1;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      padding: 4rem 5rem;
+      background: #fff;
+    }
+
+    .login-box { 
+      width: 100%; 
+      max-width: 340px; 
+    }
+
+    .login-box h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; 
+      font-weight: 400;
+      color: var(--green-dark); 
+      margin-bottom: 0.4rem;
+    }
+
+    .login-box .subtitle {
+      color: #aaa; 
+      font-size: 0.8rem; 
+      font-weight: 300;
+      margin-bottom: 2.5rem; 
+      letter-spacing: 0.05em;
+    }
+
+    .field-group { 
+      margin-bottom: 1.2rem; 
+    }
+
+    .field-group label {
+      display: block; 
+      font-size: 0.7rem; 
+      letter-spacing: 0.15em;
+      text-transform: uppercase; 
+      color: #888; 
+      margin-bottom: 0.5rem;
+    }
+
+    .field-group input {
+      width: 100%; 
+      padding: 0.9rem 1rem;
+      border: 1px solid #ddd; 
+      background: #fff;
+      font-family: 'Jost', sans-serif; 
+      font-size: 0.9rem;
+      color: var(--green-dark); 
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .field-group input:focus {
+      border-color: var(--green-dark);
+      box-shadow: 0 0 0 3px rgba(26,46,26,0.06);
+    }
+
+    .field-group input::placeholder { color: #bbb; }
+
+    .form-options {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      margin-bottom: 2rem; 
+      margin-top: 0.5rem;
+    }
+
+    .form-options a {
+      font-size: 0.78rem; color: var(--green-dark);
+      text-decoration: underline; 
+      text-underline-offset: 3px;
+      text-decoration-color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+
+    .form-options a:hover { color: var(--gold); }
+
+    .btn-signin {
+      width: 100%; 
+      padding: 1rem;
+      background: var(--green-dark); 
+      color: #fff;
+      border: none; 
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem; 
+      letter-spacing: 0.25em; 
+      text-transform: uppercase;
+      cursor: pointer; 
+      transition: background 0.3s;
+    }
+
+    .btn-signin:hover { background: var(--green-mid); }
+
+    .divider {
+      display: flex; 
+      align-items: center; 
+      gap: 1rem;
+      margin: 1.8rem 0;
+    }
+
+    .divider::before, .divider::after {
+      content: ''; 
+      flex: 1; 
+      height: 1px; 
+      background: #eee;
+    }
+
+    .divider span { 
+      color: #bbb; 
+      font-size: 0.75rem; 
+      letter-spacing: 0.1em; 
+    }
+
+    .btn-register {
+      width: 100%; 
+      padding: 1rem;
+      background: transparent; 
+      color: var(--green-dark);
+      border: 1px solid #d5d0c8;
+      font-family: 'Jost', sans-serif; 
+      font-size: 0.78rem;
+      letter-spacing: 0.2em; 
+      text-transform: uppercase;
+      cursor: pointer; 
+      transition: border-color 0.3s, color 0.3s;
+      text-decoration: none; 
+      display: block; 
+      text-align: center;
+    }
+
+    .btn-register:hover { 
+      border-color: var(--gold); 
+      color: var(--gold); 
+    }
+
+    .login-footer {
+      margin-top: 2.5rem; 
+      color: #bbb; 
+      font-size: 0.72rem;
+      text-align: center; 
+      line-height: 1.8;
+    }
+
+    .login-footer a { 
+      color: #999; 
+      text-decoration: underline; 
+      text-underline-offset: 2px; 
+    }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .login-image { flex: 0 0 45vh; }
+      .login-image::after { display: none; }
+      .login-panel { padding: 3rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- IMAGE SIDE -->
+  <div class="login-image">
+    <a class="image-brand" href="page1-home.html">
+      <span class="ib-top">Est. 2026</span>
+      <span class="ib-main">QUARTET</span>
+      <span class="ib-sub">Pavilion</span>
+    </a>
+    <img src="img/1.png" alt="Quartet Pavilion Garden">
+  </div>
+
+  <!-- FORM SIDE -->
+  <div class="login-panel">
+    <div class="login-box">
+      <h1>Login</h1>
+      <p class="subtitle">Welcome back — sign in to continue</p>
+
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="your@email.com">
+      </div>
+
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••">
+      </div>
+
+      <div class="form-options">
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <button class="btn-signin">Sign In</button>
+
+      <div class="divider"><span>or</span></div>
+
+      <a class="btn-register" href="#">Register new account</a>
+
+      <p class="login-footer">
+        By continuing, you agree to our <a href="#">Terms of Service</a><br>
+        and <a href="#">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Stay - Quartet Pavilion</title>
+    <link rel="icon" href="img/quartetlogo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="all.css">
+</head>
+<body>
+
+<div class="hp-wrapper">
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="login-image">
+    <a class="image-brand" href="practicehp.html">
+      <span class="ib-top">Est. 2026</span>
+      <span class="ib-main">QUARTET</span>
+      <span class="ib-sub">Pavilion</span>
+    </a>
+
+            <ul class="nav-menu">
+                <li><a href="practicehp.html" class="nav-link">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link">About ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="book.html">Book</a>
+                        <a href="#">Contact Us</a>
+                        <a href="log.html">Login</a>
+                        <a href="events.html">Events</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="booking-container">
+        
+        <div class="booking-card" id="bookingCard">
+            <div class="booking-header">
+                <h2>Reservation Form</h2>
+                <p>Complete the details below to secure your date.</p>
+            </div>
+
+            <form id="mainBookingForm" class="booking-form">
+                <h3 class="section-title">Customer Details</h3>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="custName" required placeholder="Juan Dela Cruz">
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" required placeholder="juan@email.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="tel" required placeholder="0912-345-6789">
+                    </div>
+                </div>
+
+                <div class="divider-small"></div>
+
+                <h3 class="section-title">Reservation Details</h3>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Arrival Date</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Departure Date</label>
+                        <input type="date" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Number of Guests</label>
+                        <input type="number" min="1" max="100" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Pavilion Type</label>
+                        <select id="pavilionType" required>
+                            <option value="" disabled selected>Select a package</option>
+                            <option value="garden">Garden Pavilion (₱15,000)</option>
+                            <option value="grand">Grand Ballroom (₱35,000)</option>
+                            <option value="executive">Executive Suite (₱8,500)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="divider-small"></div>
+
+                <h3 class="section-title">Payment Method</h3>
+                <div class="payment-options">
+                    <label class="pay-radio">
+                        <input type="radio" name="payment" value="e-wallet" checked>
+                        <span>GCash / Maya</span>
+                    </label>
+                    <label class="pay-radio">
+                        <input type="radio" name="payment" value="card">
+                        <span>Credit / Debit Card</span>
+                    </label>
+                </div>
+
+                <div class="input-group">
+                    <label>Card / Account Number</label>
+                    <input type="text" required placeholder="xxxx-xxxx-xxxx-xxxx">
+                </div>
+
+                <div class="booking-footer">
+                    <div class="price-estimate">
+                        <span>Estimated Total:</span>
+                        <strong id="totalPriceDisplay">₱ 0.00</strong>
+                    </div>
+                    <button type="submit" class="confirm-btn">Confirm & Pay</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="successMessage" class="success-container" style="display: none;">
+            <div class="success-card">
+                <div class="check-icon">✓</div>
+                <h2>Thank You, <span id="displayUser">Guest</span>!</h2>
+                <p>Your booking is done.</p>
+                <p class="sub-text">Please wait for our confirmation email or a call from our representative within 24 hours.</p>
+                <button onclick="window.location.href='practicehp.html'" class="nav-btn" style="width: 200px;">Back to Home</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footerhp">
+        <p>&copy; 2024 Quartet Pavilion. All Rights Reserved.</p>
+    </footer>
+</div>
+
+<script src="bookingjs.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quartet Pavilion</title>
+    <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'testproj/css/styles.css' %}">
+    <script src="scripts.js'" defer></script>
+</head>
+<body>
+    <div class="top-image">
+        <img src="{% static 'testproj/images/f1.PNG' %}" alt="Hero Image">
+        <div class="logo-container">
+            <svg class="logo-svg" viewBox="0 0 520 220">
+                <path id="curvePath" d="M 40 160 Q 260 60 480 160" fill="transparent"/>
+                <text>
+                    <textPath href="#curvePath" startOffset="50%" text-anchor="middle">QUARTET</textPath>
+                </text>
+            </svg>
+            <div class="sub">PAVILION</div>
+        </div>
+    </div>
+
+    <div class="second-image">
+        <img src="{% static 'testproj/images/f2.jpg' %}" alt="Story Image 2">
+    </div>
+
+    <div class="second-image story-overlay">
+        <img src="{% static 'testproj/images/f3.jpg' %}" alt="Story Image 3">
+        <div class="image-text-container">
+            <h2>A Space for creation, restoration & celebrations</h2>
+            <p>In today's world, where slow & steady is rarely preferred, Quartet Pavilion goes against the current albeit gently by offering you a beautiful, safe space where you can pace yourself & take your time.</p>
+            <p>Every detail in the farm serves as a gentle reminder to be thorough and thoughtful. From the careful choice of flora & greens to the beautiful yet painstakingly customized headboard paintings for each room Quartet Pavilion sings to us how beautiful things always take time.</p>
+            <p>Create, restore, and celebrate with us.</p>
+        </div>
+    </div>
+
+    <div class="second-image story-overlay">
+        <img src="{% static 'testproj/images/f4.jpg' %}" alt="Background Room">
+        <div class="image-text-container" style="top: 15%;"> 
+            <h2 class="stay-header">Staycation</h2>
+            <p>Inspired by the beauty of Provence, our rooms are carefully detailed to calm and charm you at the same time.</p>
+            <p>From the lighting, the beds, the linen, and the decor, our accommodations are designed for your ultimate comfort & rest.</p>
+            <a href="#" class="white-button">Explore Rooms</a>
+        </div>
+        <div class="room-gallery-container">
+            <div class="room-box"><img src="{% static 'testproj/images/duluxe room.jpeg' %}"></div>
+            <div class="room-box"><img src="{% static 'testproj/images/superior room.jpeg' %}"></div>
+        </div>
+    </div>
+
+    <div class="second-image">
+        <img src="{% static 'testproj/images/f5.jpg' %}">
+    </div>
+
+    <div class="green-page">
+        <div class="green-text">
+            <h1>
+                <div class="combined-text">
+                    <span class="text-part1">Picture perfect location</span>
+                    <span class="text-part1">for your</span>
+                </div>
+            </h1>
+            <div class="script">perfect love story</div>
+        </div>
+        <div class="images-wrapper">
+            <div class="top-row">
+                <div class="img-box"><img src="{% static 'testproj/images/f6.jpg' %}" ></div>
+                <div class="img-box middle-image"><img src="{% static 'testproj/images/f7.jpg' %}"></div>
+                <div class="img-box"><img src="{% static 'testproj/images/f8.jpg' %}"></div>
+            </div>
+            <div class="bottom-row">
+                <div class="film-box"><img src="{% static 'testproj/images/f9.jpg' %}"></div>
+                <div class="film-box"><img src="{% static 'testproj/images/f10.jpg' %}"></div>
+                <div class="film-box"><img src="{% static 'testproj/images/f11.jpg' %}"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="white-page">
+        <div class="white-text">Take a peak at our venues</div>
+        <div class="white-subtext">
+            Enjoy a lavish gardens and beautiful architecture throughout our 4-hectare farm.<br>
+            Quartet pavilion's amenities were designed to help you rest, inspire you to create and make your celebrations even more unforgettable.
+        </div>
+        <a href="#" class="white-button">Explore Quartet Pavilion</a>
+    </div>
+
+    <footer class="footer-image">
+        <img src="{% static 'testproj/images/f2.jpg' %}" class="bg-img" alt="Footer Background">
+        
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2 class="logo-small">QUARTET <br><small style="font-size: 0.4em; letter-spacing: 8px;">PAVILION</small></h2>
+                <p>We share news, stories & promos on our newsletter.<br>Nothing but sweet notes - no spam, ever.</p>
+                
+                <form class="newsletter-form" action="https://formspree.io/f/mvzbeavr" method="POST" id="signupForm" style="display: flex; flex-direction: column; gap: 10px;">
+    
+                    <input type="email" name="email" placeholder="Enter your email" required 
+                        style="width: 100%; padding: 12px; border: 1px solid #ccc;">
+                
+                    <!-- <textarea name="message" placeholder="Write your feedback/message here..." 
+                        style="width: 100%; height: 80px; padding: 12px; border: 1px solid #c25353; font-family: 'Montserrat', sans-serif;"></textarea> -->
+                    
+                    <button type="submit" class="btn-signup" style="width: fit-content;">Sign Up & Send</button>
+                </form>
+
+                <div class="social-links">
+                    <a href="#" class="social-item"><i class="fab fa-facebook-f" style="color: #1877F2;"></i> Quartet Pavilion Event's Place</a>
+                    <a href="#" class="social-item"><i class="fab fa-instagram" style="color: #E4405F;"></i> Quartet Pavilion PH</a>
+                </div>
+            </div>
+
+            <div class="footer-nav">
+                <div class="nav-col">
+                    <h4>Stay</h4>
+                    <ul>
+                        <li><a href="#">Superior Rooms</a></li>
+                        <li><a href="#">Deluxe Rooms</a></li>
+                        <li><a href="#">Pet Policy</a></li>
+                        <li><a href="#">Plan your visit</a></li>
+                    </ul>
+                </div>
+                <div class="nav-col">
+                    <h4>Celebrate</h4>
+                    <ul>
+                        <li><a href="#">Our Venues</a></li>
+                        <li><a href="#">Creative Shoots</a></li>
+                        <li><a href="#">Prenup Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="nav-col">
+                    <h4>Journey</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quartet Pavilion</title>
+  <link rel="icon" href="img/quartetlogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="all.css">
+</head>
+<body>
+    <header class="nav">
+    <div class="nav-container">
+
+      <div class="login-image">
+    <a class="image-brand" href="practicehp.html">
+      <span class="ib-top">Est. 2026</span>
+      <span class="ib-main">QUARTET</span>
+      <span class="ib-sub">Pavilion</span>
+    </a>
+
+      <ul class="nav-menu">
+        <li><a href="practicehp.html" class="nav-link">Home</a></li>
+
+        <li class="dropdown">
+          <a href="#" class="nav-link">About &#9662;</a>
+          <div class="dropdown-menu">
+            <a href="#">Contact Us</a>
+            <a href="events.html">Events</a>
+            <a href="log.html">Login</a>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </header>
+
+  <div class="page-layout">
+
+    <aside class="sidebar">
+      <h1 class="sidebar__title">Birthday<br>Venue</h1>
+      <nav class="sidebar__nav" aria-label="Venue sections">
+        <a class="sidebar__nav-link" href="overview.html">Overview</a>
+        <a class="sidebar__nav-link" href="gallery.html">Gallery</a>
+        <a class="sidebar__nav-link" href="room.html">Room</a>
+        <a class="sidebar__nav-link sidebar__nav-link--active" href="calendar.html">Calendar</a>
+        <a class="sidebar__nav-link" href="testimonials.html">Testimonials</a>
+      </nav>
+    </aside>
+
+    <main class="center-panel center-panel--calendar">
+
+      <!-- Month nav -->
+      <div class="cal-header">
+        <button class="cal-nav-btn" id="prevMonth" aria-label="Previous month">‹</button>
+        <h2 class="cal-header__title" id="calTitle"></h2>
+        <button class="cal-nav-btn" id="nextMonth" aria-label="Next month">›</button>
+      </div>
+
+      <!-- Calendar grid -->
+      <div class="cal-grid" id="calGrid"></div>
+
+      <!-- Legend -->
+      <div class="cal-legend">
+        <div class="cal-legend__item">
+          <div class="cal-legend__dot--available"></div>Available
+        </div>
+        <div class="cal-legend__item">
+          <div class="cal-legend__dot--booked"></div>Booked
+        </div>
+        <div class="cal-legend__item">
+          <div class="cal-legend__dot--unavailable"></div>Unavailable
+        </div>
+      </div>
+
+      <!-- Upcoming events -->
+      <p class="cal-section-label">Upcoming Events</p>
+      <div class="cal-events">
+        <div class="cal-event">
+          <div class="cal-event__date">
+            <span class="cal-event__date-num">08</span>
+            <span class="cal-event__date-mon">Mar</span>
+          </div>
+          <div class="cal-event__sep"></div>
+          <div>
+            <p class="cal-event__name">Garcia Wedding Reception</p>
+            <p class="cal-event__meta">Birthday Venue · 200 pax · Full Day</p>
+          </div>
+        </div>
+        <div class="cal-event">
+          <div class="cal-event__date">
+            <span class="cal-event__date-num">15</span>
+            <span class="cal-event__date-mon">Mar</span>
+          </div>
+          <div class="cal-event__sep"></div>
+          <div>
+            <p class="cal-event__name">Reyes 18th Birthday</p>
+            <p class="cal-event__meta">Birthday Venue · 80 pax · Evening</p>
+          </div>
+        </div>
+        <div class="cal-event">
+          <div class="cal-event__date">
+            <span class="cal-event__date-num">22</span>
+            <span class="cal-event__date-mon">Mar</span>
+          </div>
+          <div class="cal-event__sep"></div>
+          <div>
+            <p class="cal-event__name">Santos Anniversary Dinner</p>
+            <p class="cal-event__meta">Birthday Venue · 50 pax · Evening</p>
+          </div>
+        </div>
+        <div class="cal-event">
+          <div class="cal-event__date">
+            <span class="cal-event__date-num">05</span>
+            <span class="cal-event__date-mon">Apr</span>
+          </div>
+          <div class="cal-event__sep"></div>
+          <div>
+            <p class="cal-event__name">Cruz Debut Celebration</p>
+            <p class="cal-event__meta">Birthday Venue · 120 pax · Full Day</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="right-panel">
+      <p class="right-panel__eyebrow">Availability</p>
+      <h2 class="right-panel__heading">Reserve Your Perfect Date</h2>
+      <div class="right-panel__divider" aria-hidden="true"></div>
+      <p class="right-panel__body">
+        Dates fill quickly, especially on weekends and holidays. We recommend booking at least 3 months in advance to secure your preferred date.
+      </p>
+
+      <ol class="booking-steps">
+        <li class="booking-steps__item">
+          <span class="booking-steps__num">1</span>
+          <div class="booking-steps__text">
+            <span class="booking-steps__title">Choose a date</span>
+            <span class="booking-steps__desc">Select an available date from the calendar.</span>
+          </div>
+        </li>
+        <li class="booking-steps__item">
+          <span class="booking-steps__num">2</span>
+          <div class="booking-steps__text">
+            <span class="booking-steps__title">Submit inquiry</span>
+            <span class="booking-steps__desc">Fill in your event details and preferred setup.</span>
+          </div>
+        </li>
+        <li class="booking-steps__item">
+          <span class="booking-steps__num">3</span>
+          <div class="booking-steps__text">
+            <span class="booking-steps__title">Confirm &amp; pay</span>
+            <span class="booking-steps__desc">Secure your date with a reservation deposit.</span>
+          </div>
+        </li>
+      </ol>
+
+      <div class="cta-group">
+        <a class="btn--primary" href="book.html">Check Availability</a>
+        <a class="btn--ghost"   href="overview.html">← Back to Overview</a>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    const BOOKED      = [3, 8, 15, 22];
+    const UNAVAILABLE = [1, 2, 7, 14, 21, 28, 29];
+    const DAYS        = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+    let current = new Date();
+
+    function render() {
+      const y = current.getFullYear(), m = current.getMonth();
+      const today = new Date();
+
+      document.getElementById('calTitle').textContent =
+        current.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+      const grid = document.getElementById('calGrid');
+      grid.innerHTML = '';
+
+      // Day name headers
+      DAYS.forEach(d => {
+        const el = document.createElement('div');
+        el.className = 'cal-grid__day-name';
+        el.textContent = d;
+        grid.appendChild(el);
+      });
+
+      const firstDay = new Date(y, m, 1).getDay();
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+      // Empty cells before first day
+      for (let i = 0; i < firstDay; i++) {
+        const el = document.createElement('div');
+        el.className = 'cal-grid__day cal-grid__day--empty';
+        grid.appendChild(el);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const el = document.createElement('div');
+        let cls = 'cal-grid__day';
+
+        if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear())
+          cls += ' cal-grid__day--today';
+        else if (BOOKED.includes(d))
+          cls += ' cal-grid__day--booked';
+        else if (UNAVAILABLE.includes(d))
+          cls += ' cal-grid__day--unavailable';
+
+        el.className = cls;
+        el.textContent = d;
+        grid.appendChild(el);
+      }
+    }
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+      current.setMonth(current.getMonth() - 1); render();
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+      current.setMonth(current.getMonth() + 1); render();
+    });
+
+    render();
+  </script>
+
+</body>
+</html>

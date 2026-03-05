@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quartet Pavilion</title>
+  <link rel="icon" href="img/quartetlogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="all.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+    <header class="nav">
+    <div class="nav-container">
+
+      <div class="login-image">
+    <a class="image-brand" href="practicehp.html">
+      <span class="ib-top">Est. 2026</span>
+      <span class="ib-main">QUARTET</span>
+      <span class="ib-sub">Pavilion</span>
+    </a>
+
+      <ul class="nav-menu">
+        <li><a href="practicehp.html" class="nav-link">Home</a></li>
+
+        <li class="dropdown">
+          <a href="#" class="nav-link">About &#9662;</a>
+          <div class="dropdown-menu">
+            <a href="#">Contact Us</a>
+            <a href="events.html">Events</a>
+            <a href="log.html">Login</a>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </header>
+
+  <div class="page-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h1 class="sidebar__title">Birthday<br>Venue</h1>
+      <nav class="sidebar__nav" aria-label="Venue sections">
+        <a class="sidebar__nav-link" href="overview.html">Overview</a>
+        <a class="sidebar__nav-link sidebar__nav-link--active" href="gallery.html">Gallery</a>
+        <a class="sidebar__nav-link" href="room.html">Room</a>
+        <a class="sidebar__nav-link" href="calendar.html">Calendar</a>
+        <a class="sidebar__nav-link" href="testimonials.html">Testimonials</a>
+      </nav>
+    </aside>
+
+    <!-- CENTER: Masonry Gallery -->
+    <main class="center-panel">
+      <div class="gallery-masonry" id="galleryMasonry">
+
+        <div class="gallery-item">
+          <img src="" alt="Birthday Setup">
+          <div class="gallery-item__caption"><span class="gallery-item__label">Birthday Setup</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="" alt="Open Air Venue">
+          <div class="gallery-item__caption"><span class="gallery-item__label">Open Air Venue</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="" alt="Garden View">
+          <div class="gallery-item__caption"><span class="gallery-item__label">Garden View</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="" alt="Evening Event">
+          <div class="gallery-item__caption"><span class="gallery-item__label">Evening Event</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="" alt="Celebration Arch">
+          <div class="gallery-item__caption"><span class="gallery-item__label">Celebration Arch</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="" alt="Indoor Hall">
+          <div class="gallery-item__caption"><span class="gallery-item__label">Indoor Hall</span></div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+      <p class="right-panel__eyebrow">Photo Gallery</p>
+      <h2 class="right-panel_heading">Every Celebration, Beautifully Remembered</h2>
+      <div class="right-panel__divider" aria-hidden="true"></div>
+      <p class="right-panel__body">
+        Browse our curated collection of moments from the Birthday &amp; Private Venue. Every frame captures the warmth, beauty, and joy that fills this space with each celebration.
+      </p>
+      <div class="cta-group">
+        <a class="btn--primary" href="log.html">Book This Venue</a>
+        <a class="btn--ghost"   href="overview.html">← Back to Overview</a>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox__close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lightbox__prev"  id="lbPrev"  aria-label="Previous">‹</button>
+    <img    class="lightbox__img"   id="lbImg" src="" alt="">
+    <button class="lightbox__next"  id="lbNext"  aria-label="Next">›</button>
+    <p      class="lightbox__counter" id="lbCount"></p>
+  </div>
+
+  <script>
+    const items = Array.from(document.querySelectorAll('.gallery-item'));
+    const lb    = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCnt = document.getElementById('lbCount');
+    let cur = 0;
+
+    function open(i) {
+      cur = i;
+      lbImg.src = items[i].querySelector('img').src.replace('w=600','w=1400');
+      lbImg.alt = items[i].querySelector('img').alt;
+      lbCnt.textContent = `${i + 1} / ${items.length}`;
+      lb.classList.add('lightbox--open');
+    }
+
+    function step(d) { open((cur + d + items.length) % items.length); }
+
+    items.forEach((item, i) => item.addEventListener('click', () => open(i)));
+    document.getElementById('lbClose').addEventListener('click', () => lb.classList.remove('lightbox--open'));
+    document.getElementById('lbPrev').addEventListener('click', () => step(-1));
+    document.getElementById('lbNext').addEventListener('click', () => step(1));
+    lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('lightbox--open'); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('lightbox--open')) return;
+      if (e.key === 'Escape')     lb.classList.remove('lightbox--open');
+      if (e.key === 'ArrowLeft')  step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+  </script>
+
+</body>
+</html>
