@@ -1,49 +1,13 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quartet Pavilion</title>
-  <link rel="icon" href="{% static 'img/quartetlogo.png' %}" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/all.css' %}">
-</head>
-<body>
-   <header class="nav">
-    <div class="nav-container">
 
-      <div class="login-image">
-    <a class="image-brand" href="home.html">
-      <span class="ib-top">Est. 2026</span>
-      <span class="ib-main">QUARTET</span>
-      <span class="ib-sub">Pavilion</span>
-    </a>
-
-      <ul class="nav-menu">
-        <li><a href="{% static 'home.html' %}" class="nav-link">Home</a></li>
-
-        <li class="dropdown">
-          <a href="#" class="nav-link">About ▾</a>
-
-          <div class="dropdown-menu">
-            <a href="#">Contact Us</a>
-            <a href="{% static 'events.html' %}">Events</a>
-            <a href="{% static 'log.html' %}">Login</a>
-          </div>
-        </li>
-      </ul>
-
-    </div>
-  </header>
-
-  <div class="header">
-    <p class="label">Our Venues</p>
+  {% block header %}
+  <p class="label">Our Venues</p>
     <h1>Celebrate Every Occasion</h1>
     <p>Find the perfect setting for your most cherished moments</p>
-  </div>
+  {% endblock %}
 
-  <section class="section">
+    <section class="section">
     <div class="divider"></div>
     <div class="grid">
       <a class="card" href="{% static 'overview.html' %}">
@@ -83,7 +47,7 @@
         </div>
       </a>
     </div>
-  </section>
+    </section>
 
 </body>
 </html>
