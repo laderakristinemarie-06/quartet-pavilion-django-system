@@ -10,9 +10,6 @@ def events(request):
 def overview(request):
     return render(request, 'testproj/overview.html')
 
-def wedding(request):                                      
-    return render(request, 'testproj/wedding.html')
-
 def gallery(request):
     return render(request, 'testproj/gallery.html')
 

@@ -2,9 +2,9 @@
     const rooms = {
       sr: {
         photos: [
-          { src: 'img/SR1.jpg', alt: 'Superior Room – Bedroom' },
-          { src: 'img/SR2.jpg', alt: 'Superior Room – Lounge Area' },
-          { src: 'img/SR3.jpg', alt: 'Superior Room – Bathroom' },
+          { src: '{% static "testproj/images/SR1.jpg" %}', alt: 'Superior Room – Bedroom' },
+          { src: '{% static "testproj/images/SR2.jpg" %}', alt: 'Superior Room – Lounge Area' },
+          { src: '{% static "testproj/images/SR3.jpg" %}', alt: 'Superior Room – Bathroom' },
         ],
         cards: [
           { label: 'Room Type',   value: 'Superior Room' },
@@ -30,9 +30,9 @@
       },
       dr: {
         photos: [
-          { src: 'img/DR1.jpg', alt: 'Deluxe Room – Bedroom' },
-          { src: 'img/DR2.jpg', alt: 'Deluxe Room – Sitting Area' },
-          { src: 'img/DR3.jpg', alt: 'Deluxe Room – Bathroom' },
+          { src: '{% static "testproj/images/DR1.jpg" %}', alt: 'Deluxe Room – Bedroom' },
+          { src: '{% static "testproj/images/DR2.jpg" %}', alt: 'Deluxe Room – Sitting Area' },
+          { src: '{% static "testproj/images/DR3.jpg" %}', alt: 'Deluxe Room – Bathroom' },
         ],
         cards: [
           { label: 'Room Type',   value: 'Deluxe Room' },

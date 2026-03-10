@@ -46,11 +46,11 @@
       <h1 class="sidebar__title">Birthday<br>Venue</h1>
 
       <nav class="sidebar__nav" aria-label="Venue sections">
-        <a class="sidebar__nav-link sidebar__nav-link--active" href="overview.html">Overview</a>
-        <a class="sidebar__nav-link" href="gallery.html">Gallery</a>
-        <a class="sidebar__nav-link" href="room.html">Room</a>
-        <a class="sidebar__nav-link" href="calendar.html">Calendar</a>
-        <a class="sidebar__nav-link" href="testimonials.html">Testimonials</a>
+        <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'overview'}">Overview</a>
+        <a class="sidebar__nav-link" href="{% url 'gallery' %}">Gallery</a>
+        <a class="sidebar__nav-link" href="{% url 'room' %}">Room</a>
+        <a class="sidebar__nav-link" href="{% url 'calendar' %}">Calendar</a>
+        <a class="sidebar__nav-link" href="{% url 'testimonials' %}">Testimonials</a>
       </nav>
     </aside>
 
