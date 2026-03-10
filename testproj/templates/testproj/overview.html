@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quartet Pavilion</title>
-  <link rel="icon" href="img/quartetlogo.png" type="image/png">
+  <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="all.css">
+  <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
 </head>
 <body>
 
@@ -15,21 +16,21 @@
     <div class="nav-container">
 
       <div class="login-image">
-    <a class="image-brand" href="practicehp.html">
+    <a class="image-brand" href="{% url 'home' %}">
       <span class="ib-top">Est. 2026</span>
       <span class="ib-main">QUARTET</span>
       <span class="ib-sub">Pavilion</span>
     </a>
 
       <ul class="nav-menu">
-        <li><a href="practicehp.html" class="nav-link">Home</a></li>
+        <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
 
         <li class="dropdown">
           <a href="#" class="nav-link">About &#9662;</a>
           <div class="dropdown-menu">
             <a href="#">Contact Us</a>
-            <a href="events.html">Events</a>
-            <a href="log.html">Login</a>
+            <a href="{% url 'events' %}">Events</a>
+            <a href="{% url 'login' %}">Login</a>
           </div>
         </li>
       </ul>
@@ -57,7 +58,7 @@
     <main class="venue-hero">
       <img
         class="venue-hero__photo"
-        src="img/5.jpg"
+        src="{% static 'testproj/images/5.jpg' %}"
         alt="Birthday Venue at Quartet Pavilion">
 
       <div class="venue-hero__dots" aria-hidden="true">
@@ -89,8 +90,8 @@
       </ul>
 
       <div class="cta-group">
-        <a class="btn--primary" href="book.html">Book This Venue</a>
-        <a class="btn--ghost" href="events.html">← Back to Events</a>
+        <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+        <a class="btn--ghost" href="{% url 'events' %}">← Back to Events</a>
       </div>
     </aside>
 
