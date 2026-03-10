@@ -1,0 +1,61 @@
+{% extends "testproj/custom-admin/base_admin.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <p class="eyebrow">Overview</p>
+    <h1>Dashboard</h1>
+    <div class="divider-line"></div>
+  </div>
+
+  {% for message in messages %}
+    <div class="alert-success">{{ message }}</div>
+  {% endfor %}
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="num">{{ booked_count }}</div>
+      <div class="label">Booked Dates</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">{{ unavailable_count }}</div>
+      <div class="label">Unavailable Dates</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">{{ upcoming|length }}</div>
+      <div class="label">Upcoming Events</div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h2>Upcoming Events</h2>
+      <a href="{% url 'custom_admin_add_date' %}" class="btn-primary">+ Add Date</a>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Pax</th>
+          <th>Time Slot</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in upcoming %}
+        <tr>
+          <td>{{ event.date|date:"M d, Y" }}</td>
+          <td>{{ event.event_name|default:"—" }}</td>
+          <td>{{ event.pax|default:"—" }}</td>
+          <td>{{ event.time_slot|default:"—" }}</td>
+          <td><span class="badge badge-{{ event.status }}">{{ event.status }}</span></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" style="color:#aaa; font-style:italic;">No upcoming events yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

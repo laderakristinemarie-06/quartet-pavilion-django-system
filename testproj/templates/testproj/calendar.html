@@ -1,42 +1,8 @@
+{% extends "testproj/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quartet Pavilion</title>
-  <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
-</head>
-<body>
-    <header class="nav">
-    <div class="nav-container">
 
-      <div class="login-image">
-    <a class="image-brand" href="{% url 'home' %}">
-      <span class="ib-top">Est. 2026</span>
-      <span class="ib-main">QUARTET</span>
-      <span class="ib-sub">Pavilion</span>
-    </a>
-
-      <ul class="nav-menu">
-        <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-
-        <li class="dropdown">
-          <a href="#" class="nav-link">About &#9662;</a>
-          <div class="dropdown-menu">
-            <a href="">Contact Us</a>
-            <a href="{% url 'events' %}">Events</a>
-            <a href="{% url 'login' %}">Login</a>
-          </div>
-        </li>
-      </ul>
-
-    </div>
-  </header>
-
-  <div class="page-layout">
+{% block content %}
+<div class="page-layout">
 
     <aside class="sidebar">
       <h1 class="sidebar__title">Birthday<br>Venue</h1>
@@ -51,17 +17,14 @@
 
     <main class="center-panel center-panel--calendar">
 
-      <!-- Month nav -->
       <div class="cal-header">
         <button class="cal-nav-btn" id="prevMonth" aria-label="Previous month">‹</button>
         <h2 class="cal-header__title" id="calTitle"></h2>
         <button class="cal-nav-btn" id="nextMonth" aria-label="Next month">›</button>
       </div>
 
-      <!-- Calendar grid -->
       <div class="cal-grid" id="calGrid"></div>
 
-      <!-- Legend -->
       <div class="cal-legend">
         <div class="cal-legend__item">
           <div class="cal-legend__dot--available"></div>Available
@@ -74,54 +37,29 @@
         </div>
       </div>
 
-      <!-- Upcoming events -->
       <p class="cal-section-label">Upcoming Events</p>
       <div class="cal-events">
+        {% for event in upcoming_events %}
         <div class="cal-event">
           <div class="cal-event__date">
-            <span class="cal-event__date-num">08</span>
-            <span class="cal-event__date-mon">Mar</span>
+            <span class="cal-event__date-num">{{ event.date|date:"d" }}</span>
+            <span class="cal-event__date-mon">{{ event.date|date:"M" }}</span>
           </div>
           <div class="cal-event__sep"></div>
           <div>
-            <p class="cal-event__name">Garcia Wedding Reception</p>
-            <p class="cal-event__meta">Birthday Venue · 200 pax · Full Day</p>
+            <p class="cal-event__name">{{ event.event_name }}</p>
+            <p class="cal-event__meta">
+              Birthday Venue
+              {% if event.pax %} · {{ event.pax }} pax{% endif %}
+              {% if event.time_slot %} · {{ event.time_slot }}{% endif %}
+            </p>
           </div>
         </div>
-        <div class="cal-event">
-          <div class="cal-event__date">
-            <span class="cal-event__date-num">15</span>
-            <span class="cal-event__date-mon">Mar</span>
-          </div>
-          <div class="cal-event__sep"></div>
-          <div>
-            <p class="cal-event__name">Reyes 18th Birthday</p>
-            <p class="cal-event__meta">Birthday Venue · 80 pax · Evening</p>
-          </div>
-        </div>
-        <div class="cal-event">
-          <div class="cal-event__date">
-            <span class="cal-event__date-num">22</span>
-            <span class="cal-event__date-mon">Mar</span>
-          </div>
-          <div class="cal-event__sep"></div>
-          <div>
-            <p class="cal-event__name">Santos Anniversary Dinner</p>
-            <p class="cal-event__meta">Birthday Venue · 50 pax · Evening</p>
-          </div>
-        </div>
-        <div class="cal-event">
-          <div class="cal-event__date">
-            <span class="cal-event__date-num">05</span>
-            <span class="cal-event__date-mon">Apr</span>
-          </div>
-          <div class="cal-event__sep"></div>
-          <div>
-            <p class="cal-event__name">Cruz Debut Celebration</p>
-            <p class="cal-event__meta">Birthday Venue · 120 pax · Full Day</p>
-          </div>
-        </div>
+        {% empty %}
+        <p>No upcoming events.</p>
+        {% endfor %}
       </div>
+
     </main>
 
     <aside class="right-panel">
@@ -129,7 +67,8 @@
       <h2 class="right-panel__heading">Reserve Your Perfect Date</h2>
       <div class="right-panel__divider" aria-hidden="true"></div>
       <p class="right-panel__body">
-        Dates fill quickly, especially on weekends and holidays. We recommend booking at least 3 months in advance to secure your preferred date.
+        Dates fill quickly, especially on weekends and holidays. We recommend
+        booking at least 3 months in advance to secure your preferred date.
       </p>
 
       <ol class="booking-steps">
@@ -158,74 +97,82 @@
 
       <div class="cta-group">
         <a class="btn--primary" href="{% url 'book' %}">Check Availability</a>
-        <a class="btn--ghost"   href="{% url 'overview' %}">← Back to Overview</a>
+        <a class="btn--ghost" href="{% url 'overview' %}">← Back to Overview</a>
       </div>
     </aside>
 
-  </div>
+</div>
 
-  <script>
-    const BOOKED      = [3, 8, 15, 22];
-    const UNAVAILABLE = [1, 2, 7, 14, 21, 28, 29];
-    const DAYS        = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+<script id="calendar-data" type="application/json">
+  {{ booked_json|default:"[]"|safe }}
+</script>
 
-    let current = new Date();
+<script>
+  // Dates passed from Django database via views.py
+  const calendarDataEl = document.getElementById('calendar-data');
+  const bookedData = calendarDataEl ? JSON.parse(calendarDataEl.textContent.trim()) : {booked: [], unavailable: []};
+  const BOOKED = bookedData.booked || [];
+  const UNAVAILABLE = bookedData.unavailable || [];
+  const DAYS        = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-    function render() {
-      const y = current.getFullYear(), m = current.getMonth();
-      const today = new Date();
+  let current = new Date();
 
-      document.getElementById('calTitle').textContent =
-        current.toLocaleString('default', { month: 'long', year: 'numeric' });
+  function render() {
+    const y = current.getFullYear(), m = current.getMonth();
+    const today = new Date();
 
-      const grid = document.getElementById('calGrid');
-      grid.innerHTML = '';
+    document.getElementById('calTitle').textContent =
+      current.toLocaleString('default', { month: 'long', year: 'numeric' });
 
-      // Day name headers
-      DAYS.forEach(d => {
-        const el = document.createElement('div');
-        el.className = 'cal-grid__day-name';
-        el.textContent = d;
-        grid.appendChild(el);
-      });
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
 
-      const firstDay = new Date(y, m, 1).getDay();
-      const daysInMonth = new Date(y, m + 1, 0).getDate();
+    DAYS.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'cal-grid__day-name';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
 
-      // Empty cells before first day
-      for (let i = 0; i < firstDay; i++) {
-        const el = document.createElement('div');
-        el.className = 'cal-grid__day cal-grid__day--empty';
-        grid.appendChild(el);
-      }
+    const firstDay = new Date(y, m, 1).getDay();
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
 
-      for (let d = 1; d <= daysInMonth; d++) {
-        const el = document.createElement('div');
-        let cls = 'cal-grid__day';
-
-        if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear())
-          cls += ' cal-grid__day--today';
-        else if (BOOKED.includes(d))
-          cls += ' cal-grid__day--booked';
-        else if (UNAVAILABLE.includes(d))
-          cls += ' cal-grid__day--unavailable';
-
-        el.className = cls;
-        el.textContent = d;
-        grid.appendChild(el);
-      }
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-grid__day cal-grid__day--empty';
+      grid.appendChild(el);
     }
 
-    document.getElementById('prevMonth').addEventListener('click', () => {
-      current.setMonth(current.getMonth() - 1); render();
-    });
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement('div');
 
-    document.getElementById('nextMonth').addEventListener('click', () => {
-      current.setMonth(current.getMonth() + 1); render();
-    });
+      // Build full date string to match Django format e.g. "2026-03-08"
+      const mm = String(m + 1).padStart(2, '0');
+      const dd = String(d).padStart(2, '0');
+      const dateStr = `${y}-${mm}-${dd}`;
 
-    render();
-  </script>
+      let cls = 'cal-grid__day';
 
-</body>
-</html>
+      if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear())
+        cls += ' cal-grid__day--today';
+      else if (BOOKED.includes(dateStr))
+        cls += ' cal-grid__day--booked';
+      else if (UNAVAILABLE.includes(dateStr))
+        cls += ' cal-grid__day--unavailable';
+
+      el.className = cls;
+      el.textContent = d;
+      grid.appendChild(el);
+    }
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    current.setMonth(current.getMonth() - 1); render();
+  });
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    current.setMonth(current.getMonth() + 1); render();
+  });
+
+  render();
+</script>
+{% endblock %}

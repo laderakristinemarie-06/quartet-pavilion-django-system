@@ -1,0 +1,45 @@
+{% extends "testproj/custom-admin/base_admin.html" %}
+{% block title %}Edit Date{% endblock %}
+{% block nav_dates %}active{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <p class="eyebrow">Calendar</p>
+    <h1>Edit Date</h1>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="form-card">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="field-group">
+        <label>Date</label>
+        <input type="date" name="date" value="{{ entry.date|date:'Y-m-d' }}" required>
+      </div>
+      <div class="field-group">
+        <label>Status</label>
+        <select name="status">
+          <option value="booked" {% if entry.status == 'booked' %}selected{% endif %}>Booked</option>
+          <option value="unavailable" {% if entry.status == 'unavailable' %}selected{% endif %}>Unavailable</option>
+          <option value="available" {% if entry.status == 'available' %}selected{% endif %}>Available</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Event Name</label>
+        <input type="text" name="event_name" value="{{ entry.event_name }}">
+      </div>
+      <div class="field-group">
+        <label>Pax (Number of Guests)</label>
+        <input type="number" name="pax" value="{{ entry.pax }}">
+      </div>
+      <div class="field-group">
+        <label>Time Slot</label>
+        <input type="text" name="time_slot" value="{{ entry.time_slot }}">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Save Changes</button>
+        <a href="{% url 'custom_admin_dates' %}" class="btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

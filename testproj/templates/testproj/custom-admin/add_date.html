@@ -1,0 +1,45 @@
+{% extends "testproj/custom-admin/base_admin.html" %}
+{% block title %}Add Date{% endblock %}
+{% block nav_add %}active{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <p class="eyebrow">Calendar</p>
+    <h1>Add Date</h1>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="form-card">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="field-group">
+        <label>Date</label>
+        <input type="date" name="date" required>
+      </div>
+      <div class="field-group">
+        <label>Status</label>
+        <select name="status">
+          <option value="booked">Booked</option>
+          <option value="unavailable">Unavailable</option>
+          <option value="available">Available</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Event Name</label>
+        <input type="text" name="event_name" placeholder="e.g. Garcia Wedding Reception">
+      </div>
+      <div class="field-group">
+        <label>Pax (Number of Guests)</label>
+        <input type="number" name="pax" placeholder="e.g. 150">
+      </div>
+      <div class="field-group">
+        <label>Time Slot</label>
+        <input type="text" name="time_slot" placeholder="e.g. Full Day, Evening">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Add Date</button>
+        <a href="{% url 'custom_admin_dates' %}" class="btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
