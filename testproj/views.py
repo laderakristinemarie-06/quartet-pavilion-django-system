@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import date
-from testproj.models import BookedDate 
+from .models import BookedDate, BookingInquiry
 import json
+
 
 def home(request):
     return render(request, 'testproj/home.html')
@@ -160,21 +161,61 @@ def custom_admin_delete_date(request, pk):
     # If accessed via GET, redirect safely
     return redirect('custom_admin_dates')
 
-
-# ─────────────────────────────────────────────
-#  PUBLIC CALENDAR
-# ─────────────────────────────────────────────
 def calendar(request):
-    booked_dates = BookedDate.objects.filter(
-        status='booked'
-    ).values('date', 'event_name', 'pax', 'time_slot')
-
-    unavailable_dates = BookedDate.objects.filter(
-        status='unavailable'
-    ).values('date')
+    booked_dates = BookedDate.objects.filter(status='booked').values('date', 'event_name', 'pax', 'time_slot')
+    unavailable_dates = BookedDate.objects.filter(status='unavailable').values('date')
 
     context = {
         'booked_dates':      json.dumps(list(booked_dates),      cls=DjangoJSONEncoder),
         'unavailable_dates': json.dumps(list(unavailable_dates), cls=DjangoJSONEncoder),
     }
     return render(request, 'testproj/calendar.html', context)
+
+def submit_booking(request):
+    if request.method == 'POST':
+        date_val   = request.POST.get('date')
+        name       = request.POST.get('name', '').strip()
+        email      = request.POST.get('email', '').strip()
+        event_name = request.POST.get('event_name', '').strip()
+        pax        = request.POST.get('pax') or None
+        time_slot  = request.POST.get('time_slot', '').strip()
+        notes      = request.POST.get('notes', '').strip()
+ 
+        BookingInquiry.objects.create(
+            date=date_val,
+            name=name,
+            email=email,
+            event_name=event_name,
+            pax=pax,
+            time_slot=time_slot,
+            notes=notes,
+        )
+        # Redirect back to calendar with success flag → JS shows success modal
+        return redirect('/calendar/?success=1')
+ 
+    return redirect('calendar')
+
+@admin_required
+def custom_admin_inquiries(request):
+    inquiries = BookingInquiry.objects.all().order_by('date')
+    return render(request, 'testproj/custom-admin/inquiries.html', {'inquiries': inquiries})
+
+@admin_required
+def custom_admin_dashboard(request):
+    from datetime import date
+    today = date.today()
+ 
+    booked_count      = BookedDate.objects.filter(status='booked').count()
+    unavailable_count = BookedDate.objects.filter(status='unavailable').count()
+    pending_count     = BookingInquiry.objects.filter(status='pending').count()
+    upcoming          = BookedDate.objects.filter(status='booked', date__gte=today).order_by('date')[:10]
+    recent_inquiries  = BookingInquiry.objects.filter(status='pending').order_by('submitted_at')[:5]
+ 
+    context = {
+        'booked_count':      booked_count,
+        'unavailable_count': unavailable_count,
+        'pending_count':     pending_count,
+        'upcoming':          upcoming,
+        'recent_inquiries':  recent_inquiries,
+    }
+    return render(request, 'testproj/custom-admin/dashboard.html', context)

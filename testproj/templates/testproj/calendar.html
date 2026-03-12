@@ -8,8 +8,156 @@
   <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
+  <style>
+    /* ── Clickable available day ── */
+    .cal-grid__day--available {
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .cal-grid__day--available:hover {
+      background: #1a2e1a;
+      color: #fff;
+    }
+
+    /* ── Modal overlay ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    /* ── Modal box ── */
+    .modal {
+      background: #fff;
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 92%;
+      position: relative;
+      font-family: 'Jost', sans-serif;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal__eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #c9a84c;
+      margin-bottom: 0.3rem;
+    }
+    .modal__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: #1a2e1a;
+      margin: 0;
+    }
+    .modal__divider {
+      width: 36px;
+      height: 1px;
+      background: #c9a84c;
+      margin: 0.8rem 0 1.4rem;
+    }
+    .modal__field { margin-bottom: 1rem; }
+    .modal__field label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 0.4rem;
+    }
+    .modal__field input,
+    .modal__field select,
+    .modal__field textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      color: #1a2e1a;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fff;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+    }
+    .modal__field input:focus,
+    .modal__field select:focus,
+    .modal__field textarea:focus { border-color: #1a2e1a; }
+    .modal__field input[readonly] { background: #f9f6f2; color: #777; cursor: default; }
+    .modal__field textarea { resize: vertical; }
+
+    .modal__actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .modal__btn-submit {
+      flex: 1;
+      padding: 0.9rem;
+      background: #1a2e1a;
+      color: #fff;
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .modal__btn-submit:hover { background: #2d4a2d; }
+    .modal__btn-cancel {
+      padding: 0.9rem 1.5rem;
+      background: transparent;
+      color: #888;
+      border: 1px solid #ddd;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .modal__btn-cancel:hover { border-color: #1a2e1a; color: #1a2e1a; }
+    .modal__close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      font-size: 1.4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #bbb;
+      line-height: 1;
+      padding: 0;
+    }
+    .modal__close:hover { color: #1a2e1a; }
+
+    /* ── Success panel ── */
+    .modal__success {
+      display: none;
+      text-align: center;
+      padding: 2rem 0 1rem;
+    }
+    .modal__success .success-icon {
+      font-size: 3rem;
+      color: #1a2e1a;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .modal__success p {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.7;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ── Header ── -->
   <header class="nav">
     <div class="nav-container">
       <div class="login-image">
@@ -18,7 +166,6 @@
           <span class="ib-main">QUARTET</span>
           <span class="ib-sub">Pavilion</span>
         </a>
-
         <ul class="nav-menu">
           <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
           <li class="dropdown">
@@ -72,11 +219,9 @@
         </div>
       </div>
 
-      <!-- Upcoming Events (dynamically rendered) -->
+      <!-- Upcoming Events -->
       <p class="cal-section-label">Upcoming Events</p>
-      <div class="cal-events" id="upcomingEvents">
-        <!-- Populated by JS -->
-      </div>
+      <div class="cal-events" id="upcomingEvents"></div>
 
     </main>
 
@@ -87,7 +232,6 @@
       <p class="right-panel__body">
         Dates fill quickly, especially on weekends and holidays. We recommend booking at least 3 months in advance to secure your preferred date.
       </p>
-
       <ol class="booking-steps">
         <li class="booking-steps__item">
           <span class="booking-steps__num">1</span>
@@ -111,7 +255,6 @@
           </div>
         </li>
       </ol>
-
       <div class="cta-group">
         <a class="btn--ghost" href="{% url 'overview' %}">← Back to Overview</a>
       </div>
@@ -119,62 +262,131 @@
 
   </div>
 
-  <script>
-    const BOOKED_DATA = JSON.parse('[{"date":"2024-12-25","event_name":"Party"}]');  // CORRECT
-    const UNAVAILABLE_DATA = JSON.parse('{{ unavailable_dates|safe }}'); // [{date}, ...]
 
-    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  <!-- ══════════════════════════════════════
+       Booking Modal
+  ══════════════════════════════════════ -->
+  <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
+
+      <!-- Form view -->
+      <div id="modalForm">
+        <p class="modal__eyebrow">Inquiry</p>
+        <h2 class="modal__title">Book This Date</h2>
+        <div class="modal__divider"></div>
+
+        <form method="POST" action="{% url 'submit_booking' %}">
+          {% csrf_token %}
+
+          <div class="modal__field">
+            <label>Selected Date</label>
+            <input type="text" id="displayDate" readonly tabindex="-1">
+            <input type="hidden" name="date" id="selectedDate">
+          </div>
+          <div class="modal__field">
+            <label for="guestName">Your Name</label>
+            <input type="text" id="guestName" name="name"
+                   placeholder="e.g. Maria Santos" required autocomplete="name">
+          </div>
+          <div class="modal__field">
+            <label for="guestEmail">Email Address</label>
+            <input type="email" id="guestEmail" name="email"
+                   placeholder="your@email.com" required autocomplete="email">
+          </div>
+          <div class="modal__field">
+            <label for="eventName">Event Type</label>
+            <input type="text" id="eventName" name="event_name"
+                   placeholder="e.g. 18th Birthday, Anniversary" required>
+          </div>
+          <div class="modal__field">
+            <label for="guestPax">Number of Guests</label>
+            <input type="number" id="guestPax" name="pax"
+                   placeholder="e.g. 100" min="1">
+          </div>
+          <div class="modal__field">
+            <label for="timeSlot">Preferred Time Slot</label>
+            <select id="timeSlot" name="time_slot">
+              <option value="">— Select —</option>
+              <option value="Morning">Morning</option>
+              <option value="Afternoon">Afternoon</option>
+              <option value="Evening">Evening</option>
+              <option value="Full Day">Full Day</option>
+            </select>
+          </div>
+          <div class="modal__field">
+            <label for="guestNotes">Additional Notes</label>
+            <textarea id="guestNotes" name="notes" rows="3"
+                      placeholder="Any special requests or questions..."></textarea>
+          </div>
+          <div class="modal__actions">
+            <button type="submit" class="modal__btn-submit">Send Inquiry</button>
+            <button type="button" class="modal__btn-cancel" id="modalCancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success view -->
+      <div id="modalSuccess" class="modal__success">
+        <span class="success-icon">✓</span>
+        <h2 class="modal__title" style="text-align:center;">Inquiry Sent!</h2>
+        <div class="modal__divider" style="margin:0.8rem auto 1rem;"></div>
+        <p>Thank you for your inquiry. We'll get back to you within 24 hours to confirm your booking.</p>
+        <div class="modal__actions" style="justify-content:center; margin-top:1.5rem;">
+          <button type="button" class="modal__btn-cancel" id="modalSuccessClose">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+    // ── Data from Django views.py ─────────────────────────────
+    const BOOKED_DATA      = {{ booked_dates|safe }};
+    const UNAVAILABLE_DATA = {{ unavailable_dates|safe }};
+
+    const DAYS   = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const MONTHS = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
 
     let current = new Date();
 
-    // Returns an array of day-of-month numbers for entries matching year+month
+    // ── Helpers ───────────────────────────────────────────────
     function getDaysInMonth(dataArray, y, m) {
       return dataArray
         .map(item => new Date(item.date))
-        .filter(d => d.getFullYear() === y && d.getMonth() === m)
-        .map(d => d.getDate());
+        .filter(dt => dt.getFullYear() === y && dt.getMonth() === m)
+        .map(dt => dt.getDate());
     }
 
-    // Returns booked entries for a given year+month, sorted by day
-    function getBookedInMonth(y, m) {
-      return BOOKED_DATA
-        .filter(item => {
-          const d = new Date(item.date);
-          return d.getFullYear() === y && d.getMonth() === m;
-        })
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
-    }
-
-    // Returns upcoming events from today onward
     function getUpcomingEvents() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       return BOOKED_DATA
         .filter(item => new Date(item.date) >= today)
         .sort((a, b) => new Date(a.date) - new Date(b.date))
-        .slice(0, 5); // Show next 5 upcoming
+        .slice(0, 5);
     }
 
+    // ── Upcoming events list ──────────────────────────────────
     function renderUpcomingEvents() {
       const container = document.getElementById('upcomingEvents');
-      const upcoming = getUpcomingEvents();
+      const upcoming  = getUpcomingEvents();
 
-      if (upcoming.length === 0) {
+      if (!upcoming.length) {
         container.innerHTML = '<p class="cal-no-events">No upcoming events scheduled.</p>';
         return;
       }
 
       container.innerHTML = upcoming.map(item => {
-        const d = new Date(item.date);
-        const day = String(d.getDate()).padStart(2, '0');
-        const mon = MONTHS[d.getMonth()].substring(0, 3);
+        const dt   = new Date(item.date);
+        const day  = String(dt.getDate()).padStart(2, '0');
+        const mon  = MONTHS[dt.getMonth()].substring(0, 3);
         const slot = item.time_slot
-          ? item.time_slot.charAt(0).toUpperCase() + item.time_slot.slice(1)
-          : '';
-        const pax = item.pax ? `${item.pax} pax` : '';
+          ? item.time_slot.charAt(0).toUpperCase() + item.time_slot.slice(1) : '';
+        const pax  = item.pax ? `${item.pax} pax` : '';
         const meta = [pax, slot].filter(Boolean).join(' · ');
-
         return `
           <div class="cal-event">
             <div class="cal-event__date">
@@ -190,72 +402,119 @@
       }).join('');
     }
 
+    // ── Calendar grid ─────────────────────────────────────────
     function render() {
-      const y = current.getFullYear();
-      const m = current.getMonth();
+      const y     = current.getFullYear();
+      const m     = current.getMonth();
       const today = new Date();
+      const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
       const bookedDays      = getDaysInMonth(BOOKED_DATA, y, m);
       const unavailableDays = getDaysInMonth(UNAVAILABLE_DATA, y, m);
 
-      document.getElementById('calTitle').textContent =
-        `${MONTHS[m]} ${y}`;
+      document.getElementById('calTitle').textContent = `${MONTHS[m]} ${y}`;
 
       const grid = document.getElementById('calGrid');
       grid.innerHTML = '';
 
       // Day name headers
-      DAYS.forEach(d => {
+      DAYS.forEach(name => {
         const el = document.createElement('div');
-        el.className = 'cal-grid__day-name';
-        el.textContent = d;
+        el.className   = 'cal-grid__day-name';
+        el.textContent = name;
         grid.appendChild(el);
       });
 
+      // Empty leading cells
       const firstDay    = new Date(y, m, 1).getDay();
       const daysInMonth = new Date(y, m + 1, 0).getDate();
-
-      // Empty cells before first day
       for (let i = 0; i < firstDay; i++) {
         const el = document.createElement('div');
         el.className = 'cal-grid__day cal-grid__day--empty';
         grid.appendChild(el);
       }
 
+      // Day cells
       for (let d = 1; d <= daysInMonth; d++) {
-        const el = document.createElement('div');
-        let cls = 'cal-grid__day';
-
+        const el      = document.createElement('div');
+        const thisDay = new Date(y, m, d);
+        const isPast  = thisDay < todayMidnight;
         const isToday = (
           d === today.getDate() &&
           m === today.getMonth() &&
           y === today.getFullYear()
         );
 
-        if (isToday)
-          cls += ' cal-grid__day--today';
-        else if (bookedDays.includes(d))
-          cls += ' cal-grid__day--booked';
-        else if (unavailableDays.includes(d))
-          cls += ' cal-grid__day--unavailable';
+        let cls = 'cal-grid__day';
 
-        el.className = cls;
+        if (isToday) {
+          cls += ' cal-grid__day--today';
+        } else if (bookedDays.includes(d)) {
+          cls += ' cal-grid__day--booked';
+        } else if (unavailableDays.includes(d) || isPast) {
+          cls += ' cal-grid__day--unavailable';
+        } else {
+          // Future available date — make clickable
+          cls += ' cal-grid__day--available';
+          el.addEventListener('click', () => openModal(y, m, d));
+        }
+
+        el.className   = cls;
         el.textContent = d;
         grid.appendChild(el);
       }
     }
 
+    // ── Modal open / close ────────────────────────────────────
+    function openModal(y, m, d) {
+      const dateStr    = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const displayStr = `${MONTHS[m]} ${d}, ${y}`;
+
+      document.getElementById('selectedDate').value = dateStr;
+      document.getElementById('displayDate').value  = displayStr;
+      document.getElementById('modalForm').style.display    = 'block';
+      document.getElementById('modalSuccess').style.display = 'none';
+      document.getElementById('bookingModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => document.getElementById('guestName').focus(), 100);
+    }
+
+    function closeModal() {
+      document.getElementById('bookingModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalCancel').addEventListener('click', closeModal);
+    document.getElementById('modalSuccessClose').addEventListener('click', closeModal);
+
+    // Click backdrop to close
+    document.getElementById('bookingModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    // Escape key to close
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Show success modal if Django redirected with ?success=1
+    if (new URLSearchParams(window.location.search).get('success') === '1') {
+      document.getElementById('modalForm').style.display    = 'none';
+      document.getElementById('modalSuccess').style.display = 'block';
+      document.getElementById('bookingModal').classList.add('open');
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    // ── Month navigation ──────────────────────────────────────
     document.getElementById('prevMonth').addEventListener('click', () => {
-      current.setMonth(current.getMonth() - 1);
-      render();
+      current.setMonth(current.getMonth() - 1); render();
     });
-
     document.getElementById('nextMonth').addEventListener('click', () => {
-      current.setMonth(current.getMonth() + 1);
-      render();
+      current.setMonth(current.getMonth() + 1); render();
     });
 
-    // Initial render
     render();
     renderUpcomingEvents();
   </script>
