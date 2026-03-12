@@ -10,29 +10,27 @@
   <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
 </head>
 <body>
-    <header class="nav">
+  <header class="nav">
     <div class="nav-container">
-
       <div class="login-image">
-    <a class="image-brand" href="{% url 'home' %}">
-      <span class="ib-top">Est. 2026</span>
-      <span class="ib-main">QUARTET</span>
-      <span class="ib-sub">Pavilion</span>
-    </a>
+        <a class="image-brand" href="{% url 'home' %}">
+          <span class="ib-top">Est. 2026</span>
+          <span class="ib-main">QUARTET</span>
+          <span class="ib-sub">Pavilion</span>
+        </a>
 
-      <ul class="nav-menu">
-        <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-
-        <li class="dropdown">
-          <a href="#" class="nav-link">About &#9662;</a>
-          <div class="dropdown-menu">
-            <a href="">Contact Us</a>
-            <a href="{% url 'events' %}">Events</a>
-            <a href="{% url 'log_in' %}">Login</a>
-          </div>
-        </li>
-      </ul>
-
+        <ul class="nav-menu">
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="nav-link">About &#9662;</a>
+            <div class="dropdown-menu">
+              <a href="">Contact Us</a>
+              <a href="{% url 'events' %}">Events</a>
+              <a href="{% url 'log_in' %}">Login</a>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </header>
 
@@ -74,54 +72,12 @@
         </div>
       </div>
 
-      <!-- Upcoming events -->
+      <!-- Upcoming Events (dynamically rendered) -->
       <p class="cal-section-label">Upcoming Events</p>
-      <div class="cal-events">
-        <div class="cal-event">
-          <div class="cal-event__date">
-            <span class="cal-event__date-num">08</span>
-            <span class="cal-event__date-mon">Mar</span>
-          </div>
-          <div class="cal-event__sep"></div>
-          <div>
-            <p class="cal-event__name">Garcia Wedding Reception</p>
-            <p class="cal-event__meta">Birthday Venue · 200 pax · Full Day</p>
-          </div>
-        </div>
-        <div class="cal-event">
-          <div class="cal-event__date">
-            <span class="cal-event__date-num">15</span>
-            <span class="cal-event__date-mon">Mar</span>
-          </div>
-          <div class="cal-event__sep"></div>
-          <div>
-            <p class="cal-event__name">Reyes 18th Birthday</p>
-            <p class="cal-event__meta">Birthday Venue · 80 pax · Evening</p>
-          </div>
-        </div>
-        <div class="cal-event">
-          <div class="cal-event__date">
-            <span class="cal-event__date-num">22</span>
-            <span class="cal-event__date-mon">Mar</span>
-          </div>
-          <div class="cal-event__sep"></div>
-          <div>
-            <p class="cal-event__name">Santos Anniversary Dinner</p>
-            <p class="cal-event__meta">Birthday Venue · 50 pax · Evening</p>
-          </div>
-        </div>
-        <div class="cal-event">
-          <div class="cal-event__date">
-            <span class="cal-event__date-num">05</span>
-            <span class="cal-event__date-mon">Apr</span>
-          </div>
-          <div class="cal-event__sep"></div>
-          <div>
-            <p class="cal-event__name">Cruz Debut Celebration</p>
-            <p class="cal-event__meta">Birthday Venue · 120 pax · Full Day</p>
-          </div>
-        </div>
+      <div class="cal-events" id="upcomingEvents">
+        <!-- Populated by JS -->
       </div>
+
     </main>
 
     <aside class="right-panel">
@@ -157,25 +113,93 @@
       </ol>
 
       <div class="cta-group">
-        <a class="btn--ghost"   href="overview.html">← Back to Overview</a>
+        <a class="btn--ghost" href="{% url 'overview' %}">← Back to Overview</a>
       </div>
     </aside>
 
   </div>
 
   <script>
-    const BOOKED      = [3, 8, 15, 22];
-    const UNAVAILABLE = [1, 2, 7, 14, 21, 28, 29];
-    const DAYS        = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const BOOKED_DATA = JSON.parse('[{"date":"2024-12-25","event_name":"Party"}]');  // CORRECT
+    const UNAVAILABLE_DATA = JSON.parse('{{ unavailable_dates|safe }}'); // [{date}, ...]
+
+    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
     let current = new Date();
 
+    // Returns an array of day-of-month numbers for entries matching year+month
+    function getDaysInMonth(dataArray, y, m) {
+      return dataArray
+        .map(item => new Date(item.date))
+        .filter(d => d.getFullYear() === y && d.getMonth() === m)
+        .map(d => d.getDate());
+    }
+
+    // Returns booked entries for a given year+month, sorted by day
+    function getBookedInMonth(y, m) {
+      return BOOKED_DATA
+        .filter(item => {
+          const d = new Date(item.date);
+          return d.getFullYear() === y && d.getMonth() === m;
+        })
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    // Returns upcoming events from today onward
+    function getUpcomingEvents() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return BOOKED_DATA
+        .filter(item => new Date(item.date) >= today)
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .slice(0, 5); // Show next 5 upcoming
+    }
+
+    function renderUpcomingEvents() {
+      const container = document.getElementById('upcomingEvents');
+      const upcoming = getUpcomingEvents();
+
+      if (upcoming.length === 0) {
+        container.innerHTML = '<p class="cal-no-events">No upcoming events scheduled.</p>';
+        return;
+      }
+
+      container.innerHTML = upcoming.map(item => {
+        const d = new Date(item.date);
+        const day = String(d.getDate()).padStart(2, '0');
+        const mon = MONTHS[d.getMonth()].substring(0, 3);
+        const slot = item.time_slot
+          ? item.time_slot.charAt(0).toUpperCase() + item.time_slot.slice(1)
+          : '';
+        const pax = item.pax ? `${item.pax} pax` : '';
+        const meta = [pax, slot].filter(Boolean).join(' · ');
+
+        return `
+          <div class="cal-event">
+            <div class="cal-event__date">
+              <span class="cal-event__date-num">${day}</span>
+              <span class="cal-event__date-mon">${mon}</span>
+            </div>
+            <div class="cal-event__sep"></div>
+            <div>
+              <p class="cal-event__name">${item.event_name || 'Private Event'}</p>
+              <p class="cal-event__meta">Birthday Venue${meta ? ' · ' + meta : ''}</p>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
     function render() {
-      const y = current.getFullYear(), m = current.getMonth();
+      const y = current.getFullYear();
+      const m = current.getMonth();
       const today = new Date();
 
+      const bookedDays      = getDaysInMonth(BOOKED_DATA, y, m);
+      const unavailableDays = getDaysInMonth(UNAVAILABLE_DATA, y, m);
+
       document.getElementById('calTitle').textContent =
-        current.toLocaleString('default', { month: 'long', year: 'numeric' });
+        `${MONTHS[m]} ${y}`;
 
       const grid = document.getElementById('calGrid');
       grid.innerHTML = '';
@@ -188,7 +212,7 @@
         grid.appendChild(el);
       });
 
-      const firstDay = new Date(y, m, 1).getDay();
+      const firstDay    = new Date(y, m, 1).getDay();
       const daysInMonth = new Date(y, m + 1, 0).getDate();
 
       // Empty cells before first day
@@ -202,11 +226,17 @@
         const el = document.createElement('div');
         let cls = 'cal-grid__day';
 
-        if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear())
+        const isToday = (
+          d === today.getDate() &&
+          m === today.getMonth() &&
+          y === today.getFullYear()
+        );
+
+        if (isToday)
           cls += ' cal-grid__day--today';
-        else if (BOOKED.includes(d))
+        else if (bookedDays.includes(d))
           cls += ' cal-grid__day--booked';
-        else if (UNAVAILABLE.includes(d))
+        else if (unavailableDays.includes(d))
           cls += ' cal-grid__day--unavailable';
 
         el.className = cls;
@@ -216,14 +246,18 @@
     }
 
     document.getElementById('prevMonth').addEventListener('click', () => {
-      current.setMonth(current.getMonth() - 1); render();
+      current.setMonth(current.getMonth() - 1);
+      render();
     });
 
     document.getElementById('nextMonth').addEventListener('click', () => {
-      current.setMonth(current.getMonth() + 1); render();
+      current.setMonth(current.getMonth() + 1);
+      render();
     });
 
+    // Initial render
     render();
+    renderUpcomingEvents();
   </script>
 
 </body>

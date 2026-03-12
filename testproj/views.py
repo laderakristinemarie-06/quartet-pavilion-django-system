@@ -1,7 +1,8 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import BookedDate, AdminUser
+from django.core.serializers.json import DjangoJSONEncoder
+from datetime import date
+from testproj.models import BookedDate 
 import json
 
 def home(request):
@@ -19,141 +20,161 @@ def gallery(request):
 def room(request):
     return render(request, 'testproj/room.html')
 
-def calendar(request):
-    booked_dates = BookedDate.objects.all()
-
-    # Pass dates to JS as JSON
-    booked = [str(b.date) for b in booked_dates if b.status == 'booked']
-    unavailable = [str(b.date) for b in booked_dates if b.status == 'unavailable']
-
-    # Upcoming events (booked dates that have an event name)
-    upcoming = booked_dates.filter(
-        status='booked',
-        event_name__isnull=False
-    ).exclude(event_name='').order_by('date')[:4]
-
-    context = {
-        'booked_json': json.dumps({'booked': booked, 'unavailable': unavailable}),
-        'upcoming_events': upcoming,
-    }
-    return render(request, 'testproj/calendar.html', context)
-
 def testimonials(request):
     return render(request, 'testproj/testimonials.html')
 
 def book(request):
     return render(request, 'testproj/book.html')
 
-def login(request):
+def log_in(request):
     return render(request, 'testproj/log_in.html')
 
-# ─── Custom Admin Login ───────────────────────────────────────
+def admin_required(view_func):
+    """Simple decorator to protect custom admin     views."""
+    def wrapper(request, *args, **kwargs):
+        if not request.session.get('is_admin'):
+            return redirect('custom_admin_login')
+        return view_func(request, *args, **kwargs)
+    wrapper.__name__ = view_func.__name__
+    return wrapper
+
+
+# ─────────────────────────────────────────────
+#  AUTH
+# ─────────────────────────────────────────────
 def custom_admin_login(request):
-    if request.session.get('admin_logged_in'):
+    if request.session.get('is_admin'):
         return redirect('custom_admin_dashboard')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        try:
-            admin = AdminUser.objects.get(username=username)
-            if admin.check_password(password):
-                request.session['admin_logged_in'] = True
-                request.session['admin_username'] = username
-                return redirect('custom_admin_dashboard')
-            else:
-                messages.error(request, 'Invalid password.')
-        except AdminUser.DoesNotExist:
-            messages.error(request, 'Admin user not found.')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+
+        from django.contrib.auth import authenticate
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.is_staff:
+            request.session['is_admin'] = True
+            request.session['admin_username'] = user.username
+            return redirect('custom_admin_dashboard')
+        else:
+            messages.error(request, 'Invalid credentials or insufficient permissions.')
 
     return render(request, 'testproj/custom-admin/login.html')
 
 
-# ─── Custom Admin Logout ──────────────────────────────────────
 def custom_admin_logout(request):
     request.session.flush()
     return redirect('custom_admin_login')
 
 
-# ─── Admin Dashboard ──────────────────────────────────────────
+# ─────────────────────────────────────────────
+#  DASHBOARD
+# ─────────────────────────────────────────────
+@admin_required
 def custom_admin_dashboard(request):
-    if not request.session.get('admin_logged_in'):
-        return redirect('custom_admin_login')
+    today = date.today()
 
-    booked_count = BookedDate.objects.filter(status='booked').count()
+    booked_count      = BookedDate.objects.filter(status='booked').count()
     unavailable_count = BookedDate.objects.filter(status='unavailable').count()
-    upcoming = BookedDate.objects.filter(status='booked').order_by('date')[:5]
+    upcoming          = BookedDate.objects.filter(
+        status='booked', date__gte=today
+    ).order_by('date')[:10]
 
     context = {
-        'booked_count': booked_count,
+        'booked_count':      booked_count,
         'unavailable_count': unavailable_count,
-        'upcoming': upcoming,
-        'admin_username': request.session.get('admin_username'),
+        'upcoming':          upcoming,
     }
     return render(request, 'testproj/custom-admin/dashboard.html', context)
 
 
-# ─── Manage Dates (List) ──────────────────────────────────────
+# ─────────────────────────────────────────────
+#  MANAGE DATES
+# ─────────────────────────────────────────────
+@admin_required
 def custom_admin_dates(request):
-    if not request.session.get('admin_logged_in'):
-        return redirect('custom_admin_login')
-
     dates = BookedDate.objects.all().order_by('date')
     return render(request, 'testproj/custom-admin/dates.html', {'dates': dates})
 
 
-# ─── Add Date ─────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+#  ADD DATE
+# ─────────────────────────────────────────────
+@admin_required
 def custom_admin_add_date(request):
-    if not request.session.get('admin_logged_in'):
-        return redirect('custom_admin_login')
-
     if request.method == 'POST':
-        date = request.POST.get('date')
-        status = request.POST.get('status')
-        event_name = request.POST.get('event_name', '')
-        pax = request.POST.get('pax') or None
-        time_slot = request.POST.get('time_slot', '')
+        date_val   = request.POST.get('date')
+        status     = request.POST.get('status', 'booked')
+        event_name = request.POST.get('event_name', '').strip()
+        pax        = request.POST.get('pax') or None
+        time_slot  = request.POST.get('time_slot', '').strip()
 
         BookedDate.objects.create(
-            date=date,
+            date=date_val,
             status=status,
             event_name=event_name,
             pax=pax,
-            time_slot=time_slot
+            time_slot=time_slot,
         )
-        messages.success(request, 'Date added successfully.')
+        messages.success(request, f'Date {date_val} has been added successfully.')
         return redirect('custom_admin_dates')
 
     return render(request, 'testproj/custom-admin/add_date.html')
 
 
-# ─── Edit Date ────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+#  EDIT DATE
+# ─────────────────────────────────────────────
+@admin_required
 def custom_admin_edit_date(request, pk):
-    if not request.session.get('admin_logged_in'):
-        return redirect('custom_admin_login')
-
     entry = get_object_or_404(BookedDate, pk=pk)
 
     if request.method == 'POST':
-        entry.date = request.POST.get('date')
-        entry.status = request.POST.get('status')
-        entry.event_name = request.POST.get('event_name', '')
-        entry.pax = request.POST.get('pax') or None
-        entry.time_slot = request.POST.get('time_slot', '')
+        entry.date       = request.POST.get('date')
+        entry.status     = request.POST.get('status', 'booked')
+        entry.event_name = request.POST.get('event_name', '').strip()
+        entry.pax        = request.POST.get('pax') or None
+        entry.time_slot  = request.POST.get('time_slot', '').strip()
         entry.save()
-        messages.success(request, 'Date updated successfully.')
+
+        messages.success(request, f'Date {entry.date} has been updated successfully.')
         return redirect('custom_admin_dates')
 
     return render(request, 'testproj/custom-admin/edit_date.html', {'entry': entry})
 
 
-# ─── Delete Date ──────────────────────────────────────────────
+# ─────────────────────────────────────────────
+#  DELETE DATE
+# ─────────────────────────────────────────────
+@admin_required
 def custom_admin_delete_date(request, pk):
-    if not request.session.get('admin_logged_in'):
-        return redirect('custom_admin_login')
-
     entry = get_object_or_404(BookedDate, pk=pk)
+
     if request.method == 'POST':
+        date_label = str(entry.date)
         entry.delete()
-        messages.success(request, 'Date deleted.')
+        messages.success(request, f'Date {date_label} has been deleted.')
+        return redirect('custom_admin_dates')
+
+    # If accessed via GET, redirect safely
     return redirect('custom_admin_dates')
+
+
+# ─────────────────────────────────────────────
+#  PUBLIC CALENDAR
+# ─────────────────────────────────────────────
+def calendar(request):
+    booked_dates = BookedDate.objects.filter(
+        status='booked'
+    ).values('date', 'event_name', 'pax', 'time_slot')
+
+    unavailable_dates = BookedDate.objects.filter(
+        status='unavailable'
+    ).values('date')
+
+    context = {
+        'booked_dates':      json.dumps(list(booked_dates),      cls=DjangoJSONEncoder),
+        'unavailable_dates': json.dumps(list(unavailable_dates), cls=DjangoJSONEncoder),
+    }
+    return render(request, 'testproj/calendar.html', context)

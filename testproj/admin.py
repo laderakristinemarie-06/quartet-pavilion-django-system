@@ -3,6 +3,8 @@ from .models import BookedDate
 
 @admin.register(BookedDate)
 class BookedDateAdmin(admin.ModelAdmin):
-    list_display = ['date', 'status', 'event_name', 'pax', 'time_slot']
-    list_filter = ['status']
-    ordering = ['date']
+    list_display  = ['date', 'event_name', 'pax', 'time_slot', 'status']
+    list_filter   = ['status', 'date']
+    search_fields = ['event_name']
+    ordering      = ['date']
+    list_editable = ['status']
