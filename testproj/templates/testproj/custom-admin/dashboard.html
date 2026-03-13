@@ -58,4 +58,38 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Add this after the existing table-card in dashboard.html -->
+<div class="table-card" style="margin-top: 2rem;">
+  <div class="table-header">
+    <h2>Recent Inquiries</h2>
+    <a href="{% url 'custom_admin_bookings' %}" class="btn-ghost">View All</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Event</th>
+        <th>Date</th>
+        <th>Submitted</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in recent_bookings %}
+      <tr>
+        <td>{{ b.name }}</td>
+        <td>{{ b.email }}</td>
+        <td>{{ b.event_name }}</td>
+        <td>{{ b.date|date:"M d, Y" }}</td>
+        <td>{{ b.created_at|date:"M d, Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" style="color:#aaa; font-style:italic;">No inquiries yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

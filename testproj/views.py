@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import date
-from .models import BookedDate, BookingInquiry
+from django.utils import timezone
+from testproj.models import BookedDate, Booking, BookingInquiry
 import json
 
 
@@ -69,26 +70,26 @@ def custom_admin_logout(request):
     return redirect('custom_admin_login')
 
 
-# ─────────────────────────────────────────────
-#  DASHBOARD
-# ─────────────────────────────────────────────
-@admin_required
 def custom_admin_dashboard(request):
-    today = date.today()
-
-    booked_count      = BookedDate.objects.filter(status='booked').count()
+    if not request.session.get('is_admin'):
+        return redirect('custom_admin_login')
+    
+    now = timezone.now()
+    booked_count = BookedDate.objects.filter(status='booked').count()
     unavailable_count = BookedDate.objects.filter(status='unavailable').count()
-    upcoming          = BookedDate.objects.filter(
-        status='booked', date__gte=today
-    ).order_by('date')[:10]
+    upcoming = BookedDate.objects.filter(date__gte=now.date()).order_by('date')[:10]
+    
+    # Add bookings/inquiries
+    recent_bookings = Booking.objects.all().order_by('-created_at')[:10]
+    new_bookings = Booking.objects.filter(is_read=False).count()
 
-    context = {
-        'booked_count':      booked_count,
+    return render(request, 'testproj/custom-admin/dashboard.html', {
+        'booked_count': booked_count,
         'unavailable_count': unavailable_count,
-        'upcoming':          upcoming,
-    }
-    return render(request, 'testproj/custom-admin/dashboard.html', context)
-
+        'upcoming': upcoming,
+        'recent_bookings': recent_bookings,
+        'new_bookings': new_bookings,
+    })
 
 # ─────────────────────────────────────────────
 #  MANAGE DATES
@@ -173,26 +174,16 @@ def calendar(request):
 
 def submit_booking(request):
     if request.method == 'POST':
-        date_val   = request.POST.get('date')
-        name       = request.POST.get('name', '').strip()
-        email      = request.POST.get('email', '').strip()
-        event_name = request.POST.get('event_name', '').strip()
-        pax        = request.POST.get('pax') or None
-        time_slot  = request.POST.get('time_slot', '').strip()
-        notes      = request.POST.get('notes', '').strip()
- 
-        BookingInquiry.objects.create(
-            date=date_val,
-            name=name,
-            email=email,
-            event_name=event_name,
-            pax=pax,
-            time_slot=time_slot,
-            notes=notes,
+        Booking.objects.create(
+            date=request.POST.get('date'),
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+            event_name=request.POST.get('event_name'),
+            pax=request.POST.get('pax') or None,
+            time_slot=request.POST.get('time_slot'),
+            notes=request.POST.get('notes'),
         )
-        # Redirect back to calendar with success flag → JS shows success modal
-        return redirect('/calendar/?success=1')
- 
+        return redirect(f"{request.META.get('HTTP_REFERER', '/calendar/')}?success=1")
     return redirect('calendar')
 
 @admin_required
@@ -219,3 +210,11 @@ def custom_admin_dashboard(request):
         'recent_inquiries':  recent_inquiries,
     }
     return render(request, 'testproj/custom-admin/dashboard.html', context)
+
+def custom_admin_bookings(request):
+    if not request.session.get('is_admin'):
+        return redirect('custom_admin_login')
+    bookings = Booking.objects.all().order_by('-created_at')
+    # Mark all as read when viewed
+    Booking.objects.filter(is_read=False).update(is_read=True)
+    return render(request, 'testproj/custom-admin/bookings.html', {'bookings': bookings})

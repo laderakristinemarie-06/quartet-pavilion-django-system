@@ -36,3 +36,14 @@ class BookingInquiry(models.Model):
 
     class Meta:
         ordering = ['date']
+
+class Booking(models.Model):
+    date = models.DateField()
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    event_name = models.CharField(max_length=200)
+    pax = models.IntegerField(null=True, blank=True)
+    time_slot = models.CharField(max_length=50, blank=True)
+    notes = models.TextField(blank=True)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)

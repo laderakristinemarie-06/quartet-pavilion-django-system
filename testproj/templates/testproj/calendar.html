@@ -86,6 +86,7 @@
       background: #fff;
       box-sizing: border-box;
       -webkit-appearance: none;
+      appearance: none;
     }
     .modal__field input:focus,
     .modal__field select:focus,
@@ -261,11 +262,8 @@
     </aside>
 
   </div>
+  
 
-
-  <!-- ══════════════════════════════════════
-       Booking Modal
-  ══════════════════════════════════════ -->
   <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true">
     <div class="modal">
       <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
@@ -342,9 +340,23 @@
 
 
   <script>
-    // ── Data from Django views.py ─────────────────────────────
-    const BOOKED_DATA      = {{ booked_dates|safe }};
-    const UNAVAILABLE_DATA = {{ unavailable_dates|safe }};
+    (function() {
+      try {
+        window.BOOKED_DATA = JSON.parse('{{ booked_dates|safe|escapejs }}');
+      } catch (e) {
+        window.BOOKED_DATA = [];
+        console.error('Failed to parse BOOKED_DATA:', e);
+      }
+      try {
+        window.UNAVAILABLE_DATA = JSON.parse('{{ unavailable_dates|safe|escapejs }}');
+      } catch (e) {
+        window.UNAVAILABLE_DATA = [];
+        console.error('Failed to parse UNAVAILABLE_DATA:', e);
+      }
+    })();
+
+    const BOOKED_DATA = window.BOOKED_DATA;
+    const UNAVAILABLE_DATA = window.UNAVAILABLE_DATA;
 
     const DAYS   = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const MONTHS = ['January','February','March','April','May','June',
@@ -352,7 +364,6 @@
 
     let current = new Date();
 
-    // ── Helpers ───────────────────────────────────────────────
     function getDaysInMonth(dataArray, y, m) {
       return dataArray
         .map(item => new Date(item.date))
@@ -369,7 +380,7 @@
         .slice(0, 5);
     }
 
-    // ── Upcoming events list ──────────────────────────────────
+  
     function renderUpcomingEvents() {
       const container = document.getElementById('upcomingEvents');
       const upcoming  = getUpcomingEvents();
@@ -402,7 +413,6 @@
       }).join('');
     }
 
-    // ── Calendar grid ─────────────────────────────────────────
     function render() {
       const y     = current.getFullYear();
       const m     = current.getMonth();
@@ -417,7 +427,6 @@
       const grid = document.getElementById('calGrid');
       grid.innerHTML = '';
 
-      // Day name headers
       DAYS.forEach(name => {
         const el = document.createElement('div');
         el.className   = 'cal-grid__day-name';
@@ -425,7 +434,6 @@
         grid.appendChild(el);
       });
 
-      // Empty leading cells
       const firstDay    = new Date(y, m, 1).getDay();
       const daysInMonth = new Date(y, m + 1, 0).getDate();
       for (let i = 0; i < firstDay; i++) {
@@ -434,7 +442,6 @@
         grid.appendChild(el);
       }
 
-      // Day cells
       for (let d = 1; d <= daysInMonth; d++) {
         const el      = document.createElement('div');
         const thisDay = new Date(y, m, d);
@@ -465,7 +472,6 @@
       }
     }
 
-    // ── Modal open / close ────────────────────────────────────
     function openModal(y, m, d) {
       const dateStr    = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const displayStr = `${MONTHS[m]} ${d}, ${y}`;
@@ -489,17 +495,14 @@
     document.getElementById('modalCancel').addEventListener('click', closeModal);
     document.getElementById('modalSuccessClose').addEventListener('click', closeModal);
 
-    // Click backdrop to close
     document.getElementById('bookingModal').addEventListener('click', function(e) {
       if (e.target === this) closeModal();
     });
 
-    // Escape key to close
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') closeModal();
     });
 
-    // Show success modal if Django redirected with ?success=1
     if (new URLSearchParams(window.location.search).get('success') === '1') {
       document.getElementById('modalForm').style.display    = 'none';
       document.getElementById('modalSuccess').style.display = 'block';
@@ -507,7 +510,6 @@
       history.replaceState(null, '', window.location.pathname);
     }
 
-    // ── Month navigation ──────────────────────────────────────
     document.getElementById('prevMonth').addEventListener('click', () => {
       current.setMonth(current.getMonth() - 1); render();
     });
