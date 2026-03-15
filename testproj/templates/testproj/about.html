@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quartet Pavilion</title>
+    <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Alex+Brush&family=Cinzel:wght@400;600&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'testproj/css/about.css' %}">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="nav">
+        <div class="nav-container">
+            <div class="login-image">
+                <a class="image-brand" href="{% url 'home' %}">
+                    <span class="ib-top">Est. 2026</span>
+                    <span class="ib-main">QUARTET</span>
+                    <span class="ib-sub">Pavilion</span>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link">About &#9662;</a>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'about' %}">About Us</a>
+                            <a href="{% url 'events' %}">Events</a>
+                            <a href="{% url 'log_in' %}">Login</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero">
+        <img src="{% static 'testproj/images/about1.jpg' %}" alt="Quartet Pavilion Hero">
+        <div class="hero-text">
+            <div class="eyebrow">Our Story</div>
+            <h1>QUARTET<br>PAVILION</h1>
+            <div class="script-sub">a place where time slows down</div>
+        </div>
+    </div>
+
+    <!-- OUR STORY -->
+    <div class="story-section">
+        <img class="bg" src="pics/about2.jpg" alt="Story Background">
+        <div class="story-content">
+            <h2>Who We Are</h2>
+            <p>Quartet Pavilion is a 4-hectare Provence-inspired farm retreat nestled in the heart of nature — a sanctuary designed for those who believe that the most beautiful things in life always take time.</p>
+            <p>We are a destination for rest, creativity, and celebration. Whether you are seeking a quiet escape from the noise of the city, planning an intimate wedding, or looking for a dream backdrop for your prenuptial shoot, Quartet Pavilion was built with you in mind.</p>
+            <p>Every stone path, every flower carefully chosen, every brushstroke on our custom headboard paintings — it all whispers the same quiet truth: <em>slow down, be present, this moment is worth savoring.</em></p>
+        </div>
+    </div>
+
+    <!-- VALUES -->
+    <section class="values-section">
+        <div class="values-header">
+            <h2>WHAT WE BELIEVE IN</h2>
+            <div class="script">our heart & soul</div>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="icon"><i class="fas fa-leaf"></i></div>
+                <h3>INTENTION</h3>
+                <p>Nothing here is accidental. Every detail — from the flora to the furnishings — is chosen with purpose, care, and a deep love for beauty.</p>
+            </div>
+            <div class="value-card">
+                <div class="icon"><i class="fas fa-spa"></i></div>
+                <h3>RESTORATION</h3>
+                <p>We believe rest is sacred. Quartet Pavilion is a space where you can truly exhale, recharge, and return to yourself.</p>
+            </div>
+            <div class="value-card">
+                <div class="icon"><i class="fas fa-heart"></i></div>
+                <h3>CELEBRATION</h3>
+                <p>Life's milestones deserve to be marked in beautiful places. We are honored to be the backdrop for your most unforgettable moments.</p>
+            </div>
+            <div class="value-card">
+                <div class="icon"><i class="fas fa-paint-brush"></i></div>
+                <h3>CREATION</h3>
+                <p>Artists, dreamers, and visionaries find inspiration here. The natural light, lush grounds, and curated spaces are a canvas waiting for you.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT WE OFFER -->
+    <div class="offer-section">
+        <img class="bg" src="pics/about3.jpg" alt="What We Offer Background">
+        <div class="offer-content">
+            <h2>What We Offer</h2>
+            <div class="offer-lists-wrapper">
+                <ul class="offer-list right-col">
+                    <li>
+                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
+                        <span><strong>Staycation Rooms</strong> — Provence-inspired Superior and Deluxe rooms designed for comfort, rest, and quiet luxury.</span>
+                    </li>
+                    <li>
+                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
+                        <span><strong>Wedding & Event Venues</strong> — Lush garden settings and beautiful architecture perfect for intimate ceremonies and grand celebrations alike.</span>
+                    </li>
+                    <li>
+                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
+                        <span><strong>Creative Shoots</strong> — A naturally stunning backdrop for prenuptial photography, editorial shoots, and artistic projects.</span>
+                    </li>
+                </ul>
+                <div class="offer-divider"></div>
+                <ul class="offer-list left-col">
+                    <li>
+                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
+                        <span><strong>4-Hectare Farm Grounds</strong> — Wander through lavish gardens, breathe in nature, and let the grounds inspire you.</span>
+                    </li>
+                    <li>
+                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
+                        <span><strong>Film & Production Shoots</strong> — A one-of-a-kind location for TV commercials, music videos, indie films, and showbiz productions with multiple distinct settings in one property.</span>
+                    </li>
+                    <li>
+                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
+                        <span><strong>Curated Experiences</strong> — Thoughtful touches and personalized service for every guest and occasion.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <section class="stats-section">
+        <div class="stats-title">BY THE NUMBERS</div>
+        <div class="stats-sub">our farm at a glance</div>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="number">4</div>
+                <div class="label">Hectares of Farm</div>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stat-item">
+                <div class="number">2</div>
+                <div class="label">Room Types</div>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stat-item">
+                <div class="number">3+</div>
+                <div class="label">Event Venues</div>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stat-item">
+                <div class="number">∞</div>
+                <div class="label">Memories Made</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILM & PRODUCTION SHOOTS -->
+    <section class="film-section">
+        <div class="section-label">FILM & PRODUCTION</div>
+        <div class="script">your next shooting location</div>
+        <p class="film-intro">
+            Quartet Pavilion is not just a place to rest — it is a <strong>world-class production location</strong> for artists, directors, and production teams. With <strong>4 hectares of diverse, stunning scenery</strong> all within one property, you get multiple distinct looks and settings without ever leaving the grounds. From lush garden paths to rustic farm structures, Provence-style architecture, open fields, and intimate indoor spaces — every corner tells a different story, perfect for TV commercials, music videos, indie films, magazine shoots, and celebrity features.
+        </p>
+        <div class="locations-grid">
+            <div class="location-card">
+                <div class="loc-icon"><i class="fas fa-tree"></i></div>
+                <h3>LUSH GARDEN PATHS</h3>
+                <p>Winding green walkways lined with carefully curated flora — ideal for romantic, editorial, or lifestyle productions.</p>
+            </div>
+            <div class="location-card">
+                <div class="loc-icon"><i class="fas fa-home"></i></div>
+                <h3>PROVENCE-STYLE ARCHITECTURE</h3>
+                <p>French-inspired structures and archways that transport your production to a European countryside — right here in the Philippines.</p>
+            </div>
+            <div class="location-card">
+                <div class="loc-icon"><i class="fas fa-sun"></i></div>
+                <h3>OPEN FIELDS & MEADOWS</h3>
+                <p>Expansive open spaces bathed in natural golden light — perfect for wide-angle cinematography, dance sequences, and outdoor scenes.</p>
+            </div>
+            <div class="location-card">
+                <div class="loc-icon"><i class="fas fa-bed"></i></div>
+                <h3>CURATED INTERIOR ROOMS</h3>
+                <p>Hand-painted, artfully designed rooms that double as intimate, editorial-quality indoor sets for close-up productions.</p>
+            </div>
+            <div class="location-card">
+                <div class="loc-icon"><i class="fas fa-water"></i></div>
+                <h3>NATURAL SCENERY & PONDS</h3>
+                <p>Serene water features and naturalistic landscapes that add depth and texture to any visual production.</p>
+            </div>
+            <div class="location-card">
+                <div class="loc-icon"><i class="fas fa-archway"></i></div>
+                <h3>EVENT PAVILIONS & VENUES</h3>
+                <p>Grand open-air pavilions and covered event spaces that can serve as dramatic, large-scale production sets.</p>
+            </div>
+        </div>
+        <div class="film-perks">
+            <div class="film-perk"><i class="fas fa-check-circle"></i> Multiple distinct locations in one property</div>
+            <div class="film-perk"><i class="fas fa-check-circle"></i> Spacious grounds for large cast & crew</div>
+            <div class="film-perk"><i class="fas fa-check-circle"></i> Available for full-day & multi-day bookings</div>
+            <div class="film-perk"><i class="fas fa-check-circle"></i> Accommodation on-site for production teams</div>
+            <div class="film-perk"><i class="fas fa-check-circle"></i> Naturally photogenic in every season</div>
+            <div class="film-perk"><i class="fas fa-check-circle"></i> Exclusive venue booking available</div>
+        </div>
+    </section>
+
+    <!-- QUOTE BAND -->
+    <div class="quote-band">
+        <blockquote>
+            "Beautiful things always take time — and so does Quartet Pavilion. We built this place slowly, lovingly, and with great intention."
+        </blockquote>
+        <cite>— The Quartet Pavilion Family</cite>
+    </div>
+
+    <!-- TIMELINE / HOW LONG -->
+    <section class="timeline-section">
+        <div class="section-label">OUR JOURNEY</div>
+        <div class="script">how it all began</div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-box">
+                    <div class="year">THE BEGINNING</div>
+                    <h3>THE DREAM IS PLANTED</h3>
+                    <p>Quartet Pavilion was born from a simple but powerful idea — to create a space that goes against the rush of modern life. The founders envisioned a farm that restores, inspires, and celebrates.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-box">
+                    <div class="year">THE BUILDING</div>
+                    <h3>THE GROUNDS TAKE SHAPE</h3>
+                    <p>Across 4 hectares, every corner of Quartet Pavilion was carefully built by hand — from the garden paths to the hand-painted headboards in each room, inspired by the beauty of Provence.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-box">
+                    <div class="year">FIRST GUESTS</div>
+                    <h3>DOORS OPEN TO THE WORLD</h3>
+                    <p>Quartet Pavilion welcomed its first guests — couples, families, artists, and dreamers — who immediately fell in love with the pace and the beauty the farm had to offer.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-box">
+                    <div class="year">GOING VIRAL</div>
+                    <h3>THE WORD SPREADS</h3>
+                    <p>Word of Quartet Pavilion spread organically through social media as guests shared their stunning photos and heartfelt experiences — drawing couples, influencers, and media from across the Philippines.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-box">
+                    <div class="year">TODAY & BEYOND</div>
+                    <h3>STILL GROWING, STILL BLOOMING</h3>
+                    <p>Quartet Pavilion continues to grow — adding new experiences, refining every detail, and welcoming thousands of guests who come seeking rest, creativity, and celebration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAMOUS VISITORS -->
+    <section class="visitors-section">
+        <div class="section-label">FEATURED GUESTS</div>
+        <div class="script">faces that have graced our grounds</div>
+        <p class="visitors-intro">From influencers to artists to beloved celebrities — Quartet Pavilion has been the backdrop for some truly unforgettable visits. Here are some of the wonderful people who have chosen to spend their time with us.</p>
+        <div class="visitors-grid">
+
+            <div class="visitor-card visitor-card-wide">
+                <div class="photo-gallery">
+
+                    <!-- MAIN PHOTO — replace pics/zainab-main.jpg with your image -->
+                    <div class="photo-main">
+                        <img src="{% static 'testproj/images/about4.jpg' %}" alt="Zainab Harakeh">
+                    </div>
+
+                    <!-- 3 THUMBNAIL PHOTOS — replace each src with your images -->
+                    <div class="photo-thumbs">
+                        <div class="photo-thumb">
+                            <img src="pics/about6.jpg" alt="Zainab photo 2">
+                        </div>
+                        <div class="photo-thumb">
+                            <img src="pics/about5.jpg" alt="Zainab photo 3">
+                        </div>
+                        <div class="photo-thumb">
+                            <img src="pics/about7.jpg" alt="Zainab photo 4">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="visitor-info">
+                    <div class="visitor-name">ZAINAB HARAKEH</div>
+                    <div class="visitor-handle">@zainabharakeh · Influencer & Content Creator</div>
+                    <div class="visitor-quote">"The most magical place — where my husband proposed and my forever began. Quartet Pavilion made it unforgettable."</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="why-section">
+        <div class="section-label">WHY QUARTET PAVILION</div>
+        <div class="script">what sets us apart</div>
+        <table class="why-table">
+            <thead>
+                <tr>
+                    <th>FEATURE</th>
+                    <th class="highlight-col">QUARTET PAVILION</th>
+                    <th>Typical Farm Resort</th>
+                    <th>City Hotel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="feature-col">Provence-Inspired Design</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Custom Hand-Painted Room Art</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                </tr>
+                <tr>
+                    <td class="feature-col">4-Hectare Lush Farm Grounds</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="partial">~</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Prenup & Creative Shoot Venues</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="partial">~</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Wedding & Event Hosting</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="partial">~</span></td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Peaceful, Nature Immersed Setting</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Curated & Intentional Experience</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="cross">✘</span></td>
+                    <td class="center-col"><span class="partial">~</span></td>
+                </tr>
+                <tr>

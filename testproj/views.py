@@ -22,6 +22,9 @@ def gallery(request):
 def room(request):
     return render(request, 'testproj/room.html')
 
+def about(request):
+    return render(request, 'testproj/about.html')
+
 def testimonials(request):
     return render(request, 'testproj/testimonials.html')
 
