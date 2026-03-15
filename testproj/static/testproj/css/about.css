@@ -71,9 +71,10 @@ body {
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 36px;
+    gap: 2.5rem;
     list-style: none;
-    margin-left: auto;
+    position: absolute;
+    right: 4rem;
 }
 
 .nav-link {
@@ -898,4 +899,4 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-} 
+}

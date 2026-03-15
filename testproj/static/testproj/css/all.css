@@ -52,179 +52,146 @@ body {
   overflow-x: hidden;
 }
 
-/* NAVIGATION */
+/* ── NAV BAR ── */
 .nav {
-  background: rgba(8, 15, 10, 0.95);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding: 1.2rem 4rem;
-  border-bottom: 1px solid var(--gold-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(8, 15, 10, 0.95);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.18);
 }
 
-.nav-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 100%;
-}
-
-/* Brand */
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  text-decoration: none;
-}
-
-.logo-img {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1.5px solid var(--gold);
-  object-fit: cover;
-}
-
-.brand-name {
-  font-family: var(--serif);
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
-  color: var(--gold);
-}
-
-/* Navigation layout - logo left, nav right */
-.nav-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
 }
 
 .login-image {
-  display: flex;
-  flex-shrink: 0;
-}
-
-.nav-menu {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  
-}
-
-/* Text-based Logo (like login page) */
-.login-image {
-  display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .image-brand {
-  color: var(--gold);
-  text-decoration: none;
-  display: inline-block;
+    color: #c9a84c;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .image-brand .ib-top {
-  font-size: 0.55rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  opacity: 0.75;
-  display: block;
+    font-size: 0.55rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    display: block;
+    font-family: 'Jost', sans-serif;
 }
 
 .image-brand .ib-main {
-  font-family: var(--serif);
-  font-size: 1.6rem;
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  display: block;
-  line-height: 1.2;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    display: block;
+    line-height: 1.2;
 }
 
 .image-brand .ib-sub {
-  font-size: 0.55rem;
-  letter-spacing: 0.45em;
-  text-transform: uppercase;
-  display: block;
+    font-size: 0.55rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    display: block;
+    font-family: 'Jost', sans-serif;
 }
 
-/* Nav links */
-.nav__menu {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-right: auto;
-  justify-content: space-between;
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    list-style: none;
+    position: absolute;
+    right: 4rem;
 }
 
 .nav-link {
-  text-decoration: none;
-  color: var(--white-dim);
-  font-size: 0.8rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: color 0.3s ease;
-  white-space: nowrap;
-  position: relative;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    cursor: pointer;
 }
 
-/* Animated underline */
 .nav-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 1px;
-  background: var(--gold);
-  transition: width 0.3s ease;
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 1px;
+    background: #c9a84c;
+    transition: width 0.3s ease;
 }
 
-.nav-link:hover              { color: var(--gold); }
+.nav-link:hover              { color: #c9a84c; }
 .nav-link:hover::after       { width: 100%; }
 
 /* Dropdown */
-.dropdown { position: relative; }
+.dropdown {
+    position: relative;
+}
 
 .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 2rem;
-  right: 0;
-  background: var(--forest);
-  border: 1px solid var(--gold-border);
-  min-width: 180px;
-  flex-direction: column;
-  z-index: 200;
-  animation: fadeDown 0.25s ease;
+    display: none;
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    background: #16281a;
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    min-width: 180px;
+    flex-direction: column;
+    z-index: 200;
+    animation: fadeDown 0.25s ease;
 }
 
 .dropdown:hover .dropdown-menu { display: flex; }
 
 .dropdown-menu a {
-  display: block;
-  padding: 0.65rem 1.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--white-dim);
-  text-decoration: none;
-  border-bottom: 1px solid var(--white-soft);
-  transition: color 0.25s, background 0.25s;
+    display: block;
+    padding: 0.65rem 1.5rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: color 0.25s, background 0.25s;
 }
 
 .dropdown-menu a:last-child { border-bottom: none; }
 
 .dropdown-menu a:hover {
-  color: var(--gold);
-  background: rgba(255, 255, 255, 0.04);
+    color: #c9a84c;
+    background: rgba(255, 255, 255, 0.04);
 }
 
 @keyframes fadeDown {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
+
 /* ============================================================
    3. DECORATIVE CORNER ORNAMENTS
    ============================================================ */
@@ -1481,19 +1448,8 @@ body { font-family: 'Jost', sans-serif; background: var(--green-dark); color: #f
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    padding: 1.2rem 4rem;
     position: relative;
-}
-
-.nav-container .login-image {
-    display: flex;
-    flex-shrink: 0;
-}
-
-.nav-container .nav-menu {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 4rem;
 }
 
 .navhp .brand {
