@@ -2,56 +2,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quartet Pavilion</title>
-    <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Alex+Brush&family=Cinzel:wght@400;600&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Quartet Pavilion{% endblock %}</title>
+  <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Alex+Brush&family=Cinzel:wght@400;600&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
-   <!-- NAVBAR -->
-    <header class="nav">
-        <div class="nav-container">
-            <div class="login-image">
-                <a class="image-brand" href="{% url 'home' %}">
-                    <span class="ib-top">Est. 2026</span>
-                    <span class="ib-main">QUARTET</span>
-                    <span class="ib-sub">Pavilion</span>
-                </a>
-                <ul class="nav-menu">
-                    <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="nav-link">About &#9662;</a>
-                        <div class="dropdown-menu">
-                            <a href="{% url 'about' %}">About Us</a>
-                            <a href="{% url 'events' %}">Events</a>
-                            <a href="{% url 'log_in' %}">Login</a>
-                        </div>
-                    </li>
-                </ul>
+
+  <header class="nav">
+    <div class="nav-container">
+      <div class="login-image">
+        <a class="image-brand" href="{% url 'home' %}">
+          <span class="ib-top">Est. 2026</span>
+          <span class="ib-main">QUARTET</span>
+          <span class="ib-sub">Pavilion</span>
+        </a>
+        <ul class="nav-menu">
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="nav-link">About &#9662;</a>
+            <div class="dropdown-menu">
+              <a href="{% url 'about' %}">About Us</a>
+              <a href="{% url 'events' %}">Events</a>
+              <a href="{% url 'log_in' %}">Login</a>
             </div>
-        </div>
-    </header>
-    
-    <div class="header">
-        {% block header %}
-        {% endblock %}
+          </li>
+        </ul>
+      </div>
     </div>
+  </header>
 
-    <section class="section">
-        <div class="divider" aria-hidden="true"></div>
-        <div class="grid">
-            {% block section %}
-            {% endblock %}
-        </div>
-    </section>
+  {% block content %}{% endblock %}
 
-    <div class="page-layout">
-        {% block page_layout %}
-        {% endblock %}
-    </div>
+  {% block page_layout %}{% endblock %}
+
+  {% block card_section %}{% endblock %}
+
+  {% block footer %}{% endblock %}
+
+  {% block extra_js %}{% endblock %}
 
 </body>
 </html>

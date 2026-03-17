@@ -39,10 +39,6 @@
           <td><span class="badge badge-{{ entry.status }}">{{ entry.status }}</span></td>
           <td>
             <a href="{% url 'custom_admin_edit_date' entry.pk %}" class="btn-edit">Edit</a>
-            <form method="POST" action="{% url 'custom_admin_delete_date' entry.pk %}" style="display:inline;">
-              {% csrf_token %}
-              <button type="submit" class="btn-danger" onclick="return confirm('Delete this date?')">Delete</button>
-            </form>
           </td>
         </tr>
         {% empty %}
