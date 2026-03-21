@@ -33,6 +33,12 @@ def wedding_overview(request):
     return render(request, 'testproj/wedding_overview.html')
 def wedding_gallery(request):
     return render(request, 'testproj/wedding_gallery.html')
+def wedding_room(request):
+    return render(request, 'testproj/wedding_room.html')
+def wedding_calendar(request):
+    return render(request, 'testproj/wedding_calendar.html')
+def wedding_testimonials(request):
+    return render(request, 'testproj/wedding_testimonials.html')
 
 #Family Venue
 def family_overview(request):

@@ -1,0 +1,158 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Wedding Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Wedding<br>Venue</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link" href="{% url 'wedding_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'wedding_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'wedding_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'wedding_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'wedding_testimonials' %}">Testimonials</a>
+    </nav>
+  </aside>
+
+  <!-- CENTER: Testimonials -->
+  <main class="center-panel center-panel--testimonials">
+
+    <!-- Rating summary -->
+    <div class="rating-bar">
+      <span class="rating-bar__score">4.9</span>
+      <div class="rating-bar__right">
+        <span class="rating-bar__stars">★★★★★</span>
+        <span class="rating-bar__label">Based on 96 reviews</span>
+      </div>
+      <div class="rating-bar__breakdown">
+        <div class="rating-row">
+          <span class="rating-row__label">Venue</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:97%"></div></div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-row__label">Service</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:95%"></div></div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-row__label">Catering</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:92%"></div></div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-row__label">Value</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:90%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review cards -->
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        We always dreamed of a garden wedding, and Quartet Pavilion gave us exactly that — and so much more.
+        The Provençal setting was breathtaking, every guest was in awe, and the team made sure every detail
+        was flawless from ceremony to last dance.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Isabella &amp; Marco Santos</span>
+          <span class="testimonial-card__event">Wedding Reception · February 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        From our first site visit to the night itself, the Quartet Pavilion team treated our wedding with
+        such genuine care. The florals, the lighting, the layout — everything felt intentional and deeply personal.
+        It was everything we hoped for and more.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Sofia &amp; Daniel Reyes</span>
+          <span class="testimonial-card__event">Garden Wedding · January 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        Honestly the most beautiful venue we toured. The lush garden, the Provençal architecture, the warm
+        lighting at golden hour — our photos look like they belong in a magazine. Our guests are still talking
+        about it months later.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Carla &amp; James Villanueva</span>
+          <span class="testimonial-card__event">Intimate Wedding · December 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        We had a small, intimate ceremony and Quartet Pavilion made it feel just as grand as a big celebration.
+        The coordinator was attentive throughout, the catering was exceptional, and the ambiance was pure romance.
+        Cannot recommend enough.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Patricia &amp; Miguel Cruz</span>
+          <span class="testimonial-card__event">Intimate Wedding · November 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        From inquiry to the last dance, the team was responsive, warm, and genuinely invested in making our
+        day unforgettable. The venue photographs unlike anything else — every corner is a perfect backdrop.
+        We are so grateful we chose Quartet Pavilion.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Ana &amp; Luis Garcia</span>
+          <span class="testimonial-card__event">Wedding · October 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Couple Reviews</p>
+    <h2 class="right-panel__heading">Love Stories Told by the Couples Themselves</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      Our wedding couples are our greatest testament. From intimate ceremonies to grand receptions, each couple trusted us with their most important day — and we are honoured to share their words.
+    </p>
+    <div class="stat-list">
+      <div class="stat-item">
+        <span class="stat-item__number">4.9 / 5</span>
+        <span class="stat-item__label">Average guest rating</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">200+</span>
+        <span class="stat-item__label">Weddings celebrated</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">99%</span>
+        <span class="stat-item__label">Would recommend us</span>
+      </div>
+    </div>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost"   href="{% url 'wedding_overview' %}">← Back to Overview</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}
