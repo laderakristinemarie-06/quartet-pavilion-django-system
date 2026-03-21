@@ -1,49 +1,21 @@
 {% extends 'testproj/base.html' %}
 {% load static %}
 
-{% block title %}Family Milestones Venue — Quartet Pavilion{% endblock %}
+{% block title %}Academic & Youth Venue — Quartet Pavilion{% endblock %}
 
 {% block extra_css %}
 <style>
-  .center-panel--calendar { 
-    padding: 1.5rem 1.8rem; 
-}
-  .cal-header { 
-    margin-bottom: 0.8rem; 
-}
-  .cal-header__title { 
-    font-size: 1.5rem; 
-}
-  .cal-nav-btn { 
-    font-size: 1rem; 
-    padding: 0.2rem 0.5rem; 
-}
-  .cal-grid { 
-    gap: 4px; 
-}
-  .cal-grid__day-name { 
-    font-size: 0.62rem; 
-    padding: 0.25rem 0; 
-}
-  .cal-grid__day { 
-    font-size: 0.75rem; 
-    padding: 0.35rem 0.2rem; 
-    min-height: 32px; 
-    line-height: 1; 
-}
-  .cal-legend { 
-    margin-top: 0.8rem; 
-    gap: 1rem; 
-    font-size: 0.68rem; 
-}
-  .cal-grid__day--available { 
-    cursor: pointer; 
-    transition: background 0.2s, color 0.2s; 
-}
-  .cal-grid__day--available:hover { 
-    background: #1a2e1a; 
-    color: #fff; 
-}
+  .center-panel--calendar { padding: 1.5rem 1.8rem; }
+  .cal-header { margin-bottom: 0.8rem; }
+  .cal-header__title { font-size: 1.5rem; }
+  .cal-nav-btn { font-size: 1rem; padding: 0.2rem 0.5rem; }
+  .cal-grid { gap: 4px; }
+  .cal-grid__day-name { font-size: 0.62rem; padding: 0.25rem 0; }
+  .cal-grid__day { font-size: 0.75rem; padding: 0.35rem 0.2rem; min-height: 32px; line-height: 1; }
+  .cal-legend { margin-top: 0.8rem; gap: 1rem; font-size: 0.68rem; }
+  .cal-grid__day--available { cursor: pointer; transition: background 0.2s, color 0.2s; }
+  .cal-grid__day--available:hover { background: #1a2e1a; color: #fff; }
+
   .modal-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.5); z-index: 9999;
@@ -99,13 +71,13 @@
 <div class="page-layout">
 
   <aside class="sidebar">
-    <h1 class="sidebar__title">Family<br>Milestones Venue</h1>
+    <h1 class="sidebar__title">Academic<br>&amp; Youth Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
-      <a class="sidebar__nav-link" href="{% url 'family_overview' %}">Overview</a>
-      <a class="sidebar__nav-link" href="{% url 'family_gallery' %}">Gallery</a>
-      <a class="sidebar__nav-link" href="{% url 'family_room' %}">Room</a>
-      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'family_calendar' %}">Calendar</a>
-      <a class="sidebar__nav-link" href="{% url 'family_testimonials' %}">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_room' %}">Room</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'academic_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 
@@ -141,15 +113,15 @@
       <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
 
       <div id="modalForm">
-        <p class="modal__eyebrow">Family Milestones Venue</p>
+        <p class="modal__eyebrow">Academic &amp; Youth Venue</p>
         <h2 class="modal__title">Book This Date</h2>
         <div class="modal__divider"></div>
 
         <form method="POST" action="{% url 'submit_booking' %}">
           {% csrf_token %}
           {# Venue identifier — tells the backend which venue this inquiry is for #}
-          <input type="hidden" name="venue" value="family">
-          <input type="hidden" name="next" value="{% url 'family_calendar' %}">
+          <input type="hidden" name="venue" value="academic">
+          <input type="hidden" name="next" value="{% url 'academic_calendar' %}">
 
           <div class="modal__field">
             <label>Selected Date</label>

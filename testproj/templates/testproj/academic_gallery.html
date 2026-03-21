@@ -1,19 +1,19 @@
 {% extends 'testproj/base.html' %}
 {% load static %}
 
-{% block title %}Gallery — Academic & Youth Venue — Quartet Pavilion{% endblock %}
+{% block title %}Academic & Youth Venue — Quartet Pavilion{% endblock %}
 
 {% block page_layout %}
 <div class="page-layout">
 
   <aside class="sidebar">
-    <h1 class="sidebar__title">Academic<br>&amp; Youth</h1>
+    <h1 class="sidebar__title">Academic<br>&amp; Youth Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link" href="{% url 'academic_overview' %}">Overview</a>
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'academic_gallery' %}">Gallery</a>
-      <a class="sidebar__nav-link" href="">Room</a>
-      <a class="sidebar__nav-link" href="">Calendar</a>
-      <a class="sidebar__nav-link" href="">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 

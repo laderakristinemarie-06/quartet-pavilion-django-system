@@ -26,8 +26,11 @@ urlpatterns = [
     path('events/family/calendar/',             views.family_calendar,        name='family_calendar'),
     path('events/family/testimonials/',        views.family_testimonials,        name='family_testimonials'),
     #Academic & Youth Venue
-    path('events/academic/',                views.academic_overview,        name='academic_overview'),
-    path('events/academic/gallery',      views.academic_gallery,       name='academic_gallery'),
+    path('events/academic/',                      views.academic_overview,        name='academic_overview'),
+    path('events/academic/gallery',               views.academic_gallery,       name='academic_gallery'),
+    path('events/academic/room/',                 views.academic_room,       name='academic_room'),
+    path('events/academic/calendar/',           views.academic_calendar,       name='academic_calendar'),
+    path('events/academic/testimonials/',      views.academic_testimonials,       name='academic_testimonials'),
     #Corporate & Formal Venue
     path('events/corporate/',                views.corporate_overview,        name='corporate_overview'),
     path('events/corporate/gallery',                views.corporate_gallery,        name='corporate_gallery'),

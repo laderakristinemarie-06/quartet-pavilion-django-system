@@ -57,6 +57,12 @@ def academic_overview(request):
     return render(request, 'testproj/academic_overview.html')
 def academic_gallery(request):
     return render(request, 'testproj/academic_gallery.html')
+def academic_room(request):
+    return render(request, 'testproj/academic_room.html')
+def academic_calendar(request):
+    return render(request, 'testproj/academic_calendar.html')
+def academic_testimonials(request):
+    return render(request, 'testproj/academic_testimonials.html')
 
 #Corporate & Formal Venue
 def corporate_overview(request):
