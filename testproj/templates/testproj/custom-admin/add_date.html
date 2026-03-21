@@ -12,10 +12,24 @@
   <div class="form-card">
     <form method="POST">
       {% csrf_token %}
+
+      <div class="field-group">
+        <label>Venue</label>
+        <select name="venue" required>
+          {% for slug, label in venue_choices %}
+            <option value="{{ slug }}"
+              {% if request.GET.venue == slug %}selected{% endif %}>
+              {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
       <div class="field-group">
         <label>Date</label>
         <input type="date" name="date" required>
       </div>
+
       <div class="field-group">
         <label>Status</label>
         <select name="status">
@@ -24,18 +38,27 @@
           <option value="available">Available</option>
         </select>
       </div>
+
       <div class="field-group">
         <label>Event Name</label>
         <input type="text" name="event_name" placeholder="e.g. Garcia Wedding Reception">
       </div>
+
       <div class="field-group">
         <label>Pax (Number of Guests)</label>
         <input type="number" name="pax" placeholder="e.g. 150">
       </div>
+
       <div class="field-group">
         <label>Time Slot</label>
         <input type="text" name="time_slot" placeholder="e.g. Full Day, Evening">
       </div>
+
+      <div class="field-group">
+        <label>Notes</label>
+        <input type="text" name="notes" placeholder="Any additional notes...">
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="btn-primary">Add Date</button>
         <a href="{% url 'custom_admin_dates' %}" class="btn-ghost">Cancel</a>

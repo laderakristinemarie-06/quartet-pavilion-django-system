@@ -259,7 +259,7 @@
   </main>
 
   <aside class="right-panel">
-    <p class="right-panel__eyebrow">Admin Overview</p>
+    <p class="right-panel__eyebrow">Availability</p>
     <h2 class="right-panel__heading">Check Our Schedule</h2>
     <div class="right-panel__divider" aria-hidden="true"></div>
     <div id="monthlySummary" style="margin-bottom: 1.6rem;"></div>
@@ -269,6 +269,8 @@
 </div>
 {% endblock %}
 
+
+{# Modal lives outside .page-layout so it can overlay the full screen #}
 {% block content %}
   <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true">
     <div class="modal">
