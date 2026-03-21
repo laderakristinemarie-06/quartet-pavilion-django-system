@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test import LiveServerTestCase
 
 class TestProjTests(TestCase):
     def test_home_page(self):

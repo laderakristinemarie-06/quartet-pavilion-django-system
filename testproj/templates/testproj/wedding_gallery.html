@@ -1,0 +1,116 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Gallery — Wedding Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Wedding<br>Venue</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link" href="{% url 'wedding_overview' %}">Overview</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'wedding_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="">Room</a>
+      <a class="sidebar__nav-link" href="">Calendar</a>
+      <a class="sidebar__nav-link" href="">Testimonials</a>
+    </nav>
+  </aside>
+
+  <!-- CENTER: Masonry Gallery -->
+  <main class="center-panel">
+    <div class="gallery-masonry" id="galleryMasonry">
+
+      <div class="gallery-item">
+        <img src="" alt="Romantic Garden Setup">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Birthday Setup</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Ceremony Aisle">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Open Air Venue</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Garden Reception">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Garden View</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Evening Reception">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Evening Event</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Floral Arch">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Celebration Arch</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Banquet Hall">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Indoor Hall</span></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Photo Gallery</p>
+    <h2 class="right-panel__heading">Every Love Story, Beautifully Captured</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      Browse our curated gallery of wedding moments at Quartet Pavilion.
+      Every frame tells the story of a couple's most beautiful day in our Provençal-inspired garden.
+    </p>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost"   href="{% url 'wedding_overview' %}">← Back to Overview</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}
+
+
+<!-- LIGHTBOX (outside page-layout, rendered at body level) -->
+{% block content %}
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox__close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lightbox__prev"  id="lbPrev"  aria-label="Previous">‹</button>
+    <img    class="lightbox__img"   id="lbImg" src="" alt="">
+    <button class="lightbox__next"  id="lbNext"  aria-label="Next">›</button>
+    <p      class="lightbox__counter" id="lbCount"></p>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+  const items = Array.from(document.querySelectorAll('.gallery-item'));
+  const lb    = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCnt = document.getElementById('lbCount');
+  let cur = 0;
+
+  function open(i) {
+    cur = i;
+    lbImg.src = items[i].querySelector('img').src.replace('w=600','w=1400');
+    lbImg.alt = items[i].querySelector('img').alt;
+    lbCnt.textContent = `${i + 1} / ${items.length}`;
+    lb.classList.add('lightbox--open');
+  }
+
+  function step(d) { open((cur + d + items.length) % items.length); }
+
+  items.forEach((item, i) => item.addEventListener('click', () => open(i)));
+  document.getElementById('lbClose').addEventListener('click', () => lb.classList.remove('lightbox--open'));
+  document.getElementById('lbPrev').addEventListener('click',  () => step(-1));
+  document.getElementById('lbNext').addEventListener('click',  () => step(1));
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('lightbox--open'); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('lightbox--open')) return;
+    if (e.key === 'Escape')     lb.classList.remove('lightbox--open');
+    if (e.key === 'ArrowLeft')  step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+</script>
+</div>
+{% endblock %}

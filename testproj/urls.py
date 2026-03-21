@@ -14,16 +14,20 @@ urlpatterns = [
     path('events/birthday/calendar/',   views.birthday_calendar,             name='birthday_calendar'),
     path('events/birthday/testimonials/', views.birthday_testimonials, name='birthday_testimonials'),
     #Wedding Venue
-    path('wedding/',      views.wedding_overview,       name='wedding_overview'),
+    path('events/wedding/',      views.wedding_overview,       name='wedding_overview'),
+    path('events/wedding/gallery/',      views.wedding_gallery,       name='wedding_gallery'),
     #Family Venue
     path('events/family/',                views.family_overview,        name='family_overview'),
     path('events/family/gallery/',                views.family_gallery,        name='family_gallery'),
     #Academic & Youth Venue
     path('events/academic/',                views.academic_overview,        name='academic_overview'),
+    path('events/academic/gallery',      views.academic_gallery,       name='academic_gallery'),
     #Corporate & Formal Venue
     path('events/corporate/',                views.corporate_overview,        name='corporate_overview'),
+    path('events/corporate/gallery',                views.corporate_gallery,        name='corporate_gallery'),
     #Entertainment & Special Venue
     path('events/entertainment/',                views.entertainment_overview,        name='entertainment_overview'),
+    path('events/entertainment/gallery',                views.entertainment_gallery,        name='entertainment_gallery'),
 
     path('submit-booking/', views.submit_booking, name='submit_booking'),
     path('admin/bookings/', views.custom_admin_bookings, name='custom_admin_bookings'),

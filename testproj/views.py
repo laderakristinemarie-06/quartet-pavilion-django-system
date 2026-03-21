@@ -31,6 +31,8 @@ def birthday_testimonials(request):
 #Wedding Venue
 def wedding_overview(request):
     return render(request, 'testproj/wedding_overview.html')
+def wedding_gallery(request):
+    return render(request, 'testproj/wedding_gallery.html')
 
 #Family Venue
 def family_overview(request):
@@ -41,14 +43,20 @@ def family_gallery(request):
 #Academic & Youth Venue
 def academic_overview(request):
     return render(request, 'testproj/academic_overview.html')
+def academic_gallery(request):
+    return render(request, 'testproj/academic_gallery.html')
 
 #Corporate & Formal Venue
 def corporate_overview(request):
     return render(request, 'testproj/corporate_overview.html')
+def corporate_gallery(request):
+    return render(request, 'testproj/corporate_gallery.html')
 
 #Entertainment & Special Venue
 def entertainment_overview(request):
     return render(request, 'testproj/entertainment_overview.html')
+def entertainment_gallery(request):
+    return render(request, 'testproj/entertainment_gallery.html')
 
 def book(request):
     return render(request, 'testproj/book.html')

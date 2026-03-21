@@ -1,0 +1,88 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Gallery — Entertainment & Special Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Entertainment<br>&amp; Special</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link" href="{% url 'entertainment_overview' %}">Overview</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'entertainment_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="">Room</a>
+      <a class="sidebar__nav-link" href="">Calendar</a>
+      <a class="sidebar__nav-link" href="">Testimonials</a>
+    </nav>
+  </aside>
+
+  <main class="center-panel">
+    <div class="gallery-masonry" id="galleryMasonry">
+      <div class="gallery-item">
+        <img src="}" alt="Live Performance Night">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Live Performance Night</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Themed Party Setup">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Themed Party Setup</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Creative Shoot">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Creative Shoot</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Garden Stage">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Garden Stage</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Concert Setup">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Concert Setup</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="" alt="Indoor Hall">
+        <div class="gallery-item__caption"><span class="gallery-item__label">Indoor Hall</span></div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Photo Gallery</p>
+    <h2 class="right-panel__heading">Every Show Deserves an Unforgettable Stage</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      From live concerts to themed parties and creative productions, browse how our Entertainment &amp;
+      Special Venue transforms for every unique occasion.
+    </p>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost" href="{% url 'entertainment_overview' %}">← Back to Overview</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}
+
+{% block content %}
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox__close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lightbox__prev"  id="lbPrev"  aria-label="Previous">‹</button>
+    <img    class="lightbox__img"   id="lbImg" src="" alt="">
+    <button class="lightbox__next"  id="lbNext"  aria-label="Next">›</button>
+    <p      class="lightbox__counter" id="lbCount"></p>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const items=Array.from(document.querySelectorAll('.gallery-item'));const lb=document.getElementById('lightbox');const lbImg=document.getElementById('lbImg');const lbCnt=document.getElementById('lbCount');let cur=0;
+  function open(i){cur=i;lbImg.src=items[i].querySelector('img').src;lbImg.alt=items[i].querySelector('img').alt;lbCnt.textContent=`${i+1} / ${items.length}`;lb.classList.add('lightbox--open');}
+  function step(d){open((cur+d+items.length)%items.length);}
+  items.forEach((item,i)=>item.addEventListener('click',()=>open(i)));
+  document.getElementById('lbClose').addEventListener('click',()=>lb.classList.remove('lightbox--open'));
+  document.getElementById('lbPrev').addEventListener('click',()=>step(-1));
+  document.getElementById('lbNext').addEventListener('click',()=>step(1));
+  lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('lightbox--open');});
+  document.addEventListener('keydown',e=>{if(!lb.classList.contains('lightbox--open'))return;if(e.key==='Escape')lb.classList.remove('lightbox--open');if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1);});
+</script>
+{% endblock %}
