@@ -45,6 +45,12 @@ def family_overview(request):
     return render(request, 'testproj/family_overview.html')
 def family_gallery(request):
     return render(request, 'testproj/family_gallery.html')
+def family_room(request):
+    return render(request, 'testproj/family_room.html')
+def family_calendar(request):
+    return render(request, 'testproj/family_calendar.html')
+def family_testimonials(request):
+    return render(request, 'testproj/family_testimonials.html')
 
 #Academic & Youth Venue
 def academic_overview(request):

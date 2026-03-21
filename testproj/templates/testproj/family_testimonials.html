@@ -1,0 +1,139 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Family Milestones Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Family<br>Milestones</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link" href="{% url 'family_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'family_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'family_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'family_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'family_testimonials' %}">Testimonials</a>
+    </nav>
+  </aside>
+
+  <!-- CENTER: Testimonials -->
+  <main class="center-panel center-panel--testimonials">
+
+    <div class="rating-bar">
+      <span class="rating-bar__score">4.8</span>
+      <div class="rating-bar__right">
+        <span class="rating-bar__stars">★★★★★</span>
+        <span class="rating-bar__label">Based on 94 reviews</span>
+      </div>
+      <div class="rating-bar__breakdown">
+        <div class="rating-row">
+          <span class="rating-row__label">Venue</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:96%"></div></div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-row__label">Service</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:94%"></div></div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-row__label">Catering</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:91%"></div></div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-row__label">Value</span>
+          <div class="rating-row__track"><div class="rating-row__fill" style="width:93%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        We celebrated our parents' golden anniversary here and the entire family was in tears — happy ones!
+        The venue was immaculate, the staff treated our elderly guests with so much care, and the garden
+        setting was absolutely perfect for the occasion.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">The Reyes Family</span>
+          <span class="testimonial-card__event">50th Anniversary · March 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        We booked Quartet Pavilion for our family reunion and it was the best decision we made. Over 180 guests,
+        three generations, and everyone was comfortable and well-fed. The coordinators were on top of everything.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Lorna Mendoza</span>
+          <span class="testimonial-card__event">Family Reunion · January 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        My son's christening was held at the Family Milestones Venue and it was beyond what we imagined.
+        The open garden was perfect for our little one's big day, and the setup team made every detail feel special.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Patricia &amp; Angelo dela Cruz</span>
+          <span class="testimonial-card__event">Christening · November 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        Excellent venue for large family events. Plenty of space for kids to roam freely while adults
+        enjoyed the dinner. The catering was outstanding and the staff were always present but never intrusive.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Benjamin Santos</span>
+          <span class="testimonial-card__event">Family Celebration · October 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★☆</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Guest Reviews</p>
+    <h2 class="right-panel__heading">Where Families Come to Celebrate Together</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      From christenings to golden anniversaries, our guests trust us with their most meaningful family moments.
+      Here's what they have to say.
+    </p>
+    <div class="stat-list">
+      <div class="stat-item">
+        <span class="stat-item__number">4.8 / 5</span>
+        <span class="stat-item__label">Average guest rating</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">300+</span>
+        <span class="stat-item__label">Family events hosted</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">97%</span>
+        <span class="stat-item__label">Would recommend us</span>
+      </div>
+    </div>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost" href="{% url 'family_overview' %}">← Back to Overview</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}
