@@ -1,0 +1,54 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Entertainment & Special Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Entertainment<br>&amp; Special Venue</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'entertainment_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="">Gallery</a>
+      <a class="sidebar__nav-link" href="">Room</a>
+      <a class="sidebar__nav-link" href="">Calendar</a>
+      <a class="sidebar__nav-link" href="">Testimonials</a>
+    </nav>
+  </aside>
+
+  <main class="venue-hero">
+    <img
+      class="venue-hero__photo"
+      src="{% static 'testproj/images/fr3.jpg' %}"
+      alt="Entertainment & Special Venue at Quartet Pavilion">
+    <div class="venue-hero__dots" aria-hidden="true">
+      <div class="venue-hero__dot venue-hero__dot--active"></div>
+      <div class="venue-hero__dot"></div>
+      <div class="venue-hero__dot"></div>
+      <div class="venue-hero__dot"></div>
+    </div>
+  </main>
+
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Venue Overview</p>
+    <h2 class="right-panel__heading">Experience the Magic of Live Performance</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      A dynamic space designed for concerts, theater, and live shows. With a professional stage and a scenic natural backdrop, it’s the perfect place to host an event that entertains and inspires your audience.
+    </p>
+    <ul class="venue-features">
+      <li class="venue-features__item">Professional stage &amp; backstage area</li>
+      <li class="venue-features__item">Enhanced acoustic design</li>
+      <li class="venue-features__item">Tiered or flexible seating options</li>
+      <li class="venue-features__item">Integrated lighting &amp; sound systems</li>
+      <li class="venue-features__item">Private dressing rooms for performers</li>
+    </ul>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost" href="{% url 'events' %}">← Back to Events</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}

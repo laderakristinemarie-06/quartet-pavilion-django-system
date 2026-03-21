@@ -1,0 +1,57 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Family Milestones Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Family<br>Milestones</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'family_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'family_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="">Room</a>
+      <a class="sidebar__nav-link" href="">Calendar</a>
+      <a class="sidebar__nav-link" href="">Testimonials</a>
+    </nav>
+  </aside>
+
+  <!-- CENTER: Hero Image -->
+  <main class="venue-hero">
+    <img
+      class="venue-hero__photo"
+      src="{% static 'testproj/images/WV3.jpg' %}"
+      alt="Family Milestones Venue at Quartet Pavilion">
+    <div class="venue-hero__dots" aria-hidden="true">
+      <div class="venue-hero__dot venue-hero__dot--active"></div>
+      <div class="venue-hero__dot"></div>
+      <div class="venue-hero__dot"></div>
+      <div class="venue-hero__dot"></div>
+    </div>
+  </main>
+
+  <!-- RIGHT: Info Panel -->
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Venue Overview</p>
+    <h2 class="right-panel__heading">Bringing Families Together</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      A comfortable and open space perfect for family gatherings of any size. We make it easy to host reunions, birthdays, and anniversaries in a beautiful, natural setting designed for all generations.
+    </p>
+    <ul class="venue-features">
+      <li class="venue-features__item">Room for up to 200 guests</li>
+      <li class="venue-features__item">Kid-friendly open spaces</li>
+      <li class="venue-features__item">Indoor &amp; outdoor options</li>
+      <li class="venue-features__item">Full kitchen &amp; catering ready</li>
+      <li class="venue-features__item">Dedicated event coordinator</li>
+    </ul>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost" href="{% url 'events' %}">← Back to Events</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}

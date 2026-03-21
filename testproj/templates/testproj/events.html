@@ -14,37 +14,37 @@
     <div class="divider" aria-hidden="true"></div>
     <div class="grid">
 
-      <a class="card" href="{% url 'overview' %}">
+      <a class="card" href="{% url 'birthday_overview' %}">
         <img src="{% static 'testproj/images/BP1.jpg' %}" alt="Birthday">
         <div class="card-overlay">
           <span class="card-label">Birthday &<br>Private Venue</span>
         </div>
       </a>
-      <a class="card" href="">
-        <img src="{% static 'testproj/images/FB_IMG_1771070962882.jpg' %}" alt="Wedding">
+      <a class="card" href="{% url 'wedding_overview' %}">
+        <img src="{% static 'testproj/images/f9.jpg' %}" alt="Wedding">
         <div class="card-overlay">
           <span class="card-label">Wedding &<br>Romantic Venue</span>
         </div>
       </a>
-      <a class="card" href="">
+      <a class="card" href="{% url 'family_overview' %}">
         <img src="{% static 'testproj/images/WV3.jpg' %}" alt="Family">
         <div class="card-overlay">
           <span class="card-label">Family<br>Milestones Venue</span>
         </div>
       </a>
-      <a class="card" href="">
+      <a class="card" href="{% url 'academic_overview' %}">
         <img src="{% static 'testproj/images/WV2.jpg' %}" alt="Academic">
         <div class="card-overlay">
           <span class="card-label">Academic &<br>Youth Venue</span>
         </div>
       </a>
-      <a class="card" href="">
+      <a class="card" href="{% url 'corporate_overview' %}">
         <img src="{% static 'testproj/images/WV4.jpg' %}" alt="Corporate">
         <div class="card-overlay">
           <span class="card-label">Corporate &<br>Formal Venue</span>
         </div>
       </a>
-      <a class="card" href="">
+      <a class="card" href="{% url 'entertainment_overview' %}">
         <img src="{% static 'testproj/images/fr3.jpg' %}" alt="Entertainment">
         <div class="card-overlay">
           <span class="card-label">Entertainment &<br>Special Venue</span>

@@ -13,20 +13,42 @@ def home(request):
 def events(request):
     return render(request, 'testproj/events.html')
 
-def overview(request):
-    return render(request, 'testproj/overview.html')
-
-def gallery(request):
-    return render(request, 'testproj/gallery.html')
-
-def room(request):
-    return render(request, 'testproj/room.html')
-
 def about(request):
     return render(request, 'testproj/about.html')
 
-def testimonials(request):
-    return render(request, 'testproj/testimonials.html')
+#Birthday Venue
+def birthday_overview(request):
+    return render(request, 'testproj/birthday_overview.html')
+def birthday_gallery(request):
+    return render(request, 'testproj/birthday_gallery.html')
+def birthday_room(request):
+    return render(request, 'testproj/birthday_room.html')
+def birthday_calendar(request):
+    return render(request, 'testproj/birthday_calendar.html')
+def birthday_testimonials(request):
+    return render(request, 'testproj/birthday_testimonials.html')
+
+#Wedding Venue
+def wedding_overview(request):
+    return render(request, 'testproj/wedding_overview.html')
+
+#Family Venue
+def family_overview(request):
+    return render(request, 'testproj/family_overview.html')
+def family_gallery(request):
+    return render(request, 'testproj/family_gallery.html')
+
+#Academic & Youth Venue
+def academic_overview(request):
+    return render(request, 'testproj/academic_overview.html')
+
+#Corporate & Formal Venue
+def corporate_overview(request):
+    return render(request, 'testproj/corporate_overview.html')
+
+#Entertainment & Special Venue
+def entertainment_overview(request):
+    return render(request, 'testproj/entertainment_overview.html')
 
 def book(request):
     return render(request, 'testproj/book.html')

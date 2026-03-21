@@ -3,17 +3,31 @@ from . import views
 
 urlpatterns = [
     path('',            views.home,        name='home'),
-    path('overview/',   views.overview,    name='overview'),
-    path('gallery/',    views.gallery,     name='gallery'),
-    path('room/',       views.room,        name='room'),
-    path('calendar/', views.calendar, name='calendar'),
     path('about/',      views.about,       name='about'),
-    path('submit-booking/', views.submit_booking, name='submit_booking'),
-    path('admin/bookings/', views.custom_admin_bookings, name='custom_admin_bookings'),
     path('book/',       views.book,        name='book'),
-    path('testimonials/', views.testimonials, name='testimonials'),
     path('events/',     views.events,      name='events'),
     path('login/',      views.log_in,      name='log_in'),
+    #Birthday Venue
+    path('events/birthday/',   views.birthday_overview,    name='birthday_overview'),
+    path('events/birthday/gallery/',    views.birthday_gallery,     name='birthday_gallery'),
+    path('events/birthday/room/',       views.birthday_room,        name='birthday_room'),
+    path('events/birthday/calendar/',   views.birthday_calendar,             name='birthday_calendar'),
+    path('events/birthday/testimonials/', views.birthday_testimonials, name='birthday_testimonials'),
+    #Wedding Venue
+    path('wedding/',      views.wedding_overview,       name='wedding_overview'),
+    #Family Venue
+    path('events/family/',                views.family_overview,        name='family_overview'),
+    path('events/family/gallery/',                views.family_gallery,        name='family_gallery'),
+    #Academic & Youth Venue
+    path('events/academic/',                views.academic_overview,        name='academic_overview'),
+    #Corporate & Formal Venue
+    path('events/corporate/',                views.corporate_overview,        name='corporate_overview'),
+    #Entertainment & Special Venue
+    path('events/entertainment/',                views.entertainment_overview,        name='entertainment_overview'),
+
+    path('submit-booking/', views.submit_booking, name='submit_booking'),
+    path('admin/bookings/', views.custom_admin_bookings, name='custom_admin_bookings'),
+    #Admin Panel
     path('manage/login/',    views.custom_admin_login,    name='custom_admin_login'),
     path('manage/logout/',   views.custom_admin_logout,   name='custom_admin_logout'),
     path('manage/',          views.custom_admin_dashboard, name='custom_admin_dashboard'),

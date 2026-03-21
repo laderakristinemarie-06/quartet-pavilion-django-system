@@ -1,0 +1,59 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Overview — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Birthday<br>Venue</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'birthday_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'birthday_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'birthday_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'birthday_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'birthday_testimonials' %}">Testimonials</a>
+    </nav>
+  </aside>
+
+  <!-- CENTER: Hero Image -->
+  <main class="venue-hero">
+    <img
+      class="venue-hero__photo"
+      src="{% static 'testproj/images/5.jpg' %}"
+      alt="Birthday Venue at Quartet Pavilion">
+    <div class="venue-hero__dots" aria-hidden="true">
+      <div class="venue-hero__dot venue-hero__dot--active"></div>
+      <div class="venue-hero__dot"></div>
+      <div class="venue-hero__dot"></div>
+      <div class="venue-hero__dot"></div>
+    </div>
+  </main>
+
+  <!-- RIGHT: Info Panel -->
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Venue Overview</p>
+    <h2 class="right-panel__heading">Create Joyful Memories That Last a Lifetime</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      Our Birthday &amp; Private Venue is a stunning open-air space surrounded
+      by lush greenery and beautiful Provençal-inspired architecture —
+      perfect for intimate gatherings and grand celebrations alike.
+    </p>
+    <ul class="venue-features">
+      <li class="venue-features__item">Up to 150 pax capacity</li>
+      <li class="venue-features__item">Indoor &amp; outdoor setup options</li>
+      <li class="venue-features__item">Customizable décor packages</li>
+      <li class="venue-features__item">Full kitchen &amp; catering ready</li>
+      <li class="venue-features__item">Ample parking space</li>
+    </ul>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost" href="{% url 'events' %}">← Back to Events</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}
