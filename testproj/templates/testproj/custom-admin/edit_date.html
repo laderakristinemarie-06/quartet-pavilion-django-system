@@ -62,16 +62,6 @@
       <div class="form-actions">
         <button type="submit" class="btn-primary">Save Changes</button>
         <a href="{% url 'custom_admin_dates' %}" class="btn-ghost">Cancel</a>
-
-        <!-- Danger zone: delete from edit page too -->
-        <form method="POST" action="{% url 'custom_admin_delete_date' entry.pk %}"
-              onsubmit="return confirm('Permanently delete this date?');"
-              style="margin-left:auto;">
-          {% csrf_token %}
-          <button type="submit" class="btn-danger" style="font-size:0.75rem; letter-spacing:0.05em;">
-            ✕ Delete
-          </button>
-        </form>
       </div>
     </form>
   </div>
