@@ -20,27 +20,27 @@
   <main class="center-panel">
     <div class="gallery-masonry" id="galleryMasonry">
       <div class="gallery-item">
-        <img src="" alt="Gala Dinner Setup">
+        <img src="{% static 'testproj/images/corporate venue 1.jpg' %}" alt="Gala Dinner Setup">
         <div class="gallery-item__caption"><span class="gallery-item__label">Gala Dinner Setup</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Year-End Party">
+        <img src="{% static 'testproj/images/corporate venue4.jpg' %}" alt="Year-End Party">
         <div class="gallery-item__caption"><span class="gallery-item__label">Year-End Party</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Board Dinner">
+        <img src="{% static 'testproj/images/corporate venue2.jpg' %}" alt="Board Dinner">
         <div class="gallery-item__caption"><span class="gallery-item__label">Board Dinner</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Outdoor Reception">
+        <img src="{% static 'testproj/images/corporate venue5.jpg' %}" alt="Outdoor Reception">
         <div class="gallery-item__caption"><span class="gallery-item__label">Outdoor Reception</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Awards Night">
+        <img src="{% static 'testproj/images/corporate venue6.jpg' %}" alt="Awards Night">
         <div class="gallery-item__caption"><span class="gallery-item__label">Awards Night</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Indoor Hall">
+        <img src="{% static 'testproj/images/corporate venue3.jpg' %}" alt="Indoor Hall">
         <div class="gallery-item__caption"><span class="gallery-item__label">Indoor Hall</span></div>
       </div>
     </div>
@@ -63,6 +63,7 @@
 </div>
 {% endblock %}
 
+<!-- LIGHTBOX (outside page-layout, rendered at body level) -->
 {% block content %}
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
     <button class="lightbox__close" id="lbClose" aria-label="Close">✕</button>
@@ -71,18 +72,39 @@
     <button class="lightbox__next"  id="lbNext"  aria-label="Next">›</button>
     <p      class="lightbox__counter" id="lbCount"></p>
   </div>
+</div>
 {% endblock %}
+
 
 {% block extra_js %}
 <script>
-  const items=Array.from(document.querySelectorAll('.gallery-item'));const lb=document.getElementById('lightbox');const lbImg=document.getElementById('lbImg');const lbCnt=document.getElementById('lbCount');let cur=0;
-  function open(i){cur=i;lbImg.src=items[i].querySelector('img').src;lbImg.alt=items[i].querySelector('img').alt;lbCnt.textContent=`${i+1} / ${items.length}`;lb.classList.add('lightbox--open');}
-  function step(d){open((cur+d+items.length)%items.length);}
-  items.forEach((item,i)=>item.addEventListener('click',()=>open(i)));
-  document.getElementById('lbClose').addEventListener('click',()=>lb.classList.remove('lightbox--open'));
-  document.getElementById('lbPrev').addEventListener('click',()=>step(-1));
-  document.getElementById('lbNext').addEventListener('click',()=>step(1));
-  lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('lightbox--open');});
-  document.addEventListener('keydown',e=>{if(!lb.classList.contains('lightbox--open'))return;if(e.key==='Escape')lb.classList.remove('lightbox--open');if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1);});
+  const items = Array.from(document.querySelectorAll('.gallery-item'));
+  const lb    = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCnt = document.getElementById('lbCount');
+  let cur = 0;
+
+  function open(i) {
+    cur = i;
+    lbImg.src = items[i].querySelector('img').src.replace('w=600','w=1400');
+    lbImg.alt = items[i].querySelector('img').alt;
+    lbCnt.textContent = `${i + 1} / ${items.length}`;
+    lb.classList.add('lightbox--open');
+  }
+
+  function step(d) { open((cur + d + items.length) % items.length); }
+
+  items.forEach((item, i) => item.addEventListener('click', () => open(i)));
+  document.getElementById('lbClose').addEventListener('click', () => lb.classList.remove('lightbox--open'));
+  document.getElementById('lbPrev').addEventListener('click',  () => step(-1));
+  document.getElementById('lbNext').addEventListener('click',  () => step(1));
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('lightbox--open'); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('lightbox--open')) return;
+    if (e.key === 'Escape')     lb.classList.remove('lightbox--open');
+    if (e.key === 'ArrowLeft')  step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
 </script>
+</div>
 {% endblock %}
