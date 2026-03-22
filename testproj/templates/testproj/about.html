@@ -4,41 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quartet Pavilion</title>
-    <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Alex+Brush&family=Cinzel:wght@400;600&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>About Us — Quartet Pavilion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Cormorant+Garamond:wght@300;400&family=Great+Vibes&family=Jost:wght@300;400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
     <link rel="stylesheet" href="{% static 'testproj/css/about.css' %}">
 </head>
 <body>
 
     <!-- NAVBAR -->
-    <header class="nav">
+    <nav class="nav" id="siteNav">
         <div class="nav-container">
-            <div class="login-image">
-                <a class="image-brand" href="{% url 'home' %}">
-                    <span class="ib-top">Est. 2026</span>
-                    <span class="ib-main">QUARTET</span>
-                    <span class="ib-sub">Pavilion</span>
-                </a>
-                <ul class="nav-menu">
-                    <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="nav-link">About &#9662;</a>
-                        <div class="dropdown-menu">
-                            <a href="{% url 'about' %}">About Us</a>
-                            <a href="{% url 'events' %}">Events</a>
-                            <a href="{% url 'log_in' %}">Login</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <a href="{% url 'home' %}" class="image-brand">
+                <span class="ib-top">Est. 2026</span>
+                <span class="ib-main">QUARTET</span>
+                <span class="ib-sub">PAVILION</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                <li class="dropdown">
+                    <a href="{% url 'about' %}" class="nav-link active">About <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'about' %}">About Us</a>
+                        <a href="{% url 'events' %}">Events</a>
+                        <a href="{% url 'log_in' %}">Log In</a>
+                    </div>
+                </li>
+                <li>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                        <span class="bulb-inner">
+                            <span class="bulb-icon-text">💡</span>
+                        </span>
+                    </button>
+                </li>
+            </ul>
         </div>
-    </header>
+    </nav>
 
     <!-- HERO -->
     <div class="hero">
-        <img src="{% static 'testproj/images/about1.jpg' %}" alt="Quartet Pavilion Hero">
+        <img src="{% static 'testproj/images/f3.jpg' %}">
         <div class="hero-text">
             <div class="eyebrow">Our Story</div>
             <h1>QUARTET<br>PAVILION</h1>
@@ -95,31 +100,37 @@
             <div class="offer-lists-wrapper">
                 <ul class="offer-list right-col">
                     <li>
-                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
-                        <span><strong>Staycation Rooms</strong> — Provence-inspired Superior and Deluxe rooms designed for comfort, rest, and quiet luxury.</span>
+                        <span class="offer-text"><strong>Staycation Rooms</strong> — Provence-inspired Superior and Deluxe rooms designed for comfort, rest, and quiet luxury.</span>
+                        <img src="{% static 'testproj/images/stayroom.jpg' %}" alt="Staycation Rooms" class="offer-thumb">
                     </li>
                     <li>
-                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
-                        <span><strong>Wedding & Event Venues</strong> — Lush garden settings and beautiful architecture perfect for intimate ceremonies and grand celebrations alike.</span>
+                        <span class="offer-text"><strong>Wedding & Event Venues</strong> — Lush garden settings and beautiful architecture perfect for intimate ceremonies and grand celebrations alike.</span>
+                        <img src="{% static 'testproj/images/wed&eve.jpg' %}" alt="Wedding & Event Venues" class="offer-thumb">
                     </li>
                     <li>
-                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
-                        <span><strong>Creative Shoots</strong> — A naturally stunning backdrop for prenuptial photography, editorial shoots, and artistic projects.</span>
+                        <span class="offer-text"><strong>Creative Shoots</strong> — A naturally stunning backdrop for prenuptial photography, editorial shoots, and artistic projects.</span>
+                        <img src="{% static 'testproj/images/creativeshoots.jpg' %}" alt="Creative Shoots" class="offer-thumb">
                     </li>
                 </ul>
                 <div class="offer-divider"></div>
                 <ul class="offer-list left-col">
                     <li>
-                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
-                        <span><strong>4-Hectare Farm Grounds</strong> — Wander through lavish gardens, breathe in nature, and let the grounds inspire you.</span>
+                        <img src="{% static 'testproj/images/4 hectare.jpg' %}" alt="4-Hectare Farm Grounds" class="offer-thumb">
+                        <span class="offer-text">
+                            <strong>4-Hectare Farm Grounds</strong> — Wander through lavish gardens, breathe in nature, and let the grounds inspire you.
+                        </span>
                     </li>
                     <li>
-                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
-                        <span><strong>Film & Production Shoots</strong> — A one-of-a-kind location for TV commercials, music videos, indie films, and showbiz productions with multiple distinct settings in one property.</span>
+                        <img src="{% static 'testproj/images/film&production.jpg' %}" alt="Film & Production Shoots" class="offer-thumb">
+                        <span class="offer-text">
+                            <strong>Film & Production Shoots</strong> — A one-of-a-kind location for TV commercials, music videos, indie films, and showbiz productions with multiple distinct settings in one property.
+                        </span>
                     </li>
                     <li>
-                        <span class="bullet"><i class="fas fa-circle" style="font-size:0.5rem;"></i></span>
-                        <span><strong>Curated Experiences</strong> — Thoughtful touches and personalized service for every guest and occasion.</span>
+                        <img src="{% static 'testproj/images/curated exp.jpg' %}" alt="Curated Experiences" class="offer-thumb">
+                        <span class="offer-text">
+                            <strong>Curated Experiences</strong> — Thoughtful touches and personalized service for every guest and occasion.
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -137,18 +148,23 @@
             </div>
             <div class="stats-divider"></div>
             <div class="stat-item">
-                <div class="number">2</div>
+                <div class="number">12</div>
                 <div class="label">Room Types</div>
             </div>
             <div class="stats-divider"></div>
             <div class="stat-item">
-                <div class="number">3+</div>
+                <div class="number">8+</div>
                 <div class="label">Event Venues</div>
             </div>
             <div class="stats-divider"></div>
             <div class="stat-item">
                 <div class="number">∞</div>
                 <div class="label">Memories Made</div>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stat-item">
+                <div class="number">50k+</div>
+                <div class="label">Accommodated</div>
             </div>
         </div>
     </section>
@@ -258,6 +274,45 @@
         </div>
     </section>
 
+    <!-- FAMOUS VISITORS -->
+    <section class="visitors-section">
+        <div class="section-label">FEATURED GUESTS</div>
+        <div class="script">faces that have graced our grounds</div>
+        <p class="visitors-intro">From influencers to artists to beloved celebrities — Quartet Pavilion has been the backdrop for some truly unforgettable visits. Here are some of the wonderful people who have chosen to spend their time with us.</p>
+        <div class="visitors-grid">
+
+            <div class="visitor-card visitor-card-wide">
+                <div class="photo-gallery">
+
+                    <!-- MAIN PHOTO — replace pics/zainab-main.jpg with your image -->
+                    <div class="photo-main">
+                        <img src="{% static 'testproj/images/about4.jpg' %}" alt="Zainab Harake">
+                    </div>
+
+                    <!-- 3 THUMBNAIL PHOTOS — replace each src with your images -->
+                    <div class="photo-thumbs">
+                        <div class="photo-thumb">
+                            <img src="{% static 'testproj/images/about5.jpg' %}" alt="Zainab photo 2">
+                        </div>
+                        <div class="photo-thumb">
+                            <img src="{% static 'testproj/images/about6.jpg' %}" alt="Zainab photo 3">
+                        </div>
+                        <div class="photo-thumb">
+                            <img src="{% static 'testproj/images/about7.jpg' %}" alt="Zainab photo 4">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="visitor-info">
+                    <div class="visitor-name">ZAINAB HARAKEH</div>
+                    <div class="visitor-handle">@zainabharakeh · Influencer & Content Creator</div>
+                    <div class="visitor-quote">"The most magical place — where my husband proposed and my forever began. Quartet Pavilion made it unforgettable."</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- WHY CHOOSE US -->
     <section class="why-section">
         <div class="section-label">WHY QUARTET PAVILION</div>
@@ -271,7 +326,7 @@
                     <th>City Hotel</th>
                 </tr>
             </thead>
-            <tbo
+            <tbody>
                 <tr>
                     <td class="feature-col">Provence-Inspired Design</td>
                     <td class="center-col"><span class="check">✔</span></td>
@@ -315,3 +370,42 @@
                     <td class="center-col"><span class="partial">~</span></td>
                 </tr>
                 <tr>
+                    <td class="feature-col">Instagram-Worthy Every Corner</td>
+                    <td class="center-col"><span class="check">✔</span></td>
+                    <td class="center-col"><span class="partial">~</span></td>
+                    <td class="center-col"><span class="partial">~</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <script>
+        // ── Scroll-reveal nav ──
+        const nav = document.getElementById('siteNav');
+
+        function handleScroll() {
+            if (window.pageYOffset > 60) {
+                nav.classList.add('nav--visible');
+            } else {
+                nav.classList.remove('nav--visible');
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        // ── Dark / Light mode toggle ──
+        const themeToggle = document.getElementById('themeToggle');
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+        });
+
+        // Restore saved preference on load
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light');
+        }
+    </script>
+
+</body>
+</html>

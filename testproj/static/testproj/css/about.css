@@ -5,11 +5,22 @@
     font-family: "Cinzel", serif;
 }
 
-body {
-    background: #fff;
+/* Override all.css global body/html rules that break the about page layout */
+html, body {
+    height: auto;
 }
 
-/* ── NAV BAR ── */
+body {
+    background: #fff;
+    color: #1c2b1f;
+    display: block;
+    min-height: unset;
+    overflow-x: hidden;
+}
+
+/* ── NAV BAR — scroll-reveal for About page ── */
+/* Hidden by default, slides in when .nav--visible is added by JS */
+
 .nav {
     position: fixed;
     top: 0;
@@ -20,6 +31,16 @@ body {
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.nav.nav--visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .nav-container {
@@ -27,13 +48,6 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1.2rem 4rem;
-}
-
-.login-image {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
 }
 
 .image-brand {
@@ -155,6 +169,8 @@ body {
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .hero img {
@@ -397,32 +413,50 @@ body {
     color: #405f46;
     line-height: 1.7;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
 }
 
 .offer-list.right-col li {
-    flex-direction: row-reverse;
-    text-align: right;
+    flex-direction: row;
 }
 
 .offer-list.left-col li {
     flex-direction: row;
-    text-align: left;
 }
 
 .offer-list li .bullet {
     color: #a7ad3a;
     font-size: 1.1rem;
-    margin-top: 3px;
     flex-shrink: 0;
+    margin-top: 0;
+}
+
+.offer-text {
+    flex: 1;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #405f46;
+    line-height: 1.7;
+    min-width: 400px;
+}
+
+.offer-thumb {
+    width: 220px;
+    height: 140px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    flex-shrink: 0;
+    border: 2px solid rgba(28,43,31,0.12);
 }
 
 /* ── FARM STATS ── */
 .stats-section {
     background: #ffffff;
     width: 100%;
-    padding: 100px 6%;
+    padding: 5px 4%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -886,7 +920,6 @@ body {
     width: 480px;
     max-width: 100%;
 }
-
 .photo-gallery {
     display: flex;
     flex-direction: column;
@@ -907,42 +940,41 @@ body {
     object-fit: cover;
     display: block;
 }
-
 .no-photo {
     font-size: 3.5rem;
-    color: rgba(255, 255, 255, 0.18);
+    color: rgba(255,255,255,0.18);
 }
-
 .photo-thumbs {
     display: flex;
     gap: 6px;
 }
-
 .photo-thumb {
     flex: 1;
     height: 110px;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255,255,255,0.06);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
 }
-
 .photo-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
     display: block;
 }
-
 .no-photo-sm {
     font-size: 1.6rem;
     color: rgba(255,255,255,0.15);
 }
 
+
+
+/* Dropdown styles are inherited from all.css */
 @media (max-width: 900px) {
     .hero-text h1 { font-size: 48px; }
-    .story-content, .offer-content { position: relative; top: auto; transform: none; padding: 50px 6%; max-width: 100%; }
+    .story-content, .offer-content { position: relative; top: auto; left: auto; transform: none; padding: 50px 6%; max-width: 100%; text-align: left; }
     .story-section img.bg, .offer-section img.bg { height: 50vh; }
     .story-section::after, .offer-section::after { display: none; }
     .story-section, .offer-section { display: flex; flex-direction: column; }
@@ -951,4 +983,246 @@ body {
     .stats-divider { display: none; }
     .footer-nav { justify-content: flex-start; margin-top: 40px; gap: 30px; }
     .values-grid { gap: 20px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LIGHT MODE — toggled by adding class .light to <body>
+   ══════════════════════════════════════════════════════════════ */
+
+body.light {
+    background: #f5f0eb;
+    color: #1a2e1a;
+}
+
+/* Hero */
+body.light .hero::after {
+    background: rgba(245, 240, 235, 0.6);
+}
+
+body.light .hero-text {
+    color: #1a2e1a;
+}
+
+body.light .hero-text .eyebrow {
+    color: #2f4a35;
+}
+
+body.light .hero-text .script-sub {
+    color: #2f4a35;
+}
+
+/* Story section */
+body.light .story-section::after {
+    background: rgba(245, 240, 235, 0.78);
+}
+
+body.light .story-content h2 {
+    color: #1a2e1a;
+}
+
+body.light .story-content p {
+    color: #2f4a35;
+}
+
+/* Values section */
+body.light .values-section {
+    background: #e8e2d8;
+}
+
+body.light .values-header h2 {
+    color: #1a2e1a;
+}
+
+body.light .values-header .script {
+    color: #2f4a35;
+}
+
+body.light .value-card {
+    background: rgba(26, 46, 26, 0.05);
+    border-color: rgba(26, 46, 26, 0.15);
+}
+
+body.light .value-card h3 {
+    color: #1a2e1a;
+}
+
+body.light .value-card p {
+    color: rgba(26, 46, 26, 0.75);
+}
+
+/* Offer section */
+body.light .offer-section::after {
+    background: rgba(245, 240, 235, 0.8);
+}
+
+body.light .offer-content h2 {
+    color: #1a2e1a;
+}
+
+body.light .offer-list li,
+body.light .offer-text {
+    color: #2f4a35;
+}
+
+/* Stats section */
+body.light .stats-section {
+    background: #f5f0eb;
+}
+
+body.light .stats-title {
+    color: #1a2e1a;
+}
+
+body.light .stats-sub {
+    color: #2f4a35;
+}
+
+body.light .stat-item .number {
+    color: #c9a84c;
+}
+
+body.light .stat-item .label {
+    color: rgba(26, 46, 26, 0.65);
+}
+
+body.light .stats-divider {
+    background: rgba(26, 46, 26, 0.15);
+}
+
+/* Film section */
+body.light .film-section {
+    background: #e2ddd6;
+}
+
+body.light .film-section .section-label {
+    color: #1a2e1a;
+}
+
+body.light .film-section .script {
+    color: rgba(26, 46, 26, 0.7);
+}
+
+body.light .film-intro {
+    color: rgba(26, 46, 26, 0.75);
+}
+
+body.light .location-card {
+    background: rgba(26, 46, 26, 0.04);
+    border-color: rgba(26, 46, 26, 0.12);
+}
+
+body.light .location-card h3 {
+    color: #1a2e1a;
+}
+
+body.light .location-card p {
+    color: rgba(26, 46, 26, 0.65);
+}
+
+body.light .film-perk {
+    color: rgba(26, 46, 26, 0.8);
+}
+
+/* Quote band */
+body.light .quote-band {
+    background: #ddd8cf;
+}
+
+body.light .quote-band blockquote {
+    color: #1a2e1a;
+}
+
+body.light .quote-band cite {
+    color: rgba(26, 46, 26, 0.6);
+}
+
+/* Timeline section */
+body.light .timeline-section {
+    background: #f5f0eb;
+}
+
+body.light .timeline-section .section-label {
+    color: #1a2e1a;
+}
+
+body.light .timeline-section .script {
+    color: #2f4a35;
+}
+
+body.light .timeline-box {
+    background: #fff;
+    border-right-color: #c9a84c;
+}
+
+body.light .timeline-box h3 {
+    color: #1a2e1a;
+}
+
+body.light .timeline-box p {
+    color: rgba(26, 46, 26, 0.7);
+}
+
+body.light .timeline-dot {
+    background: #c9a84c;
+    border-color: #f5f0eb;
+}
+
+/* Visitors section */
+body.light .visitors-section {
+    background: #e8e2d8;
+}
+
+body.light .visitors-section .section-label {
+    color: #1a2e1a;
+}
+
+body.light .visitors-section .script {
+    color: rgba(26, 46, 26, 0.7);
+}
+
+body.light .visitors-intro {
+    color: rgba(26, 46, 26, 0.65);
+}
+
+body.light .visitor-card {
+    background: rgba(26, 46, 26, 0.05);
+    border-color: rgba(26, 46, 26, 0.15);
+}
+
+body.light .visitor-name {
+    color: #1a2e1a;
+}
+
+body.light .visitor-quote {
+    color: rgba(26, 46, 26, 0.65);
+}
+
+/* Why section */
+body.light .why-section {
+    background: #f5f0eb;
+}
+
+body.light .why-section .section-label {
+    color: #1a2e1a;
+}
+
+body.light .why-section .script {
+    color: #2f4a35;
+}
+
+body.light .why-table thead tr {
+    background: #1a2e1a;
+}
+
+body.light .why-table tbody tr:nth-child(even) {
+    background: #ede7df;
+}
+
+body.light .why-table tbody td {
+    color: #1a2e1a;
+    border-color: rgba(26, 46, 26, 0.1);
+}
+
+body.light .why-table tbody td.feature-col {
+    color: #1a2e1a;
 }
