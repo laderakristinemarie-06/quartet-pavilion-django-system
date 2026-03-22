@@ -11,9 +11,9 @@
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link" href="{% url 'corporate_overview' %}">Overview</a>
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'corporate_gallery' %}">Gallery</a>
-      <a class="sidebar__nav-link" href="">Room</a>
-      <a class="sidebar__nav-link" href="">Calendar</a>
-      <a class="sidebar__nav-link" href="">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 
@@ -24,11 +24,11 @@
         <div class="gallery-item__caption"><span class="gallery-item__label">Gala Dinner Setup</span></div>
       </div>
       <div class="gallery-item">
-        <img src="{% static 'testproj/images/corporate venue4.jpg' %}" alt="Year-End Party">
+        <img src="{% static 'testproj/images/year-end party.jpg' %}" alt="Year-End Party">
         <div class="gallery-item__caption"><span class="gallery-item__label">Year-End Party</span></div>
       </div>
       <div class="gallery-item">
-        <img src="{% static 'testproj/images/corporate venue2.jpg' %}" alt="Board Dinner">
+        <img src="{% static 'testproj/images/indoor hall.jpg' %}" alt="Board Dinner">
         <div class="gallery-item__caption"><span class="gallery-item__label">Board Dinner</span></div>
       </div>
       <div class="gallery-item">
