@@ -14,35 +14,43 @@
       padding: 0; 
     }
 
-    /* LIGHT MODE (default) */
+    /*
+     * ═══════════════════════════════════════════════════════
+     *  LIGHT MODE (default) — warm cream + ivory + gold
+     *  DARK MODE  (body.dark) — deep forest green + black + gold
+     *  Palette is shared with the public site for consistency.
+     * ═══════════════════════════════════════════════════════
+     */
     :root {
-      --green-dark: #1a2e1a;
-      --green-mid:  #2d4a2d;
-      --gold:       #c9a84c;
-      --cream:      #f5f0eb;
-      --bg:         #f5f0eb;
-      --card-bg:    #ffffff;
-      --text:       #333333;
-      --text-muted: #888888;
-      --border:     #f0ebe4;
-      --row-hover:  #fdfaf7;
-      --input-bg:   #ffffff;
-      --input-border: #dddddd;
-      --th-color:   #aaaaaa;
+      --green-dark:   #1a2e1a;
+      --green-mid:    #2d4a2d;
+      --gold:         #c9a84c;
+
+      /* Light mode palette — cream & ivory */
+      --bg:           #f5f2ea;
+      --card-bg:      #fff9f0;
+      --text:         #2a1f0e;
+      --text-muted:   #8a7a62;
+      --border:       #e8e0d0;
+      --row-hover:    #fdf6ec;
+      --input-bg:     #fff9f0;
+      --input-border: #d8cdb8;
+      --th-color:     #b0a080;
+      --cream:        #f5f2ea;
     }
 
-    /* DARK MODE */
+    /* DARK MODE — deep forest green + near-black + gold */
     body.dark {
-      --bg:         #0a0f0a;
-      --card-bg:    #111a11;
-      --text:       #e8e8e0;
-      --text-muted: #6a7a6a;
-      --border:     #1f2f1f;
-      --row-hover:  #162016;
-      --input-bg:   #0f1a0f;
-      --input-border: #2a3f2a;
-      --th-color:   #5a7a5a;
-      --cream:      #0a0f0a;
+      --bg:           #0b1510;
+      --card-bg:      #12211a;
+      --text:         #f0ece3;
+      --text-muted:   #7a9a82;
+      --border:       #1e3028;
+      --row-hover:    #172a20;
+      --input-bg:     #0f1a14;
+      --input-border: #2a4030;
+      --th-color:     #5a8a6a;
+      --cream:        #0b1510;
     }
 
     body { 
@@ -477,7 +485,7 @@
       </a>
 
       <div class="nav-section">Inquiries</div>
-      <a href="" class="{% block nav_bookings %}{% endblock %}">
+      <a href="{% url 'custom_admin_bookings' %}" class="{% block nav_bookings %}{% endblock %}">
         <span class="icon">✉</span> Bookings
         {% if new_bookings %}
           <span style="margin-left:auto; background:var(--gold); color:#0a0f0a; font-size:0.6rem; padding:2px 7px; border-radius:2px;">{{ new_bookings }}</span>
@@ -506,19 +514,20 @@
   </div>
 
   <script>
-    (function() {
-      const toggle = document.getElementById('darkToggle');
-      const label  = document.getElementById('toggleLabel');
+    (function () {
+      var toggle = document.getElementById('darkToggle');
+      var label  = document.getElementById('toggleLabel');
+      var KEY    = 'quartet-dark'; /* shared key with public site */
 
-
-      if (localStorage.getItem('quartet-dark') === '1') {
+      /* Apply saved preference on load */
+      if (localStorage.getItem(KEY) === '1') {
         document.body.classList.add('dark');
         label.textContent = 'Light Mode';
       }
 
-      toggle.addEventListener('click', function() {
-        const isDark = document.body.classList.toggle('dark');
-        localStorage.setItem('quartet-dark', isDark ? '1' : '0');
+      toggle.addEventListener('click', function () {
+        var isDark = document.body.classList.toggle('dark');
+        localStorage.setItem(KEY, isDark ? '1' : '0');
         label.textContent = isDark ? 'Light Mode' : 'Dark Mode';
       });
     })();
