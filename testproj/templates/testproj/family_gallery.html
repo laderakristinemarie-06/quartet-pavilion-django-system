@@ -1,20 +1,20 @@
 {% extends 'testproj/base.html' %}
 {% load static %}
 
-{% block title %}Gallery — Family Milestones Venue — Quartet Pavilion{% endblock %}
+{% block title %}Family Milestones Venue — Quartet Pavilion{% endblock %}
 
 {% block page_layout %}
 <div class="page-layout">
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
-    <h1 class="sidebar__title">Family<br>Milestones</h1>
+    <h1 class="sidebar__title">Family<br>Milestones Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link" href="{% url 'family_overview' %}">Overview</a>
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'family_gallery' %}">Gallery</a>
-      <a class="sidebar__nav-link" href="">Room</a>
-      <a class="sidebar__nav-link" href="">Calendar</a>
-      <a class="sidebar__nav-link" href="">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'family_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'family_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'family_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 
@@ -23,27 +23,27 @@
     <div class="gallery-masonry" id="galleryMasonry">
 
       <div class="gallery-item">
-        <img src="" alt="Family Reunion Setup">
+        <img src="{% static 'testproj/images/family reunion.jpg' %}" alt="Family Reunion Setup">
         <div class="gallery-item__caption"><span class="gallery-item__label">Family Reunion Setup</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Christening Reception">
+        <img src="{% static 'testproj/images/christening reception.jpg' %}" alt="Christening Reception">
         <div class="gallery-item__caption"><span class="gallery-item__label">Christening Reception</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Anniversary Dinner">
+        <img src="{% static 'testproj/images/anniversary dinner.jpg' %}" alt="Anniversary Dinner">
         <div class="gallery-item__caption"><span class="gallery-item__label">Anniversary Dinner</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Garden Gathering">
+        <img src="{% static 'testproj/images/garden gathering.jpg' %}" alt="Garden Gathering">
         <div class="gallery-item__caption"><span class="gallery-item__label">Garden Gathering</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Evening Celebration">
+        <img src="{% static 'testproj/images/evening celebration.jpg' %}" alt="Evening Celebration">
         <div class="gallery-item__caption"><span class="gallery-item__label">Evening Celebration</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Indoor Hall">
+        <img src="{% static 'testproj/images/family indoor hall.jpg' %}" alt="Indoor Hall">
         <div class="gallery-item__caption"><span class="gallery-item__label">Indoor Hall</span></div>
       </div>
 

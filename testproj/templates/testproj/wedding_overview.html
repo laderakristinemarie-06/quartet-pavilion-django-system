@@ -1,7 +1,7 @@
 {% extends 'testproj/base.html' %}
 {% load static %}
 
-{% block title %}Overview — Quartet Pavilion{% endblock %}
+{% block title %}Wedding Venue — Quartet Pavilion{% endblock %}
 
 {% block page_layout %}
 <div class="page-layout">
@@ -11,10 +11,10 @@
     <h1 class="sidebar__title">Wedding<br>Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'wedding_overview' %}">Overview</a>
-      <a class="sidebar__nav-link" href="">Gallery</a>
-      <a class="sidebar__nav-link" href="">Room</a>
-      <a class="sidebar__nav-link" href="">Calendar</a>
-      <a class="sidebar__nav-link" href="">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'wedding_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'wedding_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'wedding_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'wedding_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 
@@ -22,7 +22,7 @@
   <main class="venue-hero">
     <img
       class="venue-hero__photo"
-      src="{% static 'testproj/images/FB_IMG_1771070962882.jpg' %}"
+      src="{% static 'testproj/images/wedding overview.jpg' %}"
       alt="Wedding Venue at Quartet Pavilion">
     <div class="venue-hero__dots" aria-hidden="true">
       <div class="venue-hero__dot venue-hero__dot--active"></div>

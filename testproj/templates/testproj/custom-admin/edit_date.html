@@ -12,30 +12,53 @@
   <div class="form-card">
     <form method="POST">
       {% csrf_token %}
+
+      <div class="field-group">
+        <label>Venue</label>
+        <select name="venue" required>
+          {% for slug, label in venue_choices %}
+            <option value="{{ slug }}"
+              {% if entry.venue == slug %}selected{% endif %}>
+              {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
       <div class="field-group">
         <label>Date</label>
         <input type="date" name="date" value="{{ entry.date|date:'Y-m-d' }}" required>
       </div>
+
       <div class="field-group">
         <label>Status</label>
         <select name="status">
-          <option value="booked" {% if entry.status == 'booked' %}selected{% endif %}>Booked</option>
+          <option value="booked"      {% if entry.status == 'booked' %}selected{% endif %}>Booked</option>
           <option value="unavailable" {% if entry.status == 'unavailable' %}selected{% endif %}>Unavailable</option>
-          <option value="available" {% if entry.status == 'available' %}selected{% endif %}>Available</option>
+          <option value="available"   {% if entry.status == 'available' %}selected{% endif %}>Available</option>
         </select>
       </div>
+
       <div class="field-group">
         <label>Event Name</label>
         <input type="text" name="event_name" value="{{ entry.event_name }}">
       </div>
+
       <div class="field-group">
         <label>Pax (Number of Guests)</label>
         <input type="number" name="pax" value="{{ entry.pax }}">
       </div>
+
       <div class="field-group">
         <label>Time Slot</label>
         <input type="text" name="time_slot" value="{{ entry.time_slot }}">
       </div>
+
+      <div class="field-group">
+        <label>Notes</label>
+        <input type="text" name="notes" value="{{ entry.notes }}">
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="btn-primary">Save Changes</button>
         <a href="{% url 'custom_admin_dates' %}" class="btn-ghost">Cancel</a>

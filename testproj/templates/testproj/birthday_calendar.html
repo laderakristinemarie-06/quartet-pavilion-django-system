@@ -5,228 +5,171 @@
 
 {% block extra_css %}
 <style>
-  .center-panel--calendar { 
-    padding: 1.5rem 1.8rem; 
-  }
-
-  .cal-header { 
-    margin-bottom: 0.8rem; 
-  }
-
-  .cal-header__title { 
-    font-size: 1.5rem; 
-  }
-
-  .cal-nav-btn { 
-    font-size: 1rem; 
-    padding: 0.2rem 0.5rem; 
-  }
-
-  .cal-grid { 
-    gap: 4px; 
-  }
-
-  .cal-grid__day-name { 
-    font-size: 0.62rem; 
-    padding: 0.25rem 0;
-  }
-
-  .cal-grid__day { 
-    font-size: 0.75rem; 
-    padding: 0.35rem 0.2rem; 
-    min-height: 32px; 
-    line-height: 1; 
-  }
-
-  .cal-legend { 
-    margin-top: 0.8rem; 
-    gap: 1rem; 
-    font-size: 0.68rem; 
-  }
-
-  /* Clickable available day */
-  .cal-grid__day--available { 
-    cursor: pointer; 
-    transition: background 0.2s, color 0.2s; 
-  }
-
-  .cal-grid__day--available:hover { 
-    background: #1a2e1a; 
-    color: #fff; 
-  }
-
-  .modal-overlay {
-    display: none; 
-    position: fixed; 
-    inset: 0;
-    background: rgba(0,0,0,0.5); 
-    z-index: 9999;
-    align-items: center; 
-    justify-content: center;
-  }
-
-  .modal-overlay.open { 
-    display: flex; 
-  }
-
-  .modal {
-    background: #fff; 
-    padding: 2.5rem; 
-    max-width: 480px; 
-    width: 92%;
-    position: relative; 
-    font-family: 'Jost', sans-serif;
-    max-height: 92vh; 
-    overflow-y: auto; 
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  }
-
-  .modal__eyebrow { 
-    font-size: 0.62rem; 
-    letter-spacing: 0.3em; 
-    text-transform: uppercase; 
-    color: #c9a84c; 
-    margin-bottom: 0.3rem; 
-  }
-
-  .modal__title { 
-    font-family: 'Cormorant Garamond', serif; 
-    font-size: 1.8rem; 
-    font-weight: 400; 
-    color: #1a2e1a; 
-    margin: 0; 
-  }
-
-  .modal__divider { 
-    width: 36px;
-    height: 1px; 
-    background: #c9a84c; 
-    margin: 0.8rem 0 1.4rem; 
-  }
-
-  .modal__field { 
-    margin-bottom: 1rem; 
-  }
-
-  .modal__field label { 
-    display: block; 
-    font-size: 0.68rem; 
-    letter-spacing: 0.15em; 
-    text-transform: uppercase; 
-    color: #888; 
-    margin-bottom: 0.4rem; 
-  }
-
-  .modal__field input, .modal__field select, .modal__field textarea {
-    width: 100%; 
-    padding: 0.8rem 1rem; 
-    border: 1px solid #ddd;
-    font-family: 'Jost', sans-serif; 
-    font-size: 0.88rem; 
-    color: #1a2e1a;
-    outline: none; 
-    transition: border-color 0.2s; 
-    background: #fff;
-    box-sizing: border-box; 
-    -webkit-appearance: none; 
-    appearance: none;
-  }
-
-  .modal__field input:focus, .modal__field select:focus, .modal__field textarea:focus { 
-    border-color: #1a2e1a; 
-  }
-
-  .modal__field input[readonly] { 
-    background: #f9f6f2; 
-    color: #777; 
-    cursor: default; 
-  }
-
-  .modal__field textarea { 
-    resize: vertical; 
-  }
-
-  .modal__actions { 
-    display: flex; 
-    gap: 1rem; 
-    margin-top: 1.5rem; 
-  }
-
-  .modal__btn-submit {
-    flex: 1; 
-    padding: 0.9rem; 
-    background: #1a2e1a; 
-    color: #fff; 
-    border: none;
-    font-family: 'Jost', sans-serif; 
-    font-size: 0.75rem; 
-    letter-spacing: 0.2em;
-    text-transform: uppercase; 
-    cursor: pointer; 
-    transition: background 0.2s;
-  }
-
-  .modal__btn-submit:hover { 
-    background: #2d4a2d; 
-  }
-
-  .modal__btn-cancel {
-    padding: 0.9rem 1.5rem; 
-    background: transparent; 
-    color: #888;
-    border: 1px solid #ddd; 
-    font-family: 'Jost', sans-serif;
-    font-size: 0.75rem; 
-    letter-spacing: 0.2em; 
-    text-transform: uppercase;
-    cursor: pointer; 
-    transition: all 0.2s;
-  }
-
-  .modal__btn-cancel:hover { 
-    border-color: #1a2e1a; 
-    color: #1a2e1a; 
-  }
-
-  .modal__close {
-    position: absolute; 
-    top: 1rem; 
-    right: 1.2rem; 
-    font-size: 1.4rem;
-    background: none; 
-    border: none; 
-    cursor: pointer; 
-    color: #bbb; 
-    line-height: 1; 
-    padding: 0;
-  }
-
-  .modal__close:hover { 
-    color: #1a2e1a; 
-  }
-
-  .modal__success { 
-    display: none; 
-    text-align: center; 
-    padding: 2rem 0 1rem; 
-  }
-
-  .modal__success .success-icon { 
-    font-size: 3rem; 
-    color: #1a2e1a; 
-    margin-bottom: 1rem; 
-    display: block; 
-  }
-
-  .modal__success p { 
-    font-size: 0.85rem; 
-    color: #555; 
-    line-height: 1.7; 
-    margin-top: 0.5rem; 
-  }
-  
+.center-panel--calendar { padding: 1.5rem 1.8rem; }
+.cal-header { margin-bottom: 0.8rem; }
+.cal-header__title { font-size: 1.5rem; }
+.cal-nav-btn { 
+  font-size: 1rem; 
+  padding: 0.2rem 0.5rem; 
+}
+.cal-grid { gap: 4px; }
+.cal-grid__day-name { 
+  font-size: 0.62rem; 
+  padding: 0.25rem 0; 
+}
+.cal-grid__day { 
+  font-size: 0.75rem; 
+  padding: 0.35rem 0.2rem; 
+  min-height: 32px; 
+  line-height: 1; 
+}
+.cal-legend { 
+  margin-top: 0.8rem; 
+  gap: 1rem; 
+  font-size: 0.68rem; 
+}
+.cal-grid__day--available { 
+  cursor: pointer; 
+  transition: background 0.2s, color 0.2s; 
+}
+.cal-grid__day--available:hover { background: #1a2e1a; color: #fff; }
+.modal-overlay {
+  display: none; 
+  position: fixed; 
+  inset: 0;
+  background: rgba(0,0,0,0.5); 
+  z-index: 9999;
+  align-items: center; 
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff; 
+  padding: 2.5rem; 
+  max-width: 480px; 
+  width: 92%;
+  position: relative; 
+  font-family: 'Jost', sans-serif;
+  max-height: 92vh; 
+  overflow-y: auto; 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.modal__eyebrow { 
+  font-size: 0.62rem; 
+  letter-spacing: 0.3em; 
+  text-transform: uppercase; 
+  color: #c9a84c; 
+  margin-bottom: 0.3rem; 
+}
+.modal__title { 
+  font-family: 'Cormorant Garamond', serif; 
+  font-size: 1.8rem; 
+  font-weight: 400; 
+  color: #1a2e1a; 
+  margin: 0; 
+}
+.modal__divider { 
+  width: 36px; 
+  height: 1px; 
+  background: #c9a84c; 
+  margin: 0.8rem 0 1.4rem; 
+}
+.modal__field { margin-bottom: 1rem; }
+.modal__field label { 
+  display: block; 
+  font-size: 0.68rem; 
+  letter-spacing: 0.15em; 
+  text-transform: uppercase; 
+  color: #888; 
+  margin-bottom: 0.4rem; 
+}
+.modal__field input, .modal__field select, .modal__field textarea {
+  width: 100%; 
+  padding: 0.8rem 1rem; 
+  border: 1px solid #ddd;
+  font-family: 'Jost', sans-serif; 
+  font-size: 0.88rem; 
+  color: #1a2e1a;
+  outline: none; 
+  transition: border-color 0.2s; 
+  background: #fff;
+  box-sizing: border-box; 
+  -webkit-appearance: none; 
+  appearance: none;
+}
+.modal__field input:focus, .modal__field select:focus, .modal__field textarea:focus { border-color: #1a2e1a; }
+.modal__field input[readonly] { 
+  background: #f9f6f2; 
+  color: #777; 
+  cursor: default; 
+}
+.modal__field textarea { resize: vertical; }
+.modal__actions { 
+  display: flex; 
+  gap: 1rem; 
+  margin-top: 1.5rem; 
+}
+.modal__btn-submit {
+  flex: 1; 
+  padding: 0.9rem; 
+  background: #1a2e1a; 
+  color: #fff; 
+  border: none;
+  font-family: 'Jost', sans-serif; 
+  font-size: 0.75rem; 
+  letter-spacing: 0.2em;
+  text-transform: uppercase; 
+  cursor: pointer; 
+  transition: background 0.2s;
+}
+.modal__btn-submit:hover { background: #2d4a2d; }
+.modal__btn-cancel {
+  padding: 0.9rem 1.5rem; 
+  background: transparent; 
+  color: #888;
+  border: 1px solid #ddd; 
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem; 
+  letter-spacing: 0.2em; 
+  text-transform: uppercase;
+  cursor: pointer; 
+  transition: all 0.2s;
+}
+.modal__btn-cancel:hover { 
+  border-color: #1a2e1a; 
+  color: #1a2e1a; 
+}
+.modal__close {
+  position: absolute; 
+  top: 1rem; 
+  right: 1.2rem; 
+  font-size: 1.4rem;
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  color: #bbb; 
+  line-height: 1; 
+  padding: 0;
+}
+.modal__close:hover { color: #1a2e1a; }
+.modal__success { 
+  display: none; 
+  text-align: center; 
+  padding: 2rem 0 1rem; 
+}
+.modal__success .success-icon { 
+  font-size: 3rem; 
+  color: #1a2e1a; 
+  margin-bottom: 1rem; 
+  display: block; 
+}
+.modal__success p { 
+  font-size: 0.85rem; 
+  color: #555; 
+  line-height: 1.7; 
+  margin-top: 0.5rem; 
+}
 </style>
-</div>
 {% endblock %}
 
 
@@ -259,8 +202,8 @@
   </main>
 
   <aside class="right-panel">
-    <p class="right-panel__eyebrow">Admin Overview</p>
-    <h2 class="right-panel__heading">Upcoming Events</h2>
+    <p class="right-panel__eyebrow">Availability</p>
+    <h2 class="right-panel__heading">Check Our Schedule</h2>
     <div class="right-panel__divider" aria-hidden="true"></div>
     <div id="monthlySummary" style="margin-bottom: 1.6rem;"></div>
     <div class="cal-events" id="upcomingEvents"></div>
@@ -270,19 +213,22 @@
 {% endblock %}
 
 
-{# Modal lives outside .page-layout so it can overlay the full screen #}
 {% block content %}
   <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true">
     <div class="modal">
       <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
 
       <div id="modalForm">
-        <p class="modal__eyebrow">Inquiry</p>
+        <p class="modal__eyebrow">Birthday &amp; Private Venue</p>
         <h2 class="modal__title">Book This Date</h2>
         <div class="modal__divider"></div>
 
         <form method="POST" action="{% url 'submit_booking' %}">
           {% csrf_token %}
+          {# Venue identifier — tells the backend which venue this inquiry is for #}
+          <input type="hidden" name="venue" value="birthday">
+          <input type="hidden" name="next" value="{% url 'birthday_calendar' %}">
+
           <div class="modal__field">
             <label>Selected Date</label>
             <input type="text" id="displayDate" readonly tabindex="-1">
@@ -337,22 +283,20 @@
 
     </div>
   </div>
-</div>
 {% endblock %}
 
 
 {% block extra_js %}
 <script>
   (function() {
-    try { window.BOOKED_DATA = JSON.parse('{{ booked_dates|safe|escapejs }}'); }
-    catch (e) { window.BOOKED_DATA = []; console.error('Failed to parse BOOKED_DATA:', e); }
+    try { window.BOOKED_DATA      = JSON.parse('{{ booked_dates|safe|escapejs }}'); }
+    catch (e) { window.BOOKED_DATA = []; }
     try { window.UNAVAILABLE_DATA = JSON.parse('{{ unavailable_dates|safe|escapejs }}'); }
-    catch (e) { window.UNAVAILABLE_DATA = []; console.error('Failed to parse UNAVAILABLE_DATA:', e); }
+    catch (e) { window.UNAVAILABLE_DATA = []; }
   })();
 
   const BOOKED_DATA      = window.BOOKED_DATA;
   const UNAVAILABLE_DATA = window.UNAVAILABLE_DATA;
-
   const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const MONTHS = ['January','February','March','April','May','June',
                   'July','August','September','October','November','December'];
@@ -377,8 +321,6 @@
     if (lower.includes('graduation'))  return 'Graduation Party';
     if (lower.includes('corporate') || lower.includes('company')) return 'Corporate Event';
     if (lower.includes('reunion'))     return 'Reunion';
-    if (lower.includes('engagement'))  return 'Engagement Party';
-    if (lower.includes('baby shower')) return 'Baby Shower';
     const first = rawName.trim().split(/\s+/)[0];
     return first.charAt(0).toUpperCase() + first.slice(1) + ' Event';
   }
@@ -398,7 +340,7 @@
         </span>
       </div>`;
 
-    const container  = document.getElementById('upcomingEvents');
+    const container   = document.getElementById('upcomingEvents');
     const monthEvents = BOOKED_DATA
       .filter(item => { const dt = new Date(item.date); return dt.getFullYear() === y && dt.getMonth() === m; })
       .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -411,9 +353,9 @@
     container.innerHTML = `
       <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:#c9a84c;margin:0 0 0.7rem;">Events This Month</p>
       ${monthEvents.map(item => {
-        const dt   = new Date(item.date);
-        const day  = String(dt.getDate()).padStart(2, '0');
-        const mon  = MONTHS[dt.getMonth()].substring(0, 3);
+        const dt    = new Date(item.date);
+        const day   = String(dt.getDate()).padStart(2, '0');
+        const mon   = MONTHS[dt.getMonth()].substring(0, 3);
         const label = getEventLabel(item.event_name);
         const slot  = item.time_slot ? item.time_slot.charAt(0).toUpperCase() + item.time_slot.slice(1) : 'TBD';
         return `
@@ -441,7 +383,6 @@
     const unavailableDays = getDaysInMonth(UNAVAILABLE_DATA, y, m);
 
     document.getElementById('calTitle').textContent = `${MONTHS[m]} ${y}`;
-
     const grid = document.getElementById('calGrid');
     grid.innerHTML = '';
 
@@ -520,5 +461,4 @@
 
   render();
 </script>
-</div>
 {% endblock %}

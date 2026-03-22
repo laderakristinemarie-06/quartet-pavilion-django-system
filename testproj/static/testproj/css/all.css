@@ -1720,3 +1720,299 @@ body { font-family: 'Jost', sans-serif; background: var(--green-dark); color: #f
 @media (max-width: 600px) {
     .form-row { flex-direction: column; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   LIGHT MODE  —  toggled by adding class .light to <body>
+   Matches the admin panel's dark/light variable approach.
+   ══════════════════════════════════════════════════════════════ */
+
+body.light {
+  --forest-dark:  #f5f0eb;
+  --forest:       #ede7df;
+  --white:        #1a2e1a;
+  --white-dim:    rgba(26, 46, 26, 0.7);
+  --white-soft:   rgba(26, 46, 26, 0.06);
+  --gold-border:  rgba(201, 168, 76, 0.3);
+
+  background: #f5f0eb;
+  color: #1a2e1a;
+}
+
+/* Nav bar in light mode */
+body.light .nav {
+  background: rgba(245, 240, 235, 0.97);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+}
+
+body.light .nav-link {
+  color: rgba(26, 46, 26, 0.7);
+}
+
+body.light .nav-link:hover {
+  color: #c9a84c;
+}
+
+body.light .dropdown-menu {
+  background: #ede7df;
+  border-color: rgba(201, 168, 76, 0.25);
+}
+
+body.light .dropdown-menu a {
+  color: rgba(26, 46, 26, 0.75);
+}
+
+body.light .dropdown-menu a:hover {
+  color: #c9a84c;
+  background: rgba(201, 168, 76, 0.08);
+}
+
+body.light .image-brand {
+  color: #1a2e1a;
+}
+
+/* Sidebar in light mode */
+body.light .sidebar {
+  background: #ede7df;
+  border-right: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+body.light .sidebar__title {
+  color: #1a2e1a;
+}
+
+body.light .sidebar__nav-link {
+  color: rgba(26, 46, 26, 0.55);
+}
+
+body.light .sidebar__nav-link:hover,
+body.light .sidebar__nav-link--active {
+  color: #1a2e1a;
+  background: rgba(201, 168, 76, 0.1);
+}
+
+body.light .sidebar__nav-link--active {
+  border-left-color: #c9a84c;
+}
+
+/* Right panel in light mode */
+body.light .right-panel {
+  background: #ede7df;
+}
+
+body.light .right-panel__heading,
+body.light .right-panel__eyebrow,
+body.light .right-panel__body {
+  color: #1a2e1a;
+}
+
+/* Venue hero & cards in light mode */
+body.light .venue-features__item {
+  color: rgba(26, 46, 26, 0.75);
+  border-color: rgba(201, 168, 76, 0.3);
+}
+
+/* Center panel / gallery in light mode */
+body.light .center-panel {
+  background: #f5f0eb;
+}
+
+body.light .gallery-item__label {
+  color: #1a2e1a;
+}
+
+/* Testimonials in light mode */
+body.light .testimonial-card {
+  background: #ffffff;
+  border-color: rgba(201, 168, 76, 0.2);
+}
+
+body.light .testimonial-card__quote,
+body.light .testimonial-card__name,
+body.light .testimonial-card__event {
+  color: #1a2e1a;
+}
+
+body.light .rating-bar__score,
+body.light .rating-bar__stars,
+body.light .rating-bar__label,
+body.light .rating-row__label {
+  color: #1a2e1a;
+}
+
+/* Room cards in light mode */
+body.light .room-card {
+  background: #ffffff;
+  border-color: rgba(201, 168, 76, 0.2);
+}
+
+body.light .room-card__label {
+  color: rgba(26, 46, 26, 0.5);
+}
+
+body.light .room-card__value {
+  color: #1a2e1a;
+}
+
+body.light .room-tab {
+  color: rgba(26, 46, 26, 0.6);
+  border-color: rgba(201, 168, 76, 0.25);
+}
+
+body.light .room-tab--active {
+  background: #1a2e1a;
+  color: #fff;
+}
+
+/* Amenity list in light mode */
+body.light .amenity-list__item {
+  color: rgba(26, 46, 26, 0.75);
+}
+
+body.light .amenity-list__item::before {
+  color: #c9a84c;
+}
+
+/* Calendar in light mode */
+body.light .cal-grid__day {
+  color: #1a2e1a;
+}
+
+body.light .cal-grid__day--today {
+  background: #1a2e1a;
+  color: #fff;
+}
+
+body.light .cal-grid__day--available:hover {
+  background: #1a2e1a;
+  color: #fff;
+}
+
+body.light .cal-event__name,
+body.light .cal-event__meta,
+body.light .cal-event__date-num,
+body.light .cal-event__date-mon {
+  color: #1a2e1a;
+}
+
+body.light .cal-header__title,
+body.light .cal-grid__day-name {
+  color: rgba(26, 46, 26, 0.6);
+}
+
+/* Events page cards in light mode */
+body.light .header {
+  background-color: #ede7df;
+}
+
+body.light .header h1,
+body.light .header p,
+body.light .header .label {
+  color: #1a2e1a;
+}
+
+/* Stat items in light mode */
+body.light .stat-item__number {
+  color: #c9a84c;
+}
+
+body.light .stat-item__label {
+  color: rgba(26, 46, 26, 0.6);
+}
+
+/* Buttons stay the same — already use explicit colours */
+
+/* ── Light-bulb theme toggle ────────────────────────────────── */
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  outline: none;
+  position: relative;
+}
+
+/* The visible circle */
+.bulb-inner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(201, 168, 76, 0.15);
+  border: 2px solid #c9a84c;
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.4),
+              0 0 22px rgba(201, 168, 76, 0.2);
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s, border-color 0.3s;
+  animation: bulb-breathe 2.5s ease-in-out infinite;
+}
+
+/* Emoji icon */
+.bulb-icon-text {
+  font-size: 1.3rem;
+  line-height: 1;
+  display: block;
+  filter: drop-shadow(0 0 4px rgba(201,168,76,0.8));
+  transition: filter 0.3s, transform 0.2s;
+  user-select: none;
+}
+
+/* Hover */
+.theme-toggle:hover .bulb-inner {
+  background: rgba(201, 168, 76, 0.28);
+  box-shadow: 0 0 16px rgba(201, 168, 76, 0.65),
+              0 0 32px rgba(201, 168, 76, 0.3);
+  transform: scale(1.12);
+}
+
+.theme-toggle:hover .bulb-icon-text {
+  filter: drop-shadow(0 0 8px rgba(201,168,76,1));
+  transform: scale(1.1);
+}
+
+/* Click */
+.theme-toggle:active .bulb-inner {
+  transform: scale(0.93);
+  box-shadow: 0 0 24px rgba(201, 168, 76, 0.9),
+              0 0 48px rgba(201, 168, 76, 0.4);
+}
+
+/* Pulsing glow animation when "bulb on" (dark mode) */
+@keyframes bulb-breathe {
+  0%,100% { box-shadow: 0 0 10px rgba(201,168,76,0.4), 0 0 22px rgba(201,168,76,0.2); }
+  50%      { box-shadow: 0 0 18px rgba(201,168,76,0.7), 0 0 36px rgba(201,168,76,0.35); }
+}
+
+/* ── LIGHT MODE — bulb appears "off" ── */
+body.light .bulb-inner {
+  background: rgba(26, 46, 26, 0.06);
+  border-color: rgba(26, 46, 26, 0.4);
+  box-shadow: none;
+  animation: none;
+}
+
+body.light .bulb-icon-text {
+  filter: grayscale(1) opacity(0.55);
+}
+
+body.light .theme-toggle:hover .bulb-inner {
+  background: rgba(26, 46, 26, 0.13);
+  border-color: #1a2e1a;
+  box-shadow: 0 0 10px rgba(26,46,26,0.15);
+  transform: scale(1.1);
+}
+
+body.light .theme-toggle:hover .bulb-icon-text {
+  filter: grayscale(0) opacity(0.85);
+  transform: scale(1.05);
+}
+
+body.light .theme-toggle:active .bulb-inner {
+  transform: scale(0.93);
+}

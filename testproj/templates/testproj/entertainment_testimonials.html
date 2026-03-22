@@ -1,0 +1,142 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Entertainment & Special Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Entertainment<br>&amp; Special</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link" href="{% url 'entertainment_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'entertainment_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'entertainment_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'entertainment_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'entertainment_testimonials' %}">Testimonials</a>
+    </nav>
+  </aside>
+
+  <main class="center-panel center-panel--testimonials">
+
+    <div class="rating-bar">
+      <span class="rating-bar__score">4.9</span>
+      <div class="rating-bar__right">
+        <span class="rating-bar__stars">★★★★★</span>
+        <span class="rating-bar__label">Based on 82 reviews</span>
+      </div>
+      <div class="rating-bar__breakdown">
+        <div class="rating-row"><span class="rating-row__label">Venue</span><div class="rating-row__track"><div class="rating-row__fill" style="width:99%"></div></div></div>
+        <div class="rating-row"><span class="rating-row__label">Service</span><div class="rating-row__track"><div class="rating-row__fill" style="width:97%"></div></div></div>
+        <div class="rating-row"><span class="rating-row__label">Catering</span><div class="rating-row__track"><div class="rating-row__fill" style="width:94%"></div></div></div>
+        <div class="rating-row"><span class="rating-row__label">Value</span><div class="rating-row__track"><div class="rating-row__fill" style="width:96%"></div></div></div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        We held a surprise concert here for our band's anniversary and the stage setup blew everyone away.
+        The lighting rig, the sound system, the open garden backdrop — it felt like a proper festival venue.
+        Our guests couldn't believe this place existed so close to the city.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Marco Ilustre, Band Manager</span>
+          <span class="testimonial-card__event">Live Concert · February 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        We used this venue for a cosplay and themed party event with over 200 guests. The team was
+        incredibly flexible with our unusual setup requirements, and the space transformed beautifully.
+        Highly recommended for anyone wanting something truly different.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Trisha Navarro, Events Organizer</span>
+          <span class="testimonial-card__event">Themed Party · January 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        Shot a full music video here and every frame turned out stunning. The garden, the architecture,
+        the golden hour lighting — it's a filmmaker's dream. The staff were accommodating for a full
+        day shoot and went above and beyond throughout.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Daniel Ong, Filmmaker</span>
+          <span class="testimonial-card__event">Creative Shoot · December 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        Our New Year's Eve party here was the best one we've ever thrown. 230 guests, live band, open
+        bar, and the most beautiful garden under the stars. The Quartet Pavilion team made everything
+        seamless and the energy was electric all night.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Camille &amp; Ryan Torres</span>
+          <span class="testimonial-card__event">New Year's Eve Party · December 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        As a content creator, I'm always looking for locations that look unique on camera. Quartet Pavilion's
+        Entertainment Venue is exactly that — every corner is photogenic, the staff understand creative needs,
+        and the results speak for themselves.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Pia Reyes, Content Creator</span>
+          <span class="testimonial-card__event">Content Shoot · November 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+  </main>
+
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Guest Reviews</p>
+    <h2 class="right-panel__heading">Unforgettable Nights Start Here</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      From concerts and themed galas to creative shoots and New Year's bashes, our guests come here
+      to create something extraordinary — and leave with memories that last a lifetime.
+    </p>
+    <div class="stat-list">
+      <div class="stat-item">
+        <span class="stat-item__number">4.9 / 5</span>
+        <span class="stat-item__label">Average guest rating</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">180+</span>
+        <span class="stat-item__label">Special events hosted</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">100%</span>
+        <span class="stat-item__label">Would book again</span>
+      </div>
+    </div>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost" href="{% url 'entertainment_overview' %}">← Back to Overview</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}

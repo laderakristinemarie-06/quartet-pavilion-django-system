@@ -13,14 +13,33 @@
     <div class="alert-success">{{ message }}</div>
   {% endfor %}
 
+  <!-- Venue filter tabs -->
+  <div class="venue-tabs">
+    <a href="?venue=" class="venue-tab {% if not venue_filter %}venue-tab--active{% endif %}">All Venues</a>
+    {% for slug, label in venue_choices %}
+      <a href="?venue={{ slug }}"
+         class="venue-tab {% if venue_filter == slug %}venue-tab--active{% endif %}">
+        {{ label }}
+      </a>
+    {% endfor %}
+  </div>
+
   <div class="table-card">
     <div class="table-header">
-      <h2>All Dates</h2>
-      <a href="{% url 'custom_admin_add_date' %}" class="btn-primary">+ Add Date</a>
+      <h2>
+        {% if venue_filter %}
+          {{ venue_filter|title }} Venue Dates
+        {% else %}
+          All Dates
+        {% endif %}
+      </h2>
+      <a href="{% url 'custom_admin_add_date' %}{% if venue_filter %}?venue={{ venue_filter }}{% endif %}"
+         class="btn-primary">+ Add Date</a>
     </div>
     <table>
       <thead>
         <tr>
+          <th>Venue</th>
           <th>Date</th>
           <th>Event Name</th>
           <th>Pax</th>
@@ -32,6 +51,7 @@
       <tbody>
         {% for entry in dates %}
         <tr>
+          <td style="font-size:0.75rem; color:var(--text-muted);">{{ entry.get_venue_display }}</td>
           <td>{{ entry.date|date:"M d, Y" }}</td>
           <td>{{ entry.event_name|default:"—" }}</td>
           <td>{{ entry.pax|default:"—" }}</td>
@@ -42,9 +62,38 @@
           </td>
         </tr>
         {% empty %}
-        <tr><td colspan="6" style="color:#aaa; font-style:italic;">No dates added yet.</td></tr>
+        <tr><td colspan="7" style="color:#aaa; font-style:italic;">No dates added yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
+
+  <style>
+    .venue-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .venue-tab {
+      padding: 0.45rem 1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--input-border);
+      color: var(--text-muted);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .venue-tab:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .venue-tab--active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #0a0f0a;
+    }
+  </style>
 {% endblock %}

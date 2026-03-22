@@ -1,0 +1,252 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Entertainment & Special Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Entertainment<br>&amp; Special</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link" href="{% url 'entertainment_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'entertainment_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'entertainment_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'entertainment_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'entertainment_testimonials' %}">Testimonials</a>
+    </nav>
+  </aside>
+
+  <main class="center-panel">
+    <div class="room-tabs" role="tablist">
+      <button class="room-tab room-tab--active" role="tab" data-room="sr" aria-selected="true">Superior Room (SR)</button>
+      <button class="room-tab" role="tab" data-room="dr" aria-selected="false">Deluxe Room (DR)</button>
+    </div>
+    <div class="room-photo-wrap">
+      <img class="room-photo" id="roomPhoto" src="" alt="">
+      <button class="photo-arrow--prev" id="photoPrev" aria-label="Previous photo">‹</button>
+      <button class="photo-arrow--next" id="photoNext" aria-label="Next photo">›</button>
+      <div class="photo-dots" id="photoDots"></div>
+    </div>
+    <div class="room-details" id="roomDetails"></div>
+  </main>
+
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow" id="rpEyebrow"></p>
+    <h2 class="right-panel__heading" id="rpHeading"></h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body" id="rpBody"></p>
+    <div class="rate-block">
+      <span class="rate-block__price" id="rpRate"></span>
+      <span class="rate-block__unit">per night</span>
+    </div>
+    <ul class="amenity-list" id="rpAmenities"></ul>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Reserve a Room</a>
+      <a class="btn--ghost" href="{% url 'entertainment_overview' %}">← Back to Overview</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.room-photo-wrap {
+    position:relative;
+    width:100%;
+    overflow:hidden;
+}
+.room-photo {
+    width:100%;
+    display:block;
+    object-fit:cover;
+    transition:opacity 0.3s;
+}
+.room-photo.fade {
+    opacity:0;
+}
+.photo-arrow--prev,.photo-arrow--next {
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(255,255,255,0.85);
+    border:none;
+    font-size:1.6rem;
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:10;
+    transition:background 0.2s;
+    line-height:1;
+    color:#1a2e1a;
+}
+.photo-arrow--prev:hover,.photo-arrow--next:hover {
+    background:rgba(255,255,255,1);
+}
+.photo-arrow--prev {
+    left:0.75rem;
+}
+.photo-arrow--next {
+    right:0.75rem;
+}
+.photo-dots {
+    position:absolute;
+    bottom:0.75rem;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:6px;
+}
+.photo-dot {
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.5);
+    cursor:pointer;
+    transition:background 0.2s;
+}
+.photo-dot--active {
+    background:#fff;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const rooms = {
+    sr: {
+      photos: [
+        { src: '" %}', alt: 'Superior Room – Performer Green Room' },
+        { src: '" %}', alt: 'Superior Room – Garden View' },
+      ],
+      cards: [
+        { label: 'Room Type',    value: 'Superior Room' },
+        { label: 'Capacity',     value: '2 Guests' },
+        { label: 'Bed Size',     value: 'Queen' },
+        { label: 'Room Size',    value: '28 sqm' },
+        { label: 'View',         value: 'Garden' },
+        { label: 'Rate / Night', value: '₱ 5,000' },
+      ],
+      eyebrow:  'Superior Room',
+      heading:  'Creative Comfort and Artistic Ease',
+      body:     'The Superior Room serves as a vibrant sanctuary for artists and guests attending special events. Designed with warm lighting and artistic touches, this space offers a peaceful courtyard view that inspires creativity and provides the perfect backdrop for pre-show preparation.',
+      rate:     '₱ 5,000',
+      amenities: [
+        'Queen-size bed with plush designer linens',
+        'Full-length mirrors and vanity lighting',
+        'Air conditioning & mood lighting',
+        'Complimentary artisan breakfast for two',
+        'Direct access to performance courtyards',
+        'Free high-speed Wi-Fi',
+        'Smart TV with multimedia connectivity',
+      ],
+    },
+    dr: {
+      photos: [
+        { src: '" %}', alt: 'Deluxe Room – VIP Backstage Suite' },
+        { src: '" %}', alt: 'Deluxe Room – Lounge Area' },
+        { src: '" %}', alt: 'Deluxe Room – Elegant Bath' },
+      ],
+      cards: [
+        { label: 'Room Type',    value: 'Deluxe Room' },
+        { label: 'Capacity',     value: '2–4 Guests' },
+        { label: 'Bed Size',     value: 'King' },
+        { label: 'Room Size',    value: '42 sqm' },
+        { label: 'View',         value: 'Stage & Pool' },
+        { label: 'Rate / Night', value: '₱ 7,200' },
+      ],
+      eyebrow:  'Deluxe Room',
+      heading:  'The Ultimate VIP Experience',
+      body:     'The Deluxe Room is the premier choice for those seeking an extraordinary experience. This expansive suite functions as a private backstage lounge or a luxury VIP retreat, offering sweeping views of the stage and pool areas. It combines modern elegance with the magical energy of the Pavilion.',
+      rate:     '₱ 7,200',
+      amenities: [
+        'King-size bed with luxury satin-finish linens',
+        'Large private bathroom with soaking tub',
+        'Premium sound system integration',
+        'Complimentary champagne breakfast for two',
+        'Private balcony overlooking the stage area',
+        'Dedicated high-speed connectivity',
+        'Nespresso bar & curated refreshment center',
+        'VIP access to venue events',
+      ],
+    },
+  };
+
+  let activeRoom  = 'sr';
+  let activePhoto = 0;
+
+  function renderPhoto(room, index) {
+    const photo = rooms[room].photos[index];
+    const img   = document.getElementById('roomPhoto');
+    const dots  = document.getElementById('photoDots');
+    img.classList.add('fade');
+    setTimeout(() => {
+      img.src = photo.src;
+      img.alt = photo.alt;
+      img.classList.remove('fade');
+    }, 300);
+    dots.innerHTML = '';
+    rooms[room].photos.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'photo-dot' + (i === index ? ' photo-dot--active' : '');
+      dot.addEventListener('click', () => { activePhoto = i; renderPhoto(activeRoom, i); });
+      dots.appendChild(dot);
+    });
+  }
+
+  function renderCards(room) {
+    const grid = document.getElementById('roomDetails');
+    grid.innerHTML = rooms[room].cards.map(c => `
+      <div class="room-card">
+        <span class="room-card__label">${c.label}</span>
+        <span class="room-card__value">${c.value}</span>
+      </div>`).join('');
+  }
+
+  function renderPanel(room) {
+    const d = rooms[room];
+    document.getElementById('rpEyebrow').textContent = d.eyebrow;
+    document.getElementById('rpHeading').textContent = d.heading;
+    document.getElementById('rpBody').textContent    = d.body;
+    document.getElementById('rpRate').textContent    = d.rate;
+    const list = document.getElementById('rpAmenities');
+    list.innerHTML = d.amenities.map(a =>
+      `<li class="amenity-list__item">${a}</li>`
+    ).join('');
+  }
+
+  function render(room) {
+    activeRoom  = room;
+    activePhoto = 0;
+    renderPhoto(room, 0);
+    renderCards(room);
+    renderPanel(room);
+    document.querySelectorAll('.room-tab').forEach(btn => {
+      btn.classList.toggle('room-tab--active', btn.dataset.room === room);
+      btn.setAttribute('aria-selected', btn.dataset.room === room ? 'true' : 'false');
+    });
+  }
+
+  document.querySelectorAll('.room-tab').forEach(btn => {
+    btn.addEventListener('click', () => render(btn.dataset.room));
+  });
+
+  document.getElementById('photoPrev').addEventListener('click', () => {
+    const len = rooms[activeRoom].photos.length;
+    activePhoto = (activePhoto - 1 + len) % len;
+    renderPhoto(activeRoom, activePhoto);
+  });
+
+  document.getElementById('photoNext').addEventListener('click', () => {
+    const len = rooms[activeRoom].photos.length;
+    activePhoto = (activePhoto + 1) % len;
+    renderPhoto(activeRoom, activePhoto);
+  });
+
+  render('sr');
+</script>
+{% endblock %}

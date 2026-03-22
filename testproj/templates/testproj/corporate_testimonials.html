@@ -1,0 +1,127 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}Corporate & Formal Venue — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Corporate<br>&amp; Formal Venue</h1>
+    <nav class="sidebar__nav" aria-label="Venue sections">
+      <a class="sidebar__nav-link" href="{% url 'corporate_overview' %}">Overview</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'corporate_testimonials' %}">Testimonials</a>
+    </nav>
+  </aside>
+
+  <main class="center-panel center-panel--testimonials">
+
+    <div class="rating-bar">
+      <span class="rating-bar__score">4.9</span>
+      <div class="rating-bar__right">
+        <span class="rating-bar__stars">★★★★★</span>
+        <span class="rating-bar__label">Based on 58 reviews</span>
+      </div>
+      <div class="rating-bar__breakdown">
+        <div class="rating-row"><span class="rating-row__label">Venue</span><div class="rating-row__track"><div class="rating-row__fill" style="width:98%"></div></div></div>
+        <div class="rating-row"><span class="rating-row__label">Service</span><div class="rating-row__track"><div class="rating-row__fill" style="width:97%"></div></div></div>
+        <div class="rating-row"><span class="rating-row__label">Catering</span><div class="rating-row__track"><div class="rating-row__fill" style="width:94%"></div></div></div>
+        <div class="rating-row"><span class="rating-row__label">Value</span><div class="rating-row__track"><div class="rating-row__fill" style="width:92%"></div></div></div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        We hosted our company's annual gala here for the second year in a row. The team is incredibly
+        professional, the venue setup was impeccable, and our 160-person event ran without a single hitch.
+        Quartet Pavilion is our go-to for corporate events.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Gerald Uy, Operations Director</span>
+          <span class="testimonial-card__event">Annual Gala · February 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        Our product launch required a venue that felt both luxurious and professional — Quartet Pavilion
+        delivered exactly that. The lighting, the arrangement, and the AV support were all top-notch.
+        Clients and partners were thoroughly impressed.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Stephanie Go, Marketing Head</span>
+          <span class="testimonial-card__event">Product Launch · January 2026</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        Held our board recognition dinner here and it was one of the most elegant evenings we've had
+        as a company. The food was exceptional, the ambience was perfect, and the team made every
+        guest feel genuinely welcome.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Atty. Maria Santos</span>
+          <span class="testimonial-card__event">Board Dinner · December 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-card__quote">
+        Reliable, elegant, and genuinely stress-free. As an events organizer, I've worked with many venues —
+        Quartet Pavilion stands out for their coordination, quality, and the way they treat every event as
+        if it were their own.
+      </p>
+      <div class="testimonial-card__footer">
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Jerome Bautista, Events Coordinator</span>
+          <span class="testimonial-card__event">Year-End Party · November 2025</span>
+        </div>
+        <span class="testimonial-card__stars">★★★★★</span>
+      </div>
+    </div>
+
+  </main>
+
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Guest Reviews</p>
+    <h2 class="right-panel__heading">Trusted by Leading Organizations</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      From product launches to year-end galas, companies trust Quartet Pavilion to represent their brand
+      with the prestige and elegance their events deserve.
+    </p>
+    <div class="stat-list">
+      <div class="stat-item">
+        <span class="stat-item__number">4.9 / 5</span>
+        <span class="stat-item__label">Average guest rating</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">150+</span>
+        <span class="stat-item__label">Corporate events hosted</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">96%</span>
+        <span class="stat-item__label">Repeat bookings</span>
+      </div>
+    </div>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--ghost" href="{% url 'corporate_overview' %}">← Back to Overview</a>
+    </div>
+  </aside>
+
+</div>
+{% endblock %}

@@ -1,46 +1,46 @@
 {% extends 'testproj/base.html' %}
 {% load static %}
 
-{% block title %}Gallery — Academic & Youth Venue — Quartet Pavilion{% endblock %}
+{% block title %}Academic & Youth Venue — Quartet Pavilion{% endblock %}
 
 {% block page_layout %}
 <div class="page-layout">
 
   <aside class="sidebar">
-    <h1 class="sidebar__title">Academic<br>&amp; Youth</h1>
+    <h1 class="sidebar__title">Academic<br>&amp; Youth Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link" href="{% url 'academic_overview' %}">Overview</a>
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'academic_gallery' %}">Gallery</a>
-      <a class="sidebar__nav-link" href="">Room</a>
-      <a class="sidebar__nav-link" href="">Calendar</a>
-      <a class="sidebar__nav-link" href="">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 
   <main class="center-panel">
     <div class="gallery-masonry" id="galleryMasonry">
       <div class="gallery-item">
-        <img src="" alt="Graduation Party Setup">
+        <img src="{% static 'testproj/images/academic venue5.jpg' %}" alt="Graduation Party Setup">
         <div class="gallery-item__caption"><span class="gallery-item__label">Graduation Party Setup</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Recognition Ceremony">
+        <img src="{% static 'testproj/images/academic venue2.jpg' %}" alt="Recognition Ceremony">
         <div class="gallery-item__caption"><span class="gallery-item__label">Recognition Ceremony</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Debut Celebration">
+        <img src="{% static 'testproj/images/academic venue1.jpg' %}" alt="Debut Celebration">
         <div class="gallery-item__caption"><span class="gallery-item__label">Debut Celebration</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Garden Reception">
+        <img src="{% static 'testproj/images/academic venue4.jpg' %}" alt="Garden Reception">
         <div class="gallery-item__caption"><span class="gallery-item__label">Garden Reception</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Awards Night">
+        <img src="{% static 'testproj/images/academic venue3.jpg' %}" alt="Awards Night">
         <div class="gallery-item__caption"><span class="gallery-item__label">Awards Night</span></div>
       </div>
       <div class="gallery-item">
-        <img src="" alt="Indoor Hall">
+        <img src="{% static 'testproj/images/academic venue6.jpg' %}" alt="Indoor Hall">
         <div class="gallery-item__caption"><span class="gallery-item__label">Indoor Hall</span></div>
       </div>
     </div>

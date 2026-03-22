@@ -10,17 +10,17 @@
     <h1 class="sidebar__title">Corporate<br>&amp; Formal Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'corporate_overview' %}">Overview</a>
-      <a class="sidebar__nav-link" href="">Gallery</a>
-      <a class="sidebar__nav-link" href="">Room</a>
-      <a class="sidebar__nav-link" href="">Calendar</a>
-      <a class="sidebar__nav-link" href="">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_gallery' %}">Gallery</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'corporate_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 
   <main class="venue-hero">
     <img
       class="venue-hero__photo"
-      src="{% static 'testproj/images/WV4.jpg' %}"
+      src="{% static 'testproj/images/corporate venue5.jpg' %}"
       alt="Corporate & Formal Venue at Quartet Pavilion">
     <div class="venue-hero__dots" aria-hidden="true">
       <div class="venue-hero__dot venue-hero__dot--active"></div>

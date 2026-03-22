@@ -8,13 +8,13 @@
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
-    <h1 class="sidebar__title">Family<br>Milestones</h1>
+    <h1 class="sidebar__title">Family<br>Milestones Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'family_overview' %}">Overview</a>
       <a class="sidebar__nav-link" href="{% url 'family_gallery' %}">Gallery</a>
-      <a class="sidebar__nav-link" href="">Room</a>
-      <a class="sidebar__nav-link" href="">Calendar</a>
-      <a class="sidebar__nav-link" href="">Testimonials</a>
+      <a class="sidebar__nav-link" href="{% url 'family_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'family_calendar' %}">Calendar</a>
+      <a class="sidebar__nav-link" href="{% url 'family_testimonials' %}">Testimonials</a>
     </nav>
   </aside>
 
