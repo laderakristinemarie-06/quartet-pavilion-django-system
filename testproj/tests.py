@@ -6,7 +6,6 @@ class HomepageHeadingTest(unittest.TestCase):
 
     def setUp(self):
         """
-        SECTION 1: SETUP
         This initializes the Chrome browser and sets an implicit wait.
         """
         self.driver = webdriver.Chrome()
