@@ -1,105 +1,307 @@
 {% extends 'testproj/base.html' %}
 {% load static %}
 
+{% block title %}Book a Venue — Quartet Pavilion{% endblock %}
+
+{% block extra_css %}
+<style>
+.booking-container { max-width: 780px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+.booking-card { background: #fff; border: 0.5px solid #ddd; padding: 2.5rem; }
+.booking-header { background: #1a2e1a; color: #fff; margin: -2.5rem -2.5rem 2rem; padding: 1.5rem 2.5rem; text-align: center; }
+.booking-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; color: #c9a84c; margin: 0 0 0.3rem; }
+.booking-header p { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: #9ab89a; margin: 0; }
+.venue-badge { display: inline-block; background: rgba(201,168,76,0.15); color: #c9a84c; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.3rem 0.8rem; margin-top: 0.6rem; border: 0.5px solid rgba(201,168,76,0.4); }
+.section-title { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: #c9a84c; margin: 1.8rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 0.5px solid #eee; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.input-group { margin-bottom: 1rem; }
+.input-group label { display: block; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 0.4rem; }
+.input-group input, .input-group select, .input-group textarea { width: 100%; padding: 0.75rem 1rem; border: 1px solid #ddd; font-family: 'Jost', sans-serif; font-size: 0.88rem; color: #1a2e1a; outline: none; transition: border-color 0.2s; background: #fff; box-sizing: border-box; -webkit-appearance: none; appearance: none; }
+.input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: #1a2e1a; }
+.input-group textarea { resize: vertical; }
+.payment-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem; }
+.pay-option { border: 1.5px solid #ddd; padding: 0.9rem 0.6rem; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+.pay-option input[type="radio"] { display: none; }
+.pay-option .pay-icon { font-size: 1.4rem; display: block; margin-bottom: 0.3rem; }
+.pay-option .pay-name { font-size: 0.7rem; font-weight: 500; color: #1a2e1a; display: block; }
+.pay-option .pay-sub { font-size: 0.6rem; color: #888; display: block; margin-top: 0.2rem; }
+.pay-option.selected { border-color: #c9a84c; background: rgba(201,168,76,0.06); }
+.pay-option.selected .pay-name { color: #c9a84c; }
+.pay-option .check { display: none; position: absolute; top: 6px; right: 8px; color: #c9a84c; font-size: 0.75rem; }
+.pay-option.selected .check { display: block; }
+.price-box { background: #1a2e1a; color: #fff; padding: 1.2rem 1.5rem; margin: 1.5rem 0; display: flex; align-items: center; justify-content: space-between; }
+.price-box .price-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #9ab89a; }
+.price-box .price-amount { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #c9a84c; font-weight: 400; }
+.price-box .price-breakdown { font-size: 0.65rem; color: #6b8c6b; margin-top: 0.2rem; }
+.price-note { font-size: 0.65rem; color: #888; text-align: right; margin-top: 0.3rem; }
+.downpayment-box { background: #f9f6f2; border-left: 3px solid #c9a84c; padding: 0.9rem 1rem; margin-bottom: 1rem; font-size: 0.78rem; color: #1a2e1a; }
+.downpayment-box strong { color: #c9a84c; }
+#walkinNotice { display: none; background: #fff8e8; border: 1px solid #c9a84c; padding: 1rem; margin-top: 0.8rem; font-size: 0.78rem; color: #1a2e1a; }
+#walkinNotice ul { margin: 0.5rem 0 0 1rem; padding: 0; }
+#walkinNotice li { margin-bottom: 0.3rem; }
+#onlinePayFields { display: none; margin-top: 0.8rem; }
+.booking-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 0.5px solid #eee; gap: 1rem; }
+.confirm-btn { background: #1a2e1a; color: #fff; border: none; padding: 1rem 2.5rem; font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+.confirm-btn:hover { background: #2d4a2d; }
+.confirm-btn:disabled { background: #aaa; cursor: not-allowed; }
+.back-btn { font-size: 0.72rem; color: #888; text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; }
+.back-btn:hover { color: #1a2e1a; }
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .payment-grid { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
 {% block page_layout %}
-<main class="booking-container">
-    <div class="booking-card" id="bookingCard">
-        <div class="booking-header">
-            <h2>Reservation Form</h2>
-            <p>Complete the details below to secure your date.</p>
-        </div>
-
-        <form id="mainBookingForm" class="booking-form">
-            <h3 class="section-title">Customer Details</h3>
-            <div class="input-group">
-                <label>Full Name</label>
-                <input type="text" id="custName" required placeholder="Juan Dela Cruz">
-            </div>
-
-            <div class="form-row">
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" required placeholder="juan@email.com">
-                </div>
-                <div class="input-group">
-                    <label>Phone Number</label>
-                    <input type="tel" required placeholder="0912-345-6789">
-                </div>
-            </div>
-
-            <div class="divider-small"></div>
-
-            <h3 class="section-title">Reservation Details</h3>
-            <div class="form-row">
-                <div class="input-group">
-                    <label>Arrival Date</label>
-                    <input type="date" required>
-                </div>
-                <div class="input-group">
-                    <label>Departure Date</label>
-                    <input type="date" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="input-group">
-                    <label>Number of Guests</label>
-                    <input type="number" min="1" max="100" placeholder="0">
-                </div>
-                <div class="input-group">
-                    <label>Pavilion Type</label>
-                    <select id="pavilionType" required>
-                        <option value="" disabled selected>Select a package</option>
-                        <option value="garden">Garden Pavilion (₱15,000)</option>
-                        <option value="grand">Grand Ballroom (₱35,000)</option>
-                        <option value="executive">Executive Suite (₱8,500)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="divider-small"></div>
-
-            <h3 class="section-title">Payment Method</h3>
-            <div class="payment-options">
-                <label class="pay-radio">
-                    <input type="radio" name="payment" value="e-wallet" checked>
-                    <span>GCash / Maya</span>
-                </label>
-                <label class="pay-radio">
-                    <input type="radio" name="payment" value="card">
-                    <span>Credit / Debit Card</span>
-                </label>
-            </div>
-
-            <div class="input-group">
-                <label>Card / Account Number</label>
-                <input type="text" required placeholder="xxxx-xxxx-xxxx-xxxx">
-            </div>
-
-            <div class="booking-footer">
-                <div class="price-estimate">
-                    <span>Estimated Total:</span>
-                    <strong id="totalPriceDisplay">₱ 0.00</strong>
-                </div>
-                <button type="submit" class="confirm-btn">Confirm & Pay</button>
-            </div>
-        </form>
+<div class="booking-container">
+  <div class="booking-card">
+    <div class="booking-header">
+      <h2>Reservation Form</h2>
+      <p>Complete the details below to secure your date</p>
+      <span class="venue-badge">{{ venue_name|default:"Quartet Pavilion" }}</span>
     </div>
 
-    <div id="successMessage" class="success-container" style="display: none;">
-        <div class="success-card">
-            <div class="check-icon">✓</div>
-            <h2>Thank You, <span id="displayUser">Guest</span>!</h2>
-            <p>Your booking is done.</p>
-            <p class="sub-text">Please wait for our confirmation email or a call from our representative within 24 hours.</p>
-            <button id="backToHomeBtn" class="nav-btn" style="width: 200px;">Back to Home</button>
+    <form method="POST" action="{% url 'submit_booking' %}" id="bookingForm">
+      {% csrf_token %}
+      <input type="hidden" name="venue"      value="{{ venue|default:'birthday' }}">
+      <input type="hidden" name="next"       value="{{ next_url|default:'/' }}">
+      <input type="hidden" name="time_slot"  id="timeSlotHidden" value="Full Day">
+      <input type="hidden" name="total_price" id="totalPriceHidden" value="0">
+      <input type="hidden" name="downpay_amount" id="downpayHidden" value="0">
 
+      <!-- CUSTOMER DETAILS -->
+      <h3 class="section-title">Customer Details</h3>
+      <div class="input-group">
+        <label>Full Name *</label>
+        <input type="text" name="name" id="custName" required placeholder="Juan Dela Cruz">
+      </div>
+      <div class="form-row">
+        <div class="input-group">
+          <label>Email Address *</label>
+          <input type="email" name="email" required placeholder="juan@email.com">
+        </div>
+        <div class="input-group">
+          <label>Contact Number *</label>
+          <input type="tel" name="phone" required placeholder="0912-345-6789">
+        </div>
+      </div>
+
+      <!-- RESERVATION DETAILS -->
+      <h3 class="section-title">Reservation Details</h3>
+      <div class="form-row">
+        <div class="input-group">
+          <label>Event Date *</label>
+          <input type="date" name="date" id="eventDate" required>
+        </div>
+        <div class="input-group">
+          <label>End Date (if multi-day)</label>
+          <input type="date" name="departure_date" id="endDate">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="input-group">
+          <label>Start Time *</label>
+          <input type="time" name="start_time" id="startTime" required>
+        </div>
+        <div class="input-group">
+          <label>End Time *</label>
+          <input type="time" name="end_time" id="endTime" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="input-group">
+          <label>Type of Room / Package *</label>
+          <select name="event_name" id="roomType" required>
+            <option value="" disabled selected>Select a package</option>
+            <option value="Garden Pavilion">Garden Pavilion — up to 50 pax</option>
+            <option value="Grand Ballroom">Grand Ballroom — up to 150 pax</option>
+            <option value="Executive Suite">Executive Suite — up to 30 pax</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Number of Guests *</label>
+          <input type="number" name="pax" id="guestCount" required min="1" max="500" placeholder="e.g. 80">
+        </div>
+      </div>
+
+      <!-- LIVE PRICE -->
+      <div class="price-box">
+        <div>
+          <div class="price-label">Estimated Total</div>
+          <div class="price-amount" id="totalDisplay">₱ 0.00</div>
+          <div class="price-breakdown" id="priceBreakdown">Select a package and guest count</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="price-label">30% Downpayment</div>
+          <div style="font-size:1.2rem;color:#c9a84c;font-family:'Cormorant Garamond',serif;" id="downpayDisplay">₱ 0.00</div>
+        </div>
+      </div>
+      <p class="price-note">* Estimate only. Final amount confirmed by our team. Base rate covers 5 hours; ₱5,000/extra hour.</p>
+
+      <!-- PAYMENT METHOD -->
+      <h3 class="section-title">Downpayment Method</h3>
+      <div class="downpayment-box">
+        A <strong>30% downpayment</strong> is required to confirm your booking. Choose your preferred method below.
+      </div>
+
+      <div class="payment-grid">
+        <label class="pay-option" id="opt-gcash" onclick="selectPayment('gcash')">
+          <input type="radio" name="payment" value="gcash">
+          <span class="pay-icon">📱</span>
+          <span class="pay-name">GCash</span>
+          <span class="pay-sub">Online Transfer</span>
+          <span class="check">✓</span>
+        </label>
+        <label class="pay-option" id="opt-maya" onclick="selectPayment('maya')">
+          <input type="radio" name="payment" value="maya">
+          <span class="pay-icon">💳</span>
+          <span class="pay-name">Maya</span>
+          <span class="pay-sub">Online Transfer</span>
+          <span class="check">✓</span>
+        </label>
+        <label class="pay-option" id="opt-walkin" onclick="selectPayment('walkin')">
+          <input type="radio" name="payment" value="walkin">
+          <span class="pay-icon">🏢</span>
+          <span class="pay-name">Walk-in</span>
+          <span class="pay-sub">Pay at venue</span>
+          <span class="check">✓</span>
+        </label>
+      </div>
+
+      <div id="onlinePayFields">
+        <div class="input-group">
+          <label>GCash / Maya Number *</label>
+          <input type="text" name="account_number" id="accountNumber" placeholder="09XX-XXX-XXXX">
+        </div>
+        <div class="input-group">
+          <label>Reference Number (after sending) *</label>
+          <input type="text" name="reference_number" id="refNumber" placeholder="e.g. 1234567890">
+        </div>
+      </div>
+
+      <div id="walkinNotice">
+        <strong>📋 Walk-in Downpayment Instructions</strong>
+        <ul>
+          <li>Visit <strong>Quartet Pavilion</strong> to pay your downpayment in person.</li>
+          <li>Bring the booking receipt that will be sent to your email.</li>
+          <li>Office hours: <strong>Monday – Saturday, 8:00 AM – 5:00 PM</strong></li>
+          <li>Your booking is held for <strong>3 days</strong> pending payment.</li>
+        </ul>
+      </div>
+
+      <!-- NOTES -->
+      <h3 class="section-title">Additional Notes</h3>
+      <div class="input-group">
+        <label>Special Requests / Suggestions</label>
+        <textarea name="notes" rows="4" placeholder="Tell us about your theme, special arrangements, or any questions..."></textarea>
+      </div>
+
+      <div class="booking-footer">
+        <a class="back-btn" href="javascript:history.back()">← Back</a>
+        <button type="submit" class="confirm-btn" id="submitBtn" disabled>Send Inquiry</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
 <script>
-document.getElementById('backToHomeBtn').onclick = function() {
-    window.location.href = "{% url 'home' %}";
+const PRICING = {
+  'Garden Pavilion': { base: 15000, maxPax: 50,  excessRate: 300 },
+  'Grand Ballroom':  { base: 35000, maxPax: 150, excessRate: 250 },
+  'Executive Suite': { base: 8500,  maxPax: 30,  excessRate: 350 },
 };
+
+let selectedPayment = null;
+
+function fmt(n) {
+  return '₱ ' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function calcPrice() {
+  const room  = document.getElementById('roomType').value;
+  const pax   = parseInt(document.getElementById('guestCount').value) || 0;
+  const start = document.getElementById('startTime').value;
+  const end   = document.getElementById('endTime').value;
+
+  if (!room || !pax) {
+    document.getElementById('totalDisplay').textContent     = '₱ 0.00';
+    document.getElementById('downpayDisplay').textContent   = '₱ 0.00';
+    document.getElementById('priceBreakdown').textContent   = 'Select a package and guest count';
+    document.getElementById('totalPriceHidden').value       = 0;
+    document.getElementById('downpayHidden').value          = 0;
+    return;
+  }
+
+  const pkg = PRICING[room];
+  let total  = pkg.base;
+  let parts  = [`Base: ${fmt(pkg.base)}`];
+
+  if (pax > pkg.maxPax) {
+    const extra = (pax - pkg.maxPax) * pkg.excessRate;
+    total += extra;
+    parts.push(`+${pax - pkg.maxPax} excess pax: ${fmt(extra)}`);
+  }
+
+  if (start && end) {
+    const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
+    const hrs = (toMin(end) - toMin(start)) / 60;
+    if (hrs > 5) {
+      const extraHrs  = Math.ceil(hrs - 5);
+      const extraCost = extraHrs * 5000;
+      total += extraCost;
+      parts.push(`+${extraHrs} extra hr(s): ${fmt(extraCost)}`);
+    }
+    const sh = parseInt(start.split(':')[0]);
+    document.getElementById('timeSlotHidden').value = sh < 12 ? 'Morning' : sh < 17 ? 'Afternoon' : 'Evening';
+  }
+
+  const downpay = Math.round(total * 0.30);
+  document.getElementById('totalDisplay').textContent   = fmt(total);
+  document.getElementById('downpayDisplay').textContent = fmt(downpay);
+  document.getElementById('priceBreakdown').textContent = parts.join(' | ');
+  document.getElementById('totalPriceHidden').value     = total;
+  document.getElementById('downpayHidden').value        = downpay;
+  checkReady();
+}
+
+function selectPayment(method) {
+  selectedPayment = method;
+  ['gcash','maya','walkin'].forEach(m => document.getElementById('opt-'+m).classList.remove('selected'));
+  document.getElementById('opt-'+method).classList.add('selected');
+  document.querySelector(`input[value="${method}"]`).checked = true;
+
+  const online = document.getElementById('onlinePayFields');
+  const walkin = document.getElementById('walkinNotice');
+  const acct   = document.getElementById('accountNumber');
+  const ref    = document.getElementById('refNumber');
+
+  if (method === 'walkin') {
+    online.style.display = 'none';
+    walkin.style.display = 'block';
+    acct.removeAttribute('required');
+    ref.removeAttribute('required');
+  } else {
+    online.style.display = 'block';
+    walkin.style.display = 'none';
+    acct.setAttribute('required', '');
+    ref.setAttribute('required', '');
+  }
+  checkReady();
+}
+
+function checkReady() {
+  const ok = document.getElementById('custName').value.trim()
+          && document.getElementById('roomType').value
+          && document.getElementById('guestCount').value
+          && document.getElementById('eventDate').value
+          && selectedPayment;
+  document.getElementById('submitBtn').disabled = !ok;
+}
+
+document.getElementById('roomType').addEventListener('change',    calcPrice);
+document.getElementById('guestCount').addEventListener('input',   calcPrice);
+document.getElementById('startTime').addEventListener('change',   calcPrice);
+document.getElementById('endTime').addEventListener('change',     calcPrice);
+document.getElementById('custName').addEventListener('input',     checkReady);
+document.getElementById('eventDate').addEventListener('change',   checkReady);
 </script>
-        </div>
-    </div>
-</main>
 {% endblock %}
