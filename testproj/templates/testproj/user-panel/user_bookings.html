@@ -1,0 +1,76 @@
+{% extends "testproj/user-panel/base_user.html" %}
+{% block title %}My Bookings{% endblock %}
+{% block nav_bookings %}active{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <p class="eyebrow">My Account</p>
+    <h1>My Bookings</h1>
+    <div class="divider-line"></div>
+  </div>
+
+  {% for message in messages %}
+    <div class="alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+
+  <!-- Status filter chips -->
+  <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;">
+    <a href="?" class="status-chip {% if not status_filter %}status-chip--active{% endif %}">All</a>
+    <a href="?status=booked"      class="status-chip {% if status_filter == 'booked' %}status-chip--active{% endif %}">Booked</a>
+    <a href="?status=rescheduled" class="status-chip {% if status_filter == 'rescheduled' %}status-chip--active{% endif %}">Rescheduled</a>
+    <a href="?status=ongoing"     class="status-chip {% if status_filter == 'ongoing' %}status-chip--active{% endif %}">Ongoing</a>
+    <a href="?status=done"        class="status-chip {% if status_filter == 'done' %}status-chip--active{% endif %}">Done</a>
+    <a href="?status=canceled"    class="status-chip {% if status_filter == 'canceled' %}status-chip--active{% endif %}">Canceled</a>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h2>
+        {% if status_filter %}{{ status_filter|title }} Bookings{% else %}All Bookings{% endif %}
+      </h2>
+      <span style="font-size:0.72rem;color:var(--text-muted);letter-spacing:0.05em;">
+        {{ bookings|length }} record{{ bookings|length|pluralize }}
+      </span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Venue</th>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Pax</th>
+          <th>Time Slot</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr>
+          <td style="font-size:0.75rem;color:var(--text-muted);">{{ b.get_venue_display }}</td>
+          <td>{{ b.date|date:"M d, Y" }}</td>
+          <td>{{ b.event_name|default:"—" }}</td>
+          <td>{{ b.pax|default:"—" }}</td>
+          <td>{{ b.time_slot|default:"—" }}</td>
+          <td><span class="badge badge-{{ b.status }}">{{ b.get_status_display }}</span></td>
+          <td>
+            <a href="{% url 'user_booking_detail' b.pk %}" class="btn-action">Manage →</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" style="color:#aaa;font-style:italic;">
+            {% if status_filter %}No {{ status_filter }} bookings found.{% else %}You have no bookings yet.{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <style>
+    .status-chip { padding:0.3rem 0.9rem; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; border:1px solid var(--input-border); color:var(--text-muted); transition:all 0.2s; white-space:nowrap; }
+    .status-chip:hover { border-color:var(--gold); color:var(--gold); }
+    .status-chip--active { background:var(--green-dark); border-color:var(--green-dark); color:#fff; }
+  </style>
+{% endblock %}

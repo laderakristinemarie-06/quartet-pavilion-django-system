@@ -1,0 +1,203 @@
+{% extends "testproj/user-panel/base_user.html" %}
+{% block title %}Booking Detail{% endblock %}
+{% block nav_bookings %}active{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <p class="eyebrow">My Bookings</p>
+    <h1>{{ booking.event_name|default:"My Event" }}</h1>
+    <div class="divider-line"></div>
+  </div>
+
+  {% for message in messages %}
+    <div class="alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:2rem;align-items:start;">
+
+    <!-- LEFT: Booking details -->
+    <div>
+      <!-- Status banner -->
+      <div class="status-banner status-banner--{{ booking.status }}">
+        <div>
+          <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;opacity:0.75;margin-bottom:4px;">Current Status</p>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;">
+            {{ booking.get_status_display }}
+          </p>
+        </div>
+        {% if booking.status == 'ongoing' %}
+          <p style="font-size:0.78rem;opacity:0.8;">🎉 Your event is happening today!</p>
+        {% elif booking.status == 'done' %}
+          <p style="font-size:0.78rem;opacity:0.8;">✓ Your event has been completed.</p>
+        {% elif booking.status == 'canceled' %}
+          <p style="font-size:0.78rem;opacity:0.8;">This booking has been canceled.</p>
+        {% endif %}
+      </div>
+
+      <!-- Details card -->
+      <div class="detail-card">
+        <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;">Event Information</p>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Venue</span>
+            <span class="detail-value">{{ booking.get_venue_display }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Date</span>
+            <span class="detail-value">{{ booking.date|date:"F d, Y" }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Event Type</span>
+            <span class="detail-value">{{ booking.event_name|default:"—" }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Time Slot</span>
+            <span class="detail-value">{{ booking.time_slot|default:"—" }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Number of Guests</span>
+            <span class="detail-value">{{ booking.pax|default:"—" }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Submitted On</span>
+            <span class="detail-value">{{ booking.created_at|date:"F d, Y" }}</span>
+          </div>
+          <div class="detail-item" style="grid-column:1/-1;">
+            <span class="detail-label">Your Notes</span>
+            <span class="detail-value">{{ booking.notes|default:"—" }}</span>
+          </div>
+          {% if booking.admin_notes %}
+          <div class="detail-item" style="grid-column:1/-1;">
+            <span class="detail-label">Message from Quartet Pavilion</span>
+            <span class="detail-value" style="color:var(--green-dark);font-style:italic;">{{ booking.admin_notes }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Reschedule request form (only if booked or already rescheduled) -->
+      {% if booking.status == 'booked' or booking.status == 'rescheduled' %}
+      <div class="detail-card" style="margin-top:1.5rem;">
+        <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Request Reschedule</p>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.2rem;line-height:1.6;">
+          Need to move your event? Select your preferred new date below and we'll confirm availability within 24 hours.
+        </p>
+        <form method="POST" action="{% url 'user_booking_reschedule' booking.pk %}">
+          {% csrf_token %}
+          <div class="field-group">
+            <label>Preferred New Date</label>
+            <input type="date" name="new_date" required
+              min="{{ today_str }}"
+              value="{{ booking.requested_new_date|date:'Y-m-d'|default:'' }}">
+          </div>
+          <div class="field-group">
+            <label>Reason (optional)</label>
+            <textarea name="reschedule_reason" rows="2"
+              style="width:100%;padding:0.8rem 1rem;border:1px solid var(--input-border);background:var(--input-bg);font-family:'Jost',sans-serif;font-size:0.85rem;color:var(--text);outline:none;resize:vertical;transition:border-color 0.2s;"
+              placeholder="Let us know why you need to reschedule…">{{ booking.reschedule_reason|default:'' }}</textarea>
+          </div>
+          <button type="submit" class="btn-primary">Submit Reschedule Request</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- RIGHT: Action panel -->
+    <div>
+      <div class="action-card">
+        <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;">Manage Booking</p>
+
+        {% if booking.status == 'booked' %}
+          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem;">
+            Your booking is confirmed. You can cancel or request a reschedule below.
+          </p>
+          <form method="POST" action="{% url 'user_booking_cancel' booking.pk %}" onsubmit="return confirm('Are you sure you want to cancel this booking? This cannot be undone.');">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger-sm" style="width:100%;padding:0.8rem;margin-bottom:0.7rem;">Cancel This Booking</button>
+          </form>
+
+        {% elif booking.status == 'rescheduled' %}
+          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem;">
+            Your reschedule request has been submitted. We'll confirm your new date soon.
+          </p>
+          <form method="POST" action="{% url 'user_booking_cancel' booking.pk %}" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger-sm" style="width:100%;padding:0.8rem;margin-bottom:0.7rem;">Cancel Booking</button>
+          </form>
+
+        {% elif booking.status == 'canceled' %}
+          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem;">
+            This booking has been canceled. To rebook, please submit a new inquiry.
+          </p>
+          <a href="{% url 'book' %}" class="btn-primary" style="width:100%;text-align:center;display:block;padding:0.8rem;">New Inquiry</a>
+
+        {% elif booking.status == 'ongoing' %}
+          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;">
+            Your event is in progress today. Enjoy your celebration at Quartet Pavilion! 🎉
+          </p>
+
+        {% elif booking.status == 'done' %}
+          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem;">
+            Thank you for celebrating with us! We hope your event was everything you imagined.
+          </p>
+          <a href="{% url 'birthday_testimonials' %}" class="btn-ghost" style="width:100%;text-align:center;display:block;padding:0.8rem;">Leave a Review</a>
+        {% endif %}
+
+        <div style="margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);">
+          <p style="font-size:0.72rem;color:var(--text-muted);line-height:1.6;">
+            Need help? Contact us at<br>
+            <a href="mailto:hello@quartetpavilion.com" style="color:var(--gold);text-decoration:none;">hello@quartetpavilion.com</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="action-card" style="margin-top:1rem;">
+        <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Status Timeline</p>
+        <div class="timeline">
+          {% for entry in status_history %}
+          <div class="timeline-item {% if forloop.last %}timeline-item--current{% endif %}">
+            <div class="timeline-dot"></div>
+            <div class="timeline-body">
+              <span class="badge badge-{{ entry.status }}" style="margin-bottom:3px;display:inline-block;">{{ entry.status }}</span>
+              <p style="font-size:0.72rem;color:var(--text-muted);">{{ entry.changed_at|date:"M d, Y · H:i" }}</p>
+              {% if entry.note %}<p style="font-size:0.78rem;color:var(--text);margin-top:2px;">{{ entry.note }}</p>{% endif %}
+            </div>
+          </div>
+          {% empty %}
+          <p style="font-size:0.8rem;color:var(--text-muted);">No history yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .status-banner { padding:1.5rem; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center; color:#fff; }
+    .status-banner--booked      { background: #c9a84c; }
+    .status-banner--canceled    { background: #c0392b; }
+    .status-banner--rescheduled { background: #2980b9; }
+    .status-banner--ongoing     { background: #1e8449; }
+    .status-banner--done        { background: #7f8c8d; }
+
+    .detail-card { background: var(--card-bg); padding: 1.8rem; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
+    .detail-item { display: flex; flex-direction: column; gap: 3px; }
+    .detail-label { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+    .detail-value { font-size: 0.9rem; color: var(--text); }
+
+    .action-card { background: var(--card-bg); padding: 1.5rem; }
+    .field-group { margin-bottom: 1rem; }
+    .field-group label { display: block; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .field-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--input-border); background: var(--input-bg); font-family: 'Jost', sans-serif; font-size: 0.88rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+    .field-group input:focus { border-color: var(--gold); }
+
+    .timeline { position: relative; padding-left: 1.2rem; }
+    .timeline::before { content: ''; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 1px; background: var(--border); }
+    .timeline-item { position: relative; margin-bottom: 1.2rem; padding-left: 1rem; }
+    .timeline-dot { position: absolute; left: -1.2rem; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--border); border: 2px solid var(--card-bg); }
+    .timeline-item--current .timeline-dot { background: var(--gold); }
+    .timeline-body { }
+  </style>
+{% endblock %}

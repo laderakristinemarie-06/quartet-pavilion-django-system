@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings — Quartet Pavilion</title>
+  <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --green-dark: #1a2e1a; --green-mid: #2d4a2d; --gold: #c9a84c; }
+    body { font-family: 'Jost', sans-serif; min-height: 100vh; display: flex; background: #fff; overflow: hidden; }
+    .login-image { flex: 0 0 55%; position: relative; overflow: hidden; }
+    .login-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); transition: transform 12s ease; }
+    .login-image:hover img { transform: scale(1.04); }
+    .login-image::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 120px; background: linear-gradient(to right, transparent, #fff); }
+    .image-brand { position: absolute; top: 2rem; left: 2.5rem; z-index: 2; color: #fff; text-decoration: none; }
+    .image-brand .ib-top  { font-size: 0.55rem; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.85; display: block; }
+    .image-brand .ib-main { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; letter-spacing: 0.1em; display: block; }
+    .image-brand .ib-sub  { font-size: 0.55rem; letter-spacing: 0.45em; text-transform: uppercase; display: block; }
+    .login-panel { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4rem 5rem; background: #fff; }
+    .login-box { width: 100%; max-width: 340px; }
+    .login-box .eyebrow { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .login-box h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--green-dark); margin-bottom: 0.4rem; }
+    .login-box .subtitle { color: #aaa; font-size: 0.8rem; font-weight: 300; margin-bottom: 2.5rem; letter-spacing: 0.05em; line-height: 1.6; }
+    .divider-line { width: 40px; height: 1px; background: var(--gold); margin-bottom: 2rem; }
+    .field-group { margin-bottom: 1.2rem; }
+    .field-group label { display: block; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 0.5rem; }
+    .field-group input { width: 100%; padding: 0.9rem 1rem; border: 1px solid #ddd; background: #fff; font-family: 'Jost', sans-serif; font-size: 0.9rem; color: var(--green-dark); outline: none; transition: border-color 0.3s, box-shadow 0.3s; }
+    .field-group input:focus { border-color: var(--green-dark); box-shadow: 0 0 0 3px rgba(26,46,26,0.06); }
+    .field-group input::placeholder { color: #bbb; }
+    .btn-signin { width: 100%; padding: 1rem; background: var(--green-dark); color: #fff; border: none; font-family: 'Jost', sans-serif; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer; transition: background 0.3s; margin-top: 0.5rem; }
+    .btn-signin:hover { background: var(--green-mid); }
+    .error-msg { background: #fff0f0; color: #c0392b; border-left: 3px solid #c0392b; padding: 10px 14px; font-size: 0.8rem; margin-bottom: 1.2rem; }
+    .back-link { display: block; text-align: center; margin-top: 1.8rem; font-size: 0.75rem; color: #aaa; text-decoration: none; letter-spacing: 0.05em; }
+    .back-link:hover { color: var(--green-dark); }
+    .info-box { background: #f9f6f2; border-left: 3px solid var(--gold); padding: 10px 14px; font-size: 0.78rem; color: #777; margin-bottom: 1.5rem; line-height: 1.6; }
+    @media (max-width: 768px) { body { flex-direction: column; } .login-image { flex: 0 0 40vh; } .login-image::after { display: none; } .login-panel { padding: 3rem 2rem; } }
+  </style>
+</head>
+<body>
+  <div class="login-image">
+    <a class="image-brand" href="{% url 'home' %}">
+      <span class="ib-top">Est. 2026</span>
+      <span class="ib-main">QUARTET</span>
+      <span class="ib-sub">Pavilion</span>
+    </a>
+    <img src="{% static 'testproj/images/f1.png' %}" alt="Quartet Pavilion">
+  </div>
+
+  <div class="login-panel">
+    <div class="login-box">
+      <p class="eyebrow">Guest Portal</p>
+      <h1>My Bookings</h1>
+      <p class="subtitle">Enter the email address you used when submitting your inquiry to view and manage your bookings.</p>
+      <div class="divider-line"></div>
+
+      {% for message in messages %}
+        <div class="error-msg">{{ message }}</div>
+      {% endfor %}
+
+      <div class="info-box">
+        Use the same email you provided when booking. If you can't find your booking, contact us at <strong>hello@quartetpavilion.com</strong>.
+      </div>
+
+      <form method="POST" action="{% url 'user_login' %}">
+        {% csrf_token %}
+        <div class="field-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" value="{{ request.POST.email }}" required autofocus>
+        </div>
+        <button type="submit" class="btn-signin">Access My Bookings</button>
+      </form>
+
+      <a class="back-link" href="{% url 'home' %}">← Back to Quartet Pavilion</a>
+    </div>
+  </div>
+</body>
+</html>
