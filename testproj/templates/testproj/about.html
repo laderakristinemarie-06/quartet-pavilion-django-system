@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'testproj/css/all.css' %}">
     <link rel="stylesheet" href="{% static 'testproj/css/about.css' %}">
+    <script>
+        (function () {
+            if (localStorage.getItem('quartet-theme') === 'light') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.body.classList.add('light');
+                });
+            }
+        })();
+    </script>
 </head>
 <body>
 
@@ -393,18 +402,32 @@
         window.addEventListener('scroll', handleScroll);
         handleScroll();
 
-        // ── Dark / Light mode toggle ──
+        // ── Dark / Light mode toggle — shared key across all pages ──
+        const KEY = 'quartet-theme';
         const themeToggle = document.getElementById('themeToggle');
-
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light');
-            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-        });
+        const bulbInner   = themeToggle ? themeToggle.querySelector('.bulb-inner') : null;
 
         // Restore saved preference on load
-        if (localStorage.getItem('theme') === 'light') {
+        if (localStorage.getItem(KEY) === 'light') {
             document.body.classList.add('light');
         }
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.body.classList.toggle('light');
+            localStorage.setItem(KEY, isLight ? 'light' : 'dark');
+
+            // Burst flash feedback
+            if (bulbInner) {
+                bulbInner.style.transition = 'box-shadow 0.05s';
+                bulbInner.style.boxShadow  = isLight
+                    ? '0 0 8px rgba(245,242,234,0.6)'
+                    : '0 0 30px rgba(201,168,76,1), 0 0 60px rgba(201,168,76,0.5)';
+                setTimeout(() => {
+                    bulbInner.style.boxShadow  = '';
+                    bulbInner.style.transition = '';
+                }, 250);
+            }
+        });
     </script>
 
 </body>
