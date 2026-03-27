@@ -45,7 +45,7 @@
       <li class="venue-features__item">Private dressing rooms for performers</li>
     </ul>
     <div class="cta-group">
-      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--primary" href="{% url 'book' %}?venue=entertainment&next={% url 'entertainment_overview' %}">Book This Venue</a>
       <a class="btn--ghost" href="{% url 'events' %}">← Back to Events</a>
     </div>
   </aside>
