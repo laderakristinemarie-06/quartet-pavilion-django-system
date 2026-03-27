@@ -10,8 +10,9 @@ path('book/',   views.book,   name='book'),
 path('events/', views.events, name='events'),
 path('login/',  views.log_in, name='log_in'),
 
-# ── Booking inquiry submission ───────────────────────────────────────────
-path('submit-booking/', views.submit_booking, name='submit_booking'),
+# ── Booking ──────────────────────────────────────────────────────────────
+path('submit-booking/',             views.submit_booking,  name='submit_booking'),
+path('booking/receipt/<int:pk>/',   views.booking_receipt, name='booking_receipt'),
 
 # ── Birthday & Private Venue ─────────────────────────────────────────────
 path('events/birthday/',               views.birthday_overview,     name='birthday_overview'),
@@ -56,13 +57,15 @@ path('events/entertainment/calendar/',      views.entertainment_calendar,     na
 path('events/entertainment/testimonials/',  views.entertainment_testimonials, name='entertainment_testimonials'),
 
 # ── Admin Panel ──────────────────────────────────────────────────────────
-path('manage/login/',                     views.custom_admin_login,      name='custom_admin_login'),
-path('manage/logout/',                    views.custom_admin_logout,     name='custom_admin_logout'),
-path('manage/',                           views.custom_admin_dashboard,  name='custom_admin_dashboard'),
-path('manage/dates/',                     views.custom_admin_dates,      name='custom_admin_dates'),
-path('manage/dates/add/',                 views.custom_admin_add_date,   name='custom_admin_add_date'),
-path('manage/dates/edit/<int:pk>/',       views.custom_admin_edit_date,  name='custom_admin_edit_date'),
-path('manage/dates/delete/<int:pk>/',     views.custom_admin_delete_date, name='custom_admin_delete_date'),
-path('manage/inquiries/',                 views.custom_admin_inquiries,  name='custom_admin_inquiries'),
-path('manage/bookings/',                  views.custom_admin_bookings,   name='custom_admin_bookings'),
+path('manage/login/',                       views.custom_admin_login,           name='custom_admin_login'),
+path('manage/logout/',                      views.custom_admin_logout,          name='custom_admin_logout'),
+path('manage/',                             views.custom_admin_dashboard,       name='custom_admin_dashboard'),
+path('manage/dates/',                       views.custom_admin_dates,           name='custom_admin_dates'),
+path('manage/dates/add/',                   views.custom_admin_add_date,        name='custom_admin_add_date'),
+path('manage/dates/edit/<int:pk>/',         views.custom_admin_edit_date,       name='custom_admin_edit_date'),
+path('manage/dates/delete/<int:pk>/',       views.custom_admin_delete_date,     name='custom_admin_delete_date'),
+path('manage/inquiries/',                   views.custom_admin_inquiries,       name='custom_admin_inquiries'),
+path('manage/inquiries/<int:pk>/action/',   views.custom_admin_approve_inquiry, name='custom_admin_approve_inquiry'),
+path('manage/bookings/',                    views.custom_admin_bookings,        name='custom_admin_bookings'),
+
 ]
