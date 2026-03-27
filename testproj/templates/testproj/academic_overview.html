@@ -49,7 +49,7 @@
       <li class="venue-features__item">Affordable student-package rates</li>
     </ul>
     <div class="cta-group">
-      <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
+      <a class="btn--primary" href="{% url 'book' %}?venue=academic&next={% url 'academic_overview' %}">Book This Venue</a>
       <a class="btn--ghost" href="{% url 'events' %}">← Back to Events</a>
     </div>
   </aside>
