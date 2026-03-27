@@ -1,63 +1,78 @@
 {% extends "testproj/custom-admin/base_admin.html" %}
-{% block title %}Edit Date{% endblock %}
+{% block title %}Edit Booking{% endblock %}
 {% block nav_dates %}active{% endblock %}
 
 {% block content %}
   <div class="page-header">
     <p class="eyebrow">Calendar</p>
-    <h1>Edit Date</h1>
+    <h1>Edit Booking</h1>
     <div class="divider-line"></div>
   </div>
 
   <div class="form-card">
+    {# Read-only info panel #}
+    <div style="background:var(--bg); border:1px solid var(--border); padding:1.2rem 1.5rem; margin-bottom:2rem;">
+      <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;">Booking Details (Read-only)</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem 2rem;">
+        <div>
+          <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Venue</span>
+          <p style="font-size:0.9rem;color:var(--text);margin-top:2px;">{{ entry.get_venue_display }}</p>
+        </div>
+        <div>
+          <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Date</span>
+          <p style="font-size:0.9rem;color:var(--text);margin-top:2px;">{{ entry.date|date:"F d, Y" }}</p>
+        </div>
+        <div>
+          <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Status</span>
+          <p style="margin-top:4px;"><span class="badge badge-{{ entry.status }}">{{ entry.status }}</span></p>
+        </div>
+        <div>
+          <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Event Name</span>
+          <p style="font-size:0.9rem;color:var(--text);margin-top:2px;">{{ entry.event_name|default:"—" }}</p>
+        </div>
+        <div>
+          <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Time Slot</span>
+          <p style="font-size:0.9rem;color:var(--text);margin-top:2px;">{{ entry.time_slot|default:"—" }}</p>
+        </div>
+        <div>
+          <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Booked By</span>
+          <p style="font-size:0.9rem;color:var(--text);margin-top:2px;">{{ entry.name|default:"—" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;">Admin-Editable Fields</p>
+
     <form method="POST">
       {% csrf_token %}
 
       <div class="field-group">
-        <label>Venue</label>
-        <select name="venue" required>
-          {% for slug, label in venue_choices %}
-            <option value="{{ slug }}"
-              {% if entry.venue == slug %}selected{% endif %}>
-              {{ label }}
-            </option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div class="field-group">
-        <label>Date</label>
-        <input type="date" name="date" value="{{ entry.date|date:'Y-m-d' }}" required>
-      </div>
-
-      <div class="field-group">
-        <label>Status</label>
-        <select name="status">
-          <option value="booked"      {% if entry.status == 'booked' %}selected{% endif %}>Booked</option>
-          <option value="unavailable" {% if entry.status == 'unavailable' %}selected{% endif %}>Unavailable</option>
-          <option value="available"   {% if entry.status == 'available' %}selected{% endif %}>Available</option>
-        </select>
-      </div>
-
-      <div class="field-group">
-        <label>Event Name</label>
-        <input type="text" name="event_name" value="{{ entry.event_name }}">
-      </div>
-
-      <div class="field-group">
         <label>Pax (Number of Guests)</label>
-        <input type="number" name="pax" value="{{ entry.pax }}">
+        <input type="number" name="pax" value="{{ entry.pax }}" placeholder="e.g. 150" min="1">
+        <p class="field-hint">Update if the client confirms a different guest count.</p>
       </div>
 
       <div class="field-group">
-        <label>Time Slot</label>
-        <input type="text" name="time_slot" value="{{ entry.time_slot }}">
+        <label>Admin Notes</label>
+        <textarea name="notes" rows="4"
+          style="width:100%;padding:0.85rem 1rem;border:1px solid var(--input-border);background:var(--input-bg);font-family:'Jost',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color 0.2s,background 0.3s;resize:vertical;"
+          placeholder="Internal notes: setup instructions, special requirements, reminders…">{{ entry.notes }}</textarea>
+        <p class="field-hint">Notes are visible to admins only and are never deleted — each save appends to the history below.</p>
       </div>
 
-      <div class="field-group">
-        <label>Notes</label>
-        <input type="text" name="notes" value="{{ entry.notes }}">
+      {% if entry.notes_history %}
+      <div style="margin-bottom:1.5rem;">
+        <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.7rem;">Notes History</p>
+        <div style="border:1px solid var(--border);max-height:200px;overflow-y:auto;">
+          {% for log in entry.notes_history %}
+          <div style="padding:0.7rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem;color:var(--text);">
+            <span style="font-size:0.65rem;color:var(--text-muted);display:block;margin-bottom:3px;">{{ log.saved_at|date:"M d, Y — H:i" }} · {{ log.admin }}</span>
+            {{ log.text }}
+          </div>
+          {% endfor %}
+        </div>
       </div>
+      {% endif %}
 
       <div class="form-actions">
         <button type="submit" class="btn-primary">Save Changes</button>

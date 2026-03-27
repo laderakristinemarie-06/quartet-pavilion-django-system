@@ -1,0 +1,95 @@
+{% extends "testproj/user-panel/base_user.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <p class="eyebrow">My Account</p>
+    <h1>Welcome Back{% if request.session.user_name %}, {{ request.session.user_name }}{% endif %}</h1>
+    <div class="divider-line"></div>
+  </div>
+
+  {% for message in messages %}
+    <div class="alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="num">{{ total_bookings }}</div>
+      <div class="label">Total Bookings</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">{{ upcoming_count }}</div>
+      <div class="label">Upcoming</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">{{ ongoing_count }}</div>
+      <div class="label">Ongoing</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">{{ done_count }}</div>
+      <div class="label">Completed</div>
+    </div>
+  </div>
+
+  <!-- Upcoming bookings -->
+  <div class="table-card" style="margin-bottom:2rem;">
+    <div class="table-header">
+      <h2>Upcoming Events</h2>
+      <a href="{% url 'user_bookings' %}" class="btn-ghost">View All</a>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Venue</th>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Time Slot</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in upcoming_bookings %}
+        <tr>
+          <td style="font-size:0.75rem;color:var(--text-muted);">{{ b.get_venue_display }}</td>
+          <td>{{ b.date|date:"M d, Y" }}</td>
+          <td>{{ b.event_name|default:"—" }}</td>
+          <td>{{ b.time_slot|default:"—" }}</td>
+          <td><span class="badge badge-{{ b.status }}">{{ b.get_status_display }}</span></td>
+          <td><a href="{% url 'user_booking_detail' b.pk %}" class="btn-action">View</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" style="color:#aaa;font-style:italic;">No upcoming events.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Quick status guide -->
+  <div class="card" style="padding:1.8rem;border-top:2px solid var(--gold);">
+    <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Status Guide</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.8rem;">
+      <div style="display:flex;align-items:flex-start;gap:0.7rem;">
+        <span class="badge badge-booked" style="flex-shrink:0;margin-top:2px;">Booked</span>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">Your reservation is confirmed and scheduled.</p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.7rem;">
+        <span class="badge badge-rescheduled" style="flex-shrink:0;margin-top:2px;">Rescheduled</span>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">You have requested a new date. Pending confirmation.</p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.7rem;">
+        <span class="badge badge-ongoing" style="flex-shrink:0;margin-top:2px;">Ongoing</span>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">Your event is happening today.</p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.7rem;">
+        <span class="badge badge-done" style="flex-shrink:0;margin-top:2px;">Done</span>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">Your event has been completed.</p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.7rem;">
+        <span class="badge badge-canceled" style="flex-shrink:0;margin-top:2px;">Canceled</span>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">Booking canceled. Contact us to rebook.</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
