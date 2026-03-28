@@ -123,3 +123,27 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles' 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ADD THESE LINES to the BOTTOM of your settings.py
+# Replace the Gmail values with your actual Gmail address and App Password
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Email Configuration (Gmail SMTP)
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST          = 'smtp.gmail.com'
+EMAIL_PORT          = 587
+EMAIL_USE_TLS       = True
+EMAIL_HOST_USER     = 'quartetpavilion@gmail.com'        # ← your Gmail address
+EMAIL_HOST_PASSWORD = 'ymvi eehq yjof xzqh'         # ← Gmail App Password (NOT your real password)
+DEFAULT_FROM_EMAIL  = 'Quartet Pavilion <quartetpavilion@gmail.com>'
+ADMIN_EMAIL         = 'quartetpavilion@gmail.com'        # ← where admin notifications go
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HOW TO GET A GMAIL APP PASSWORD:
+# 1. Go to your Google Account → Security
+# 2. Enable 2-Step Verification (required)
+# 3. Go to Security → App Passwords
+# 4. Select "Mail" and "Windows Computer" → Generate
+# 5. Copy the 16-character password and paste it above
+# ─────────────────────────────────────────────────────────────────────────────
