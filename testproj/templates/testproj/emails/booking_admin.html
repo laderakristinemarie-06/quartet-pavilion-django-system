@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:'Helvetica Neue',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:2rem 0;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;">
+
+      <tr><td style="background:#1a2e1a;padding:1.5rem;text-align:center;">
+        <h1 style="font-family:Georgia,serif;font-size:1.3rem;color:#c9a84c;margin:0;font-weight:400;">New Booking Inquiry</h1>
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9ab89a;margin:0.3rem 0 0;">Quartet Pavilion Admin</p>
+      </td></tr>
+
+      <tr><td style="padding:2rem;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#1a2e1a;margin-bottom:1.5rem;">
+          <tr><td style="padding:1rem 1.5rem;display:flex;justify-content:space-between;">
+            <div>
+              <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9ab89a;margin:0 0 0.2rem;">Booking ID</p>
+              <p style="font-family:Georgia,serif;font-size:1.5rem;color:#c9a84c;margin:0;font-weight:400;">{{ booking_id }}</p>
+            </div>
+          </td></tr>
+        </table>
+
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin:0 0 0.8rem;padding-bottom:0.4rem;border-bottom:1px solid #eee;">Customer</p>
+        <table width="100%" cellpadding="6" cellspacing="0" style="font-size:0.85rem;margin-bottom:1.5rem;">
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;width:40%;">Name</td><td style="color:#1a2e1a;font-weight:500;">{{ name }}</td></tr>
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Email</td><td style="color:#1a2e1a;font-weight:500;">{{ email }}</td></tr>
+          <tr><td style="color:#888;">Phone</td><td style="color:#1a2e1a;font-weight:500;">{{ phone }}</td></tr>
+        </table>
+
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin:0 0 0.8rem;padding-bottom:0.4rem;border-bottom:1px solid #eee;">Reservation</p>
+        <table width="100%" cellpadding="6" cellspacing="0" style="font-size:0.85rem;margin-bottom:1.5rem;">
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;width:40%;">Venue</td><td style="color:#1a2e1a;font-weight:500;">{{ venue_name }}</td></tr>
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Package</td><td style="color:#1a2e1a;font-weight:500;">{{ event_name }}</td></tr>
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Date</td><td style="color:#1a2e1a;font-weight:500;">{{ date }}</td></tr>
+          {% if start_time %}<tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Time</td><td style="color:#1a2e1a;font-weight:500;">{{ start_time }} – {{ end_time }}</td></tr>{% endif %}
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Guests</td><td style="color:#1a2e1a;font-weight:500;">{{ pax }} pax</td></tr>
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Estimated Total</td><td style="color:#1a2e1a;font-weight:500;">₱ {{ total_price }}</td></tr>
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Downpayment (30%)</td><td style="color:#c9a84c;font-weight:500;">₱ {{ downpay_amount }}</td></tr>
+          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Payment Method</td><td style="color:#1a2e1a;font-weight:500;">{{ payment|upper }}</td></tr>
+          {% if reference_number %}<tr><td style="color:#888;">Reference #</td><td style="color:#1a2e1a;font-weight:500;">{{ reference_number }}</td></tr>{% endif %}
+        </table>
+
+        {% if notes %}
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin:0 0 0.5rem;">Client Notes</p>
+        <p style="font-size:0.82rem;color:#555;background:#f9f6f2;padding:0.8rem;margin:0 0 1.5rem;">{{ notes }}</p>
+        {% endif %}
+
+        <p style="text-align:center;margin-top:1rem;">
+          <a href="http://localhost:8000/manage/inquiries/" style="background:#1a2e1a;color:#fff;padding:0.8rem 1.5rem;text-decoration:none;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;">View in Admin Panel</a>
+        </p>
+      </td></tr>
+
+      <tr><td style="background:#1a2e1a;padding:1rem;text-align:center;">
+        <p style="font-size:0.65rem;color:#6b8c6b;margin:0;">QUARTET PAVILION ADMIN NOTIFICATION</p>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>
