@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('testproj', '0012_bookinginquiry'),
+        ('testproj', '0011_alter_noteslog_options_alter_dateentry_email'),
         ('testproj', '0012_bookinginquiry_alter_bookinglog_options_and_more'),
     ]
 
