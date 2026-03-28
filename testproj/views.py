@@ -6,7 +6,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.urls import reverse
-
 from .models import DateEntry, BookingInquiry, BookingLog, NotesLog
 
 # ── CONSTANTS ────────────────────────────────────────────────────────────────
