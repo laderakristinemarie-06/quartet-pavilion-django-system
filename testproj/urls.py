@@ -2,75 +2,43 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-<<<<<<< HEAD
-=======
-    # ── General ──
-    path('', views.home, name='home'),
-    path('about/', views.about, name='about'),
-    path('book/', views.book, name='book'),
-    path('events/', views.events, name='events'),
-    path('submit-booking/', views.submit_booking, name='submit_booking'),
->>>>>>> 5cd62355c70074964bea9da83d9af8ce4415f5fd
 
     # ── General ──────────────────────────────────────────────────────────
     path('',        views.home,   name='home'),
     path('about/',  views.about,  name='about'),
     path('book/',   views.book,   name='book'),
     path('events/', views.events, name='events'),
-    path('login/',  views.log_in, name='log_in'),
 
     # ── Booking ───────────────────────────────────────────────────────────
     path('submit-booking/',           views.submit_booking,  name='submit_booking'),
     path('booking/receipt/<int:pk>/', views.booking_receipt, name='booking_receipt'),
 
-<<<<<<< HEAD
-    # ── User Panel / My Account ───────────────────────────────────────────
-    path('my-account/',                   views.user_dashboard,      name='user_dashboard'),
-    path('my-account/bookings/',          views.user_bookings,       name='user_bookings'),
-    path('my-account/bookings/<int:pk>/', views.user_booking_detail, name='user_booking_detail'),
-    path('my-account/calendar/',          views.user_calendar,       name='user_calendar'),
-
-    # ── Admin Panel ───────────────────────────────────────────────────────
-    path('manage/',                             views.custom_admin_dashboard,      name='custom_admin_dashboard'),
-    path('manage/login/',                       views.custom_admin_login,          name='custom_admin_login'),
-    path('manage/logout/',                      views.custom_admin_logout,         name='custom_admin_logout'),
-    path('manage/dates/',                       views.custom_admin_dates,          name='custom_admin_dates'),
-    path('manage/dates/add/',                   views.custom_admin_add_date,       name='custom_admin_add_date'),
-    path('manage/dates/edit/<int:pk>/',         views.custom_admin_edit_date,      name='custom_admin_edit_date'),
-    path('manage/dates/delete/<int:pk>/',       views.custom_admin_delete_date,    name='custom_admin_delete_date'),
-    path('manage/inquiries/',                   views.custom_admin_inquiries,      name='custom_admin_inquiries'),
-    path('manage/inquiries/<int:pk>/action/',   views.custom_admin_approve_inquiry,name='custom_admin_approve_inquiry'),
-    path('manage/bookings/',                    views.custom_admin_bookings,       name='custom_admin_bookings'),
-    path('manage/calendar/',                    views.custom_admin_calendar,       name='custom_admin_calendar'),
-    # Legacy path kept for team members using old prefix
-    path('admin-panel/calendar/',               views.custom_admin_calendar,       name='custom_admin_calendar_legacy'),
-=======
-    # ── User Login / Logout ──
-    path('login/', views.user_login, name='user_login'),
-    path('login/', views.user_login, name='log_in'),       # alias for old templates
+    # ── User Login / Logout ───────────────────────────────────────────────
+    path('login/',  views.user_login,  name='log_in'),
     path('logout/', views.user_logout, name='user_logout'),
 
-    # ── User Panel / My Account ──
-    path('my-account/', views.user_dashboard, name='user_dashboard'),
-    path('my-account/bookings/', views.user_bookings, name='user_bookings'),
-    path('my-account/bookings/<int:pk>/', views.user_booking_detail, name='user_booking_detail'),
-    path('my-account/bookings/<int:pk>/reschedule/', views.user_booking_reschedule, name='user_booking_reschedule'),
-    path('my-account/bookings/<int:pk>/cancel/', views.user_booking_cancel, name='user_booking_cancel'),
-    path('my-account/calendar/', views.user_calendar, name='user_calendar'),
+    # ── User Panel / My Account ───────────────────────────────────────────
+    path('my-account/',                                      views.user_dashboard,         name='user_dashboard'),
+    path('my-account/bookings/',                             views.user_bookings,           name='user_bookings'),
+    path('my-account/bookings/<int:pk>/',                    views.user_booking_detail,     name='user_booking_detail'),
+    path('my-account/bookings/<int:pk>/reschedule/',         views.user_booking_reschedule, name='user_booking_reschedule'),
+    path('my-account/bookings/<int:pk>/cancel/',             views.user_booking_cancel,     name='user_booking_cancel'),
+    path('my-account/calendar/',                             views.user_calendar,           name='user_calendar'),
 
-    # ── Admin / Management Panel ──
-    path('manage/', views.custom_admin_dashboard, name='custom_admin_dashboard'),
-    path('manage/login/', views.custom_admin_login, name='custom_admin_login'),
-    path('manage/logout/', views.custom_admin_logout, name='custom_admin_logout'),
-    path('manage/dates/', views.custom_admin_dates, name='custom_admin_dates'),
-    path('manage/dates/add/', views.custom_admin_add_date, name='custom_admin_add_date'),
-    path('manage/dates/edit/<int:pk>/', views.custom_admin_edit_date, name='custom_admin_edit_date'),
-    path('manage/dates/delete/<int:pk>/', views.custom_admin_delete_date, name='custom_admin_delete_date'),
-    path('manage/inquiries/', views.custom_admin_inquiries, name='custom_admin_inquiries'),
-    path('manage/inquiries/<int:pk>/action/', views.custom_admin_approve_inquiry, name='custom_admin_approve_inquiry'),
-    path('manage/bookings/', views.custom_admin_bookings, name='custom_admin_bookings'),
-    path('admin-panel/calendar/', views.custom_admin_calendar, name='custom_admin_calendar'),
->>>>>>> 5cd62355c70074964bea9da83d9af8ce4415f5fd
+    # ── Admin / Management Panel ──────────────────────────────────────────
+    path('manage/',                                          views.custom_admin_dashboard,       name='custom_admin_dashboard'),
+    path('manage/login/',                                    views.custom_admin_login,           name='custom_admin_login'),
+    path('manage/logout/',                                   views.custom_admin_logout,          name='custom_admin_logout'),
+    path('manage/dates/',                                    views.custom_admin_dates,           name='custom_admin_dates'),
+    path('manage/dates/add/',                                views.custom_admin_add_date,        name='custom_admin_add_date'),
+    path('manage/dates/edit/<int:pk>/',                      views.custom_admin_edit_date,       name='custom_admin_edit_date'),
+    path('manage/dates/delete/<int:pk>/',                    views.custom_admin_delete_date,     name='custom_admin_delete_date'),
+    path('manage/inquiries/',                                views.custom_admin_inquiries,       name='custom_admin_inquiries'),
+    path('manage/inquiries/<int:pk>/action/',                views.custom_admin_approve_inquiry, name='custom_admin_approve_inquiry'),
+    path('manage/bookings/',                                 views.custom_admin_bookings,        name='custom_admin_bookings'),
+    path('manage/calendar/',                                 views.custom_admin_calendar,        name='custom_admin_calendar'),
+    # Legacy path kept for team members using old prefix
+    path('admin-panel/calendar/',                            views.custom_admin_calendar,        name='custom_admin_calendar_legacy'),
 
     # ── Birthday Venue ────────────────────────────────────────────────────
     path('events/birthday/',              views.birthday_overview,     name='birthday_overview'),
