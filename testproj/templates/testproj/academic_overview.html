@@ -12,7 +12,7 @@
     <nav class="sidebar__nav" aria-label="Venue sections">
       <a class="sidebar__nav-link sidebar__nav-link--active" href="{% url 'academic_overview' %}">Overview</a>
       <a class="sidebar__nav-link" href="{% url 'academic_gallery' %}">Gallery</a>
-      <a class="sidebar__nav-link" href="{& url 'academic_room' %}">Room</a>
+      <a class="sidebar__nav-link" href="{% url 'academic_room' %}">Room</a>
       <a class="sidebar__nav-link" href="{% url 'academic_calendar' %}">Calendar</a>
       <a class="sidebar__nav-link" href="{% url 'academic_testimonials' %}">Testimonials</a>
     </nav>
@@ -35,14 +35,13 @@
   <!-- RIGHT: Info Panel -->
   <aside class="right-panel">
     <p class="right-panel__eyebrow">Venue Overview</p>
-    <h2 class="right-panel__heading">Inspriring the Next Generation of Leaders</h2>
+    <h2 class="right-panel__heading">Inspiring the Next Generation of Leaders</h2>
     <div class="right-panel__divider" aria-hidden="true"></div>
     <p class="right-panel__body">
       A vibrant &amp; versatile space tailored for graduations, prom nights, and recognition ceremonies. We provide an environment that balances formal prestige with the energetic spirit of youth achievement.
-
     </p>
     <ul class="venue-features">
-      <li class="venue-features__item">Stage &amp; podim setups</li>
+      <li class="venue-features__item">Stage &amp; podium setups</li>
       <li class="venue-features__item">High-quality audio-visual equipment</li>
       <li class="venue-features__item">Spacious floor for dancing or seating</li>
       <li class="venue-features__item">Photo-ready installation areas</li>
