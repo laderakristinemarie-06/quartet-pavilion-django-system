@@ -64,11 +64,13 @@
         Use the same email you provided when booking. If you can't find your booking, contact us at <strong>hello@quartetpavilion.com</strong>.
       </div>
 
+      <!-- FIX: was {% url 'user_login' %} which didn't exist — now correctly named -->
       <form method="POST" action="{% url 'user_login' %}">
         {% csrf_token %}
         <div class="field-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" value="{{ request.POST.email }}" required autofocus>
+          <input type="email" id="email" name="email" placeholder="your@email.com"
+                 value="{{ request.POST.email }}" required autofocus>
         </div>
         <button type="submit" class="btn-signin">Access My Bookings</button>
       </form>

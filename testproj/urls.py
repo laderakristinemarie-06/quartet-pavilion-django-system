@@ -7,16 +7,22 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('book/', views.book, name='book'),
     path('events/', views.events, name='events'),
-    path('login/', views.log_in, name='log_in'),
     path('submit-booking/', views.submit_booking, name='submit_booking'),
 
     # ── Booking & Receipts ──
     path('booking/receipt/<int:pk>/', views.booking_receipt, name='booking_receipt'),
 
+    # ── User Login / Logout ──
+    path('login/', views.user_login, name='user_login'),
+    path('login/', views.user_login, name='log_in'),       # alias for old templates
+    path('logout/', views.user_logout, name='user_logout'),
+
     # ── User Panel / My Account ──
     path('my-account/', views.user_dashboard, name='user_dashboard'),
     path('my-account/bookings/', views.user_bookings, name='user_bookings'),
     path('my-account/bookings/<int:pk>/', views.user_booking_detail, name='user_booking_detail'),
+    path('my-account/bookings/<int:pk>/reschedule/', views.user_booking_reschedule, name='user_booking_reschedule'),
+    path('my-account/bookings/<int:pk>/cancel/', views.user_booking_cancel, name='user_booking_cancel'),
     path('my-account/calendar/', views.user_calendar, name='user_calendar'),
 
     # ── Admin / Management Panel ──
@@ -30,7 +36,6 @@ urlpatterns = [
     path('manage/inquiries/', views.custom_admin_inquiries, name='custom_admin_inquiries'),
     path('manage/inquiries/<int:pk>/action/', views.custom_admin_approve_inquiry, name='custom_admin_approve_inquiry'),
     path('manage/bookings/', views.custom_admin_bookings, name='custom_admin_bookings'),
-    # Legacy admin paths (kept if needed for group members using the 'admin-panel/' prefix)
     path('admin-panel/calendar/', views.custom_admin_calendar, name='custom_admin_calendar'),
 
     # ── Event Categories ──
