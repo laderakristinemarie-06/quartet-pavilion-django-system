@@ -1,4 +1,4 @@
-import json
+import json 
 from datetime import date
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -51,7 +51,45 @@ def _venue_calendar_context(venue_slug):
 
 # ── PUBLIC VIEWS ─────────────────────────────────────────────────────────────
 def home(request):   return render(request, 'testproj/home.html')
-def about(request):  return render(request, 'testproj/about.html')
+
+def about(request):
+    from django.db.models import Sum
+    from datetime import date
+
+    today = date.today()
+
+    # Number of distinct venue types that have at least one completed/booked event
+    venue_count = len(DateEntry.VENUE_CHOICES)  # always 6 (all defined venues)
+
+    # Total events ever hosted (status = done)
+    total_events = DateEntry.objects.filter(status='done').count()
+
+    # Total guests accommodated across all completed events
+    total_accommodated_raw = DateEntry.objects.filter(
+        status='done'
+    ).aggregate(total=Sum('pax'))['total'] or 0
+
+    # Format nicely: 1000 → 1k, 50000 → 50k
+    def fmt(n):
+        if n >= 1000:
+            return f"{n // 1000}k+"
+        return str(n)
+
+    total_accommodated = fmt(total_accommodated_raw)
+
+    # Events this year (all statuses except canceled/unavailable)
+    ongoing_count = DateEntry.objects.filter(
+        status__in=['booked', 'ongoing', 'done'],
+        date__year=today.year,
+    ).count()
+
+    return render(request, 'testproj/about.html', {
+        'venue_count':        venue_count,
+        'total_events':       total_events,
+        'total_accommodated': total_accommodated,
+        'ongoing_count':      ongoing_count,
+    })
+
 def events(request): return render(request, 'testproj/events.html')
 
 def book(request):
