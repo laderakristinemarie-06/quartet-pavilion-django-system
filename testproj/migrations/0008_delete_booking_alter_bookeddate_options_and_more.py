@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='bookinginquiry',
-            options={'ordering': ['-submitted_at']},
+            options={'ordering': ['-created_at']},
         ),
         migrations.AddField(
             model_name='bookeddate',

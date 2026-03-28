@@ -7,6 +7,13 @@
   <title>{% block title %}My Bookings{% endblock %} — Quartet Pavilion</title>
   <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      if (localStorage.getItem('quartet-user-theme') === 'dark') {
+        document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('dark'); });
+      }
+    })();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -15,7 +22,12 @@
       --text-muted: #8a7a62; --border: #e8e0d0; --row-hover: #fdf6ec;
       --input-bg: #fff9f0; --input-border: #d8cdb8;
     }
-    body { font-family: 'Jost', sans-serif; background: var(--bg); display: flex; min-height: 100vh; color: var(--text); }
+    body.dark {
+      --bg: #0b1510; --card-bg: #12211a; --text: #f0ece3; --text-muted: #7a9a82;
+      --border: #1e3028; --row-hover: #172a20; --input-bg: #0f1a14;
+      --input-border: #2a4030;
+    }
+    body { font-family: 'Jost', sans-serif; background: var(--bg); display: flex; min-height: 100vh; color: var(--text); transition: background 0.3s, color 0.3s; }
 
     /* ── Sidebar ── */
     .user-sidebar { width: 240px; background: #0d1a0d; color: #fff; min-height: 100vh; display: flex; flex-direction: column; flex-shrink: 0; border-right: 1px solid rgba(201,168,76,0.12); }
@@ -80,6 +92,21 @@
     .stat-card { background: var(--card-bg); padding: 1.6rem; border-bottom: 2px solid var(--gold); }
     .stat-card .num   { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 300; color: var(--gold); line-height: 1; }
     .stat-card .label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+
+    /* Dark mode toggle */
+    .dark-toggle { display: flex; align-items: center; gap: 8px; padding: 0.55rem 1.8rem; margin-top: 0.3rem; cursor: pointer; font-size: 0.78rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.45); border-left: 2px solid transparent; transition: all 0.2s; user-select: none; }
+    .dark-toggle:hover { color: var(--gold); }
+    .toggle-track { width: 30px; height: 16px; background: rgba(255,255,255,0.15); border-radius: 999px; position: relative; transition: background 0.3s; flex-shrink: 0; }
+    body.dark .toggle-track { background: rgba(201,168,76,0.5); }
+    .toggle-thumb { width: 12px; height: 12px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.3s; }
+    body.dark .toggle-thumb { transform: translateX(14px); }
+
+    /* Dark mode card/table overrides */
+    body.dark .card,
+    body.dark .table-card,
+    body.dark .stat-card { background: var(--card-bg); }
+    body.dark .btn-primary { background: var(--gold); color: #0a0f0a; }
+    body.dark .btn-primary:hover { background: #d4b05a; }
   </style>
 </head>
 <body>
@@ -101,7 +128,7 @@
         <span class="icon">◷</span> My Bookings
       </a>
       <a href="{% url 'user_calendar' %}" class="{% block nav_calendar %}{% endblock %}">
-        <span class="icon">📅</span> Calendar
+        <span class="icon"></span> Calendar
       </a>
 
       <div class="nav-section">Site</div>
@@ -111,6 +138,11 @@
       <a href="{% url 'book' %}">
         <span class="icon">＋</span> New Inquiry
       </a>
+
+      <div class="dark-toggle" id="darkToggle" title="Toggle dark mode">
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        <span id="toggleLabel">Dark Mode</span>
+      </div>
     </nav>
 
     <!-- FIX: logout was floating outside <aside> — moved here and given proper class -->
@@ -124,7 +156,18 @@
 
   <div class="user-main">
     {% block content %}{% endblock %}
-  </div>
-
+  <script>
+    (function () {
+      var toggle = document.getElementById('darkToggle');
+      var label  = document.getElementById('toggleLabel');
+      var KEY    = 'quartet-user-theme';
+      if (localStorage.getItem(KEY) === 'dark') { document.body.classList.add('dark'); label.textContent = 'Dark Mode'; }
+      toggle.addEventListener('click', function () {
+        var isDark = document.body.classList.toggle('dark');
+        localStorage.setItem(KEY, isDark ? 'dark' : 'light');
+        label.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+      });
+    })();
+  </script>
 </body>
 </html>

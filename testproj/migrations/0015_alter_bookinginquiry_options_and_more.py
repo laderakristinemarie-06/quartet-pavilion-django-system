@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RemoveField(
             model_name='bookinginquiry',
-            name='submitted_at',
+            name='created_at',
         ),
         migrations.AddField(
             model_name='bookinginquiry',

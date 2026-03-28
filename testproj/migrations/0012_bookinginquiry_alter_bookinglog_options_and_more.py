@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('pax', models.IntegerField(blank=True, null=True)),
                 ('time_slot', models.CharField(blank=True, max_length=100)),
                 ('status', models.CharField(default='pending', max_length=20)),
-                ('submitted_at', models.DateTimeField(auto_now_add=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('is_read', models.BooleanField(default=False)),
             ],
         ),

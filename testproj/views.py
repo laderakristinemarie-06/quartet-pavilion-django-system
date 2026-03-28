@@ -376,9 +376,9 @@ def custom_admin_dashboard(request):
         'booked_count':      DateEntry.objects.filter(status='booked').count(),
         'unavailable_count': DateEntry.objects.filter(status='unavailable').count(),
         'pending_count':     BookingInquiry.objects.filter(status='pending').count(),
-        'new_inquiries':     BookingInquiry.objects.filter(is_read=False).count(),
+        'new_inquiries':     BookingInquiry.objects.filter(status='pending').count(),
         'upcoming':          DateEntry.objects.filter(status='booked', date__gte=today).order_by('date')[:10],
-        'recent_inquiries':  BookingInquiry.objects.filter(status='pending').order_by('-submitted_at')[:5],
+        'recent_bookings':   BookingInquiry.objects.all().order_by('-created_at')[:5],
     }
     return render(request, 'testproj/custom-admin/dashboard.html', context)
 
@@ -393,7 +393,7 @@ def custom_admin_dates(request):
         'dates':         qs,
         'venue_filter':  venue_filter,
         'venue_choices': VENUE_CHOICES,
-        'new_inquiries': BookingInquiry.objects.filter(is_read=False).count(),
+        'new_inquiries': BookingInquiry.objects.filter(status='pending').count(),
     })
 
 @admin_required
@@ -414,7 +414,7 @@ def custom_admin_add_date(request):
         return redirect('custom_admin_dates')
     return render(request, 'testproj/custom-admin/add_date.html', {
         'venue_choices': VENUE_CHOICES,
-        'new_inquiries': BookingInquiry.objects.filter(is_read=False).count(),
+        'new_inquiries': BookingInquiry.objects.filter(status='pending').count(),
     })
 
 @admin_required
@@ -433,7 +433,7 @@ def custom_admin_edit_date(request, pk):
     return render(request, 'testproj/custom-admin/edit_date.html', {
         'entry':         entry,
         'venue_choices': VENUE_CHOICES,
-        'new_inquiries': BookingInquiry.objects.filter(is_read=False).count(),
+        'new_inquiries': BookingInquiry.objects.filter(status='pending').count(),
     })
 
 @admin_required
@@ -452,9 +452,8 @@ def custom_admin_inquiries(request):
     qs = BookingInquiry.objects.all()
     if venue_filter:
         qs = qs.filter(venue=venue_filter)
-    qs.filter(is_read=False).update(is_read=True)
     return render(request, 'testproj/custom-admin/inquiries.html', {
-        'inquiries':     qs.order_by('-submitted_at'),
+        'inquiries':     qs.order_by('-created_at'),
         'venue_filter':  venue_filter,
         'venue_choices': VENUE_CHOICES,
         'new_inquiries': 0,
@@ -486,7 +485,16 @@ def custom_admin_approve_inquiry(request, pk):
 
 @admin_required
 def custom_admin_bookings(request):
-    return redirect('custom_admin_inquiries')
+    venue_filter = request.GET.get('venue', '')
+    qs = BookingInquiry.objects.all()
+    if venue_filter:
+        qs = qs.filter(venue=venue_filter)
+    return render(request, 'testproj/custom-admin/booking.html', {
+        'bookings':      qs.order_by('-created_at'),
+        'venue_filter':  venue_filter,
+        'venue_choices': VENUE_CHOICES,
+        'new_inquiries': BookingInquiry.objects.filter(status='pending').count(),
+    })
 
 # ── ADMIN CALENDAR ────────────────────────────────────────────────────────────
 @admin_required
@@ -496,14 +504,19 @@ def custom_admin_calendar(request):
     events_data = []
     for d in dates:
         events_data.append({
-            'date':       d.date.isoformat(),
-            'status':     d.status,
-            'venue':      VENUE_NAMES.get(d.venue, d.venue),
-            'event_name': d.event_name or 'Available',
+            'id':          d.pk,
+            'date':        d.date.isoformat(),
+            'status':      d.status,
+            'venue':       d.venue,
+            'venue_label': VENUE_NAMES.get(d.venue, d.venue),
+            'event_name':  d.event_name or '',
+            'pax':         d.pax,
+            'time_slot':   d.time_slot or '',
+            'notes':       d.notes or '',
+            'name':        d.email or '',
         })
     return render(request, 'testproj/custom-admin/admin_calendar.html', {
-        'events_json': json.dumps(events_data),
-        'all_entries': json.dumps(events_data, cls=DjangoJSONEncoder),
+        'bookings_json': json.dumps(events_data, cls=DjangoJSONEncoder),
     })
 
 # ── VENUE VIEWS ───────────────────────────────────────────────────────────────

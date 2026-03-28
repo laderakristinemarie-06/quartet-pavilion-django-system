@@ -1,0 +1,196 @@
+{% extends 'testproj/custom-admin/base_admin.html' %}
+{% block title %}Calendar View{% endblock %}
+{% block nav_calendar %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <p class="eyebrow">Overview</p>
+  <h1>Calendar View</h1>
+  <div class="divider-line"></div>
+</div>
+
+<!-- Venue filter tabs -->
+<div class="venue-tabs" style="margin-bottom:1.5rem;">
+  <button class="venue-tab venue-tab--active" data-venue="">All Venues</button>
+  <button class="venue-tab" data-venue="birthday">Birthday & Private</button>
+  <button class="venue-tab" data-venue="wedding">Wedding & Romantic</button>
+  <button class="venue-tab" data-venue="family">Family Milestones</button>
+  <button class="venue-tab" data-venue="academic">Academic & Youth</button>
+  <button class="venue-tab" data-venue="corporate">Corporate & Formal</button>
+  <button class="venue-tab" data-venue="entertainment">Entertainment & Special</button>
+</div>
+
+<div class="calendar-card">
+  <div id="adminCalendar"></div>
+</div>
+
+<!-- Event Detail Modal -->
+<div class="cal-modal-overlay" id="eventModal">
+  <div class="cal-modal">
+    <button class="cal-modal__close" id="eventModalClose">&times;</button>
+    <h3 id="evVenue" style="color:var(--gold); font-size:0.7rem; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:1px;"></h3>
+    <h2 id="evTitle" style="font-family:'Cormorant Garamond',serif; font-weight:400; margin-top:0; margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1rem; color:var(--text);"></h2>
+    <div class="cal-modal__grid" id="evGrid"></div>
+    <div style="margin-top:2rem; display:flex; gap:1rem;">
+      <a id="evEditLink" href="#" class="btn-primary" style="flex:1; text-align:center; padding:0.8rem;">Edit Booking</a>
+      <button id="evModalCancel" class="btn-ghost" style="flex:1; padding:0.8rem; cursor:pointer;">Close</button>
+    </div>
+  </div>
+</div>
+
+{{ bookings_json|json_script:"bookings-data" }}
+
+<style>
+  .calendar-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: background 0.3s;
+  }
+  #adminCalendar { min-height: 680px; }
+
+  /* FullCalendar dark-mode overrides */
+  body.dark .fc-theme-standard td,
+  body.dark .fc-theme-standard th,
+  body.dark .fc-theme-standard .fc-scrollgrid { border-color: var(--border); }
+  body.dark .fc .fc-daygrid-day { background: var(--card-bg); }
+  body.dark .fc .fc-toolbar-title,
+  body.dark .fc .fc-col-header-cell-cushion,
+  body.dark .fc .fc-daygrid-day-number { color: var(--text); }
+  body.dark .fc .fc-button { background: var(--green-mid); border-color: var(--border); color: #fff; }
+  body.dark .fc .fc-button-primary:not(:disabled).fc-button-active { background: var(--gold); border-color: var(--gold); color: #0a0f0a; }
+  body.dark .fc .fc-day-today { background: rgba(201,168,76,0.08) !important; }
+
+  /* Modal */
+  .cal-modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65); z-index: 9999;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .cal-modal-overlay.open { display: flex; }
+  .cal-modal {
+    background: var(--card-bg); color: var(--text);
+    padding: 2.5rem; max-width: 480px; width: 92%;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+  .cal-modal__close {
+    position: absolute; top: 1rem; right: 1.2rem;
+    font-size: 1.5rem; background: none; border: none;
+    cursor: pointer; color: var(--text-muted);
+  }
+  .cal-modal__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
+  .cal-modal__item span:first-child {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 2px; letter-spacing: 0.1em;
+  }
+  .cal-modal__item span:last-child { font-size: 0.9rem; color: var(--text); }
+
+  /* Venue tabs */
+  .venue-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .venue-tab {
+    padding: 0.45rem 1rem; font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase; border: 1px solid var(--input-border);
+    color: var(--text-muted); background: transparent;
+    cursor: pointer; font-family: 'Jost', sans-serif;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .venue-tab:hover { border-color: var(--gold); color: var(--gold); }
+  .venue-tab--active { background: var(--gold); border-color: var(--gold); color: #0a0f0a; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script>
+function initCalendar() {
+  const dataEl = document.getElementById('bookings-data');
+  if (!dataEl) { console.error('bookings-data not found'); return; }
+
+  const rawData = JSON.parse(dataEl.textContent);
+
+  function buildEvents(data) {
+    return data.map(function(item) {
+      const s = (item.status || '').toLowerCase();
+      let color = '#888';
+      if      (s === 'booked')                           color = '#c9a84c';
+      else if (s === 'unavailable' || s === 'canceled')  color = '#e74c3c';
+      else if (s === 'rescheduled')                      color = '#2980b9';
+      else if (s === 'ongoing' || s === 'available')     color = '#27ae60';
+      else if (s === 'done')                             color = '#7f8c8d';
+      return {
+        id:    item.id,
+        title: item.event_name || 'Available',
+        start: item.date,
+        color: color,
+        extendedProps: {
+          venue:      item.venue,
+          venueLabel: item.venue_label,
+          status:     item.status,
+          pax:        item.pax,
+          timeSlot:   item.time_slot,
+          notes:      item.notes,
+          name:       item.name,
+          editUrl:    '/manage/dates/edit/' + item.id + '/',
+        }
+      };
+    });
+  }
+
+  const ALL_EVENTS = buildEvents(rawData);
+  const calEl = document.getElementById('adminCalendar');
+  if (!calEl) { console.error('adminCalendar element not found'); return; }
+
+  const calendar = new FullCalendar.Calendar(calEl, {
+    initialView: 'dayGridMonth',
+    height: 'auto',
+    headerToolbar: {
+      left:   'prev,next today',
+      center: 'title',
+      right:  'dayGridMonth,listMonth'
+    },
+    events: ALL_EVENTS,
+    eventClick: function(info) {
+      const ev = info.event.extendedProps;
+      document.getElementById('evVenue').textContent = ev.venueLabel || 'Quartet Pavilion';
+      document.getElementById('evTitle').textContent = info.event.title;
+      document.getElementById('evEditLink').href     = ev.editUrl;
+      document.getElementById('evGrid').innerHTML = `
+        <div class="cal-modal__item"><span>Date</span><span>${info.event.startStr}</span></div>
+        <div class="cal-modal__item"><span>Status</span><span class="badge badge-${ev.status}">${ev.status}</span></div>
+        <div class="cal-modal__item"><span>Email</span><span>${ev.name || '—'}</span></div>
+        <div class="cal-modal__item"><span>Pax</span><span>${ev.pax || '—'}</span></div>
+        <div class="cal-modal__item"><span>Time Slot</span><span>${ev.timeSlot || '—'}</span></div>
+        <div class="cal-modal__item" style="grid-column:1/-1;"><span>Notes</span><span>${ev.notes || '—'}</span></div>
+      `;
+      document.getElementById('eventModal').classList.add('open');
+    }
+  });
+  calendar.render();
+
+  // Modal close
+  const modal = document.getElementById('eventModal');
+  const closeModal = () => modal.classList.remove('open');
+  document.getElementById('eventModalClose').onclick = closeModal;
+  document.getElementById('evModalCancel').onclick   = closeModal;
+  window.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  // Venue filter tabs
+  document.querySelectorAll('.venue-tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.venue-tab').forEach(b => b.classList.remove('venue-tab--active'));
+      this.classList.add('venue-tab--active');
+      const venue = this.dataset.venue;
+      calendar.removeAllEvents();
+      calendar.addEventSource(venue ? ALL_EVENTS.filter(e => e.extendedProps.venue === venue) : ALL_EVENTS);
+    });
+  });
+}
+
+// Run after DOM + FullCalendar are both ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCalendar);
+} else {
+  initCalendar();
+}
+</script>
+{% endblock %}

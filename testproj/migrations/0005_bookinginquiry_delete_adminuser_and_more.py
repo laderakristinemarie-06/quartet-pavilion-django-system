@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('pax', models.IntegerField(blank=True, null=True)),
                 ('time_slot', models.CharField(blank=True, max_length=100)),
                 ('notes', models.TextField(blank=True)),
-                ('submitted_at', models.DateTimeField(auto_now_add=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('status', models.CharField(choices=[('pending', 'Pending'), ('confirmed', 'Confirmed'), ('declined', 'Declined')], default='pending', max_length=20)),
             ],
             options={

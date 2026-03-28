@@ -58,20 +58,10 @@
             <span class="detail-label">Number of Guests</span>
             <span class="detail-value">{{ booking.pax|default:"—" }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-label">Submitted On</span>
-            <span class="detail-value">{{ booking.created_at|date:"F d, Y" }}</span>
-          </div>
           <div class="detail-item" style="grid-column:1/-1;">
             <span class="detail-label">Your Notes</span>
             <span class="detail-value">{{ booking.notes|default:"—" }}</span>
           </div>
-          {% if booking.admin_notes %}
-          <div class="detail-item" style="grid-column:1/-1;">
-            <span class="detail-label">Message from Quartet Pavilion</span>
-            <span class="detail-value" style="color:var(--green-dark);font-style:italic;">{{ booking.admin_notes }}</span>
-          </div>
-          {% endif %}
         </div>
       </div>
 
@@ -198,6 +188,6 @@
     .timeline-item { position: relative; margin-bottom: 1.2rem; padding-left: 1rem; }
     .timeline-dot { position: absolute; left: -1.2rem; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--border); border: 2px solid var(--card-bg); }
     .timeline-item--current .timeline-dot { background: var(--gold); }
-    .timeline-body { }
+
   </style>
 {% endblock %}
