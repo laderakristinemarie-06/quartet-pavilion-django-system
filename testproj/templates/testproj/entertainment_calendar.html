@@ -15,6 +15,21 @@
 .cal-legend { margin-top: 0.8rem; gap: 1rem; font-size: 0.68rem; }
 .cal-grid__day--available { cursor: pointer; transition: background 0.2s, color 0.2s; }
 .cal-grid__day--available:hover { background: #1a2e1a; color: #fff; }
+.cal-grid__day--pending {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: not-allowed;
+  padding: 0.3rem 0.2rem;
+  min-height: 54px;
+  background: rgba(201,168,76,0.08);
+  border: 1px dashed rgba(201,168,76,0.4);
+}
+.cal-grid__day--pending .booked-num  { font-size: 0.85rem; font-weight: 600; color: #c9a84c; line-height: 1; }
+.cal-grid__day--pending .booked-event { font-size: 0.52rem; letter-spacing: 0.04em; text-transform: uppercase; color: #c9a84c; text-align: center; font-weight: 500; }
+.cal-grid__day--pending .booked-time  { font-size: 0.46rem; letter-spacing: 0.04em; text-transform: uppercase; color: #8aaa8a; text-align: center; }
 .cal-grid__day--booked {
   display: flex;
   flex-direction: column;
@@ -226,10 +241,13 @@
     catch (e) { window.BOOKED_DATA = []; }
     try { window.UNAVAILABLE_DATA = JSON.parse('{{ unavailable_dates|safe|escapejs }}'); }
     catch (e) { window.UNAVAILABLE_DATA = []; }
+    try { window.PENDING_DATA     = JSON.parse('{{ pending_dates|safe|escapejs }}'); }
+    catch (e) { window.PENDING_DATA = []; }
   })();
 
   const BOOKED_DATA      = window.BOOKED_DATA;
   const UNAVAILABLE_DATA = window.UNAVAILABLE_DATA;
+  const PENDING_DATA     = window.PENDING_DATA;
   const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const MONTHS = ['January','February','March','April','May','June',
                   'July','August','September','October','November','December'];
@@ -321,6 +339,7 @@
 
     const bookedDays      = getDaysInMonth(BOOKED_DATA, y, m);
     const unavailableDays = getDaysInMonth(UNAVAILABLE_DATA, y, m);
+    const pendingDays     = getDaysInMonth(PENDING_DATA, y, m);
     const bookedDataMonth = getBookedDataForMonth(y, m);
 
     document.getElementById('calTitle').textContent = `${MONTHS[m]} ${y}`;
@@ -351,6 +370,9 @@
       let cls = 'cal-grid__day';
       if (isToday) {
         cls += ' cal-grid__day--today';
+      } else if (pendingDays.includes(d)) {
+        cls += ' cal-grid__day--pending';
+        el.innerHTML = `<span class="booked-num">${d}</span><span class="booked-event">PENDING</span><span class="booked-time">Under Review</span>`;
       } else if (bookedDays.includes(d)) {
         cls += ' cal-grid__day--booked';
         const bookingInfo = bookedDataMonth.find(item => new Date(item.date).getDate() === d);
