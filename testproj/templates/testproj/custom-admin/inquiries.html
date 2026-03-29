@@ -1,0 +1,373 @@
+{% extends "testproj/custom-admin/base_admin.html" %}
+{% block title %}Inquiries{% endblock %}
+{% block nav_bookings %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <p class="eyebrow">Inquiries</p>
+  <h1>Booking Inquiries</h1>
+  <div class="divider-line"></div>
+</div>
+
+{% for message in messages %}
+  <div class="alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %}
+
+<!-- Summary stat cards -->
+<div class="inq-stats">
+  <div class="inq-stat inq-stat--pending">
+    <span class="inq-stat__num">{{ pending_count }}</span>
+    <span class="inq-stat__label">Pending</span>
+  </div>
+  <div class="inq-stat inq-stat--accepted">
+    <span class="inq-stat__num">{{ accepted_count }}</span>
+    <span class="inq-stat__label">Confirmed</span>
+  </div>
+  <div class="inq-stat inq-stat--rejected">
+    <span class="inq-stat__num">{{ rejected_count }}</span>
+    <span class="inq-stat__label">Declined</span>
+  </div>
+  <div class="inq-stat">
+    <span class="inq-stat__num">{{ bookings|length }}</span>
+    <span class="inq-stat__label">Shown</span>
+  </div>
+</div>
+
+<!-- Venue filter tabs -->
+<div class="venue-tabs">
+  <a href="?{% if status_filter %}status={{ status_filter }}&{% endif %}venue="
+     class="venue-tab {% if not venue_filter %}venue-tab--active{% endif %}">All Venues</a>
+  {% for slug, label in venue_choices %}
+    <a href="?{% if status_filter %}status={{ status_filter }}&{% endif %}venue={{ slug }}"
+       class="venue-tab {% if venue_filter == slug %}venue-tab--active{% endif %}">
+      {{ label }}
+    </a>
+  {% endfor %}
+</div>
+
+<!-- Status filter chips -->
+<div class="status-bar">
+  <a href="?{% if venue_filter %}venue={{ venue_filter }}&{% endif %}"
+     class="status-chip {% if not status_filter %}status-chip--active{% endif %}">All</a>
+  <a href="?{% if venue_filter %}venue={{ venue_filter }}&{% endif %}status=pending"
+     class="status-chip {% if status_filter == 'pending' %}status-chip--active{% endif %}">
+    Pending
+    {% if pending_count %}<span class="chip-badge">{{ pending_count }}</span>{% endif %}
+  </a>
+  <a href="?{% if venue_filter %}venue={{ venue_filter }}&{% endif %}status=confirmed"
+     class="status-chip {% if status_filter == 'confirmed' %}status-chip--active{% endif %}">Confirmed</a>
+  <a href="?{% if venue_filter %}venue={{ venue_filter }}&{% endif %}status=declined"
+     class="status-chip {% if status_filter == 'declined' %}status-chip--active{% endif %}">Declined</a>
+</div>
+
+<!-- Inquiries table -->
+<div class="table-card">
+  <div class="table-header">
+    <h2>
+      {% if venue_filter %}{{ venue_filter|title }} —{% endif %}
+      {% if status_filter %}{{ status_filter|title }}{% else %}All{% endif %} Inquiries
+    </h2>
+    <span style="font-size:0.72rem;color:var(--text-muted);letter-spacing:0.05em;">
+      {{ bookings|length }} record{{ bookings|length|pluralize }}
+    </span>
+  </div>
+
+  {% if bookings %}
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Venue</th>
+        <th>Requested Date</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Event</th>
+        <th>Pax</th>
+        <th>Submitted</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+      <!-- Main row -->
+      <tr class="inq-row {% if b.status == 'pending' %}inq-row--pending{% endif %}" id="row-{{ b.pk }}">
+        <td>
+          <span class="badge
+            {% if b.status == 'pending' %}badge-pending
+            {% elif b.status == 'confirmed' %}badge-accepted
+            {% elif b.status == 'declined' %}badge-rejected
+            {% else %}badge-pending{% endif %}">
+            {{ b.status|title }}
+          </span>
+        </td>
+        <td style="font-size:0.75rem;color:var(--text-muted);">{{ b.get_venue_display_name }}</td>
+        <td>{{ b.date|date:"M d, Y" }}</td>
+        <td style="font-weight:500;">{{ b.name }}</td>
+        <td>
+          <a href="mailto:{{ b.email }}" style="color:var(--gold);text-decoration:none;font-size:0.82rem;">
+            {{ b.email }}
+          </a>
+        </td>
+        <td>{{ b.event_name|default:"—" }}</td>
+        <td>{{ b.pax|default:"—" }}</td>
+        <td style="font-size:0.78rem;color:var(--text-muted);">{{ b.submitted_at|date:"M d, Y" }}</td>
+        <td>
+          <div class="action-btns">
+            <!-- Details toggle -->
+            <button class="btn-ghost btn-sm" onclick="toggleDetails('detail-{{ b.pk }}', this)">
+              Details
+            </button>
+
+            {% if b.status == 'pending' %}
+              <!-- Confirm -->
+              <form method="POST" action="{% url 'custom_admin_confirm_inquiry' b.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-accept" title="Confirm — adds to calendar as Booked">
+                  ✓ Confirm
+                </button>
+              </form>
+              <!-- Decline -->
+              <form method="POST" action="{% url 'custom_admin_decline_inquiry' b.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-reject"
+                        onclick="return confirm('Decline this inquiry from {{ b.name }}?')"
+                        title="Decline — removes from calendar, notifies client">
+                  ✗ Decline
+                </button>
+              </form>
+
+            {% elif b.status == 'confirmed' %}
+              <span class="status-confirmed-label">✓ On Calendar</span>
+              <!-- Revoke: decline a previously confirmed booking -->
+              <form method="POST" action="{% url 'custom_admin_decline_inquiry' b.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-reject btn-sm"
+                        onclick="return confirm('Revoke confirmation and decline this booking?')">
+                  Revoke
+                </button>
+              </form>
+
+            {% elif b.status == 'declined' %}
+              <span class="status-declined-label">✗ Declined</span>
+              <!-- Re-confirm -->
+              <form method="POST" action="{% url 'custom_admin_confirm_inquiry' b.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-accept btn-sm" title="Re-confirm this inquiry">
+                  Re-confirm
+                </button>
+              </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+
+      <!-- Expandable detail row -->
+      <tr id="detail-{{ b.pk }}" class="detail-row" style="display:none;">
+        <td colspan="9">
+          <div class="detail-panel">
+            <div class="detail-panel__grid">
+              <div class="dp-item">
+                <span class="dp-label">Full Name</span>
+                <span class="dp-value">{{ b.name }}</span>
+              </div>
+              <div class="dp-item">
+                <span class="dp-label">Email</span>
+                <span class="dp-value">
+                  <a href="mailto:{{ b.email }}" style="color:var(--gold);text-decoration:none;">{{ b.email }}</a>
+                </span>
+              </div>
+              <div class="dp-item">
+                <span class="dp-label">Venue</span>
+                <span class="dp-value">{{ b.get_venue_display_name }}</span>
+              </div>
+              <div class="dp-item">
+                <span class="dp-label">Requested Date</span>
+                <span class="dp-value">{{ b.date|date:"F d, Y" }}</span>
+              </div>
+              <div class="dp-item">
+                <span class="dp-label">Event Name</span>
+                <span class="dp-value">{{ b.event_name|default:"—" }}</span>
+              </div>
+              <div class="dp-item">
+                <span class="dp-label">Time Slot</span>
+                <span class="dp-value">{{ b.time_slot|default:"—" }}</span>
+              </div>
+              <div class="dp-item">
+                <span class="dp-label">Pax</span>
+                <span class="dp-value">{{ b.pax|default:"—" }}</span>
+              </div>
+              <div class="dp-item">
+                <span class="dp-label">Submitted</span>
+                <span class="dp-value">{{ b.submitted_at|date:"F d, Y — H:i" }}</span>
+              </div>
+              <div class="dp-item dp-item--full">
+                <span class="dp-label">Client Notes</span>
+                <span class="dp-value">{{ b.notes|default:"No notes provided." }}</span>
+              </div>
+
+              {% if b.status == 'confirmed' %}
+              <div class="dp-item dp-item--full">
+                <span class="dp-label">Calendar Status</span>
+                <span class="dp-value">
+                  Confirmed and appears on the calendar as
+                  <span class="badge badge-booked" style="padding:2px 8px;">Booked</span>.
+                  <a href="{% url 'custom_admin_calendar' %}" style="color:var(--gold);text-decoration:none;margin-left:0.5rem;">
+                    View Calendar →
+                  </a>
+                </span>
+              </div>
+              {% endif %}
+
+              {% if b.admin_notes %}
+              <div class="dp-item dp-item--full">
+                <span class="dp-label">Admin Notes</span>
+                <span class="dp-value">{{ b.admin_notes }}</span>
+              </div>
+              {% endif %}
+            </div>
+
+            <!-- Quick internal note form -->
+            <form method="POST" action="{% url 'custom_admin_inquiry_note' b.pk %}"
+                  style="margin-top:1.2rem;display:flex;gap:0.8rem;align-items:flex-end;">
+              {% csrf_token %}
+              <div style="flex:1;">
+                <label style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:0.4rem;">
+                  Internal Note
+                </label>
+                <input type="text" name="admin_notes"
+                       value="{{ b.admin_notes|default:'' }}"
+                       placeholder="Add an internal note for this inquiry…"
+                       style="width:100%;padding:0.7rem 1rem;border:1px solid var(--input-border);background:var(--input-bg);font-family:'Jost',sans-serif;font-size:0.85rem;color:var(--text);outline:none;transition:border-color 0.2s;">
+              </div>
+              <button type="submit" class="btn-primary" style="padding:0.7rem 1.2rem;white-space:nowrap;">
+                Save Note
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div style="padding:3rem;text-align:center;">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--text-muted);font-weight:300;">
+      No inquiries found.
+    </p>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">
+      {% if status_filter %}Try a different filter.{% else %}Inquiries submitted by clients will appear here.{% endif %}
+    </p>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Workflow note -->
+<div class="workflow-note">
+  <p class="workflow-note__title">How the booking workflow works</p>
+  <div class="workflow-steps">
+    <div class="workflow-step">
+      <div class="ws-num">1</div>
+      <div>
+        <strong>Client submits</strong>
+        <p>Inquiry arrives here as <span class="badge badge-pending" style="padding:2px 7px;font-size:0.6rem;">Pending</span></p>
+      </div>
+    </div>
+    <div class="ws-arrow">→</div>
+    <div class="workflow-step">
+      <div class="ws-num">2</div>
+      <div>
+        <strong>Admin reviews</strong>
+        <p>Expand details, check the date, add internal notes</p>
+      </div>
+    </div>
+    <div class="ws-arrow">→</div>
+    <div class="workflow-step">
+      <div class="ws-num">3</div>
+      <div>
+        <strong>Confirm or Decline</strong>
+        <p>Confirming creates a <span class="badge badge-booked" style="padding:2px 7px;font-size:0.6rem;">Booked</span> entry and emails the client</p>
+      </div>
+    </div>
+    <div class="ws-arrow">→</div>
+    <div class="workflow-step">
+      <div class="ws-num">4</div>
+      <div>
+        <strong>Appears on Calendar</strong>
+        <p>Only confirmed bookings show on the Calendar View</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Stat cards ── */
+  .inq-stats { display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.8rem; }
+  .inq-stat { background:var(--card-bg);padding:1.2rem 1.8rem;border-bottom:2px solid var(--border);min-width:120px;transition:background 0.3s; }
+  .inq-stat--pending  { border-color:#c9a84c; }
+  .inq-stat--accepted { border-color:#27ae60; }
+  .inq-stat--rejected { border-color:#e74c3c; }
+  .inq-stat__num   { font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--gold);line-height:1;display:block; }
+  .inq-stat__label { font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-top:4px;display:block; }
+
+  /* ── Venue tabs ── */
+  .venue-tabs { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem; }
+  .venue-tab { padding:0.45rem 1rem;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border:1px solid var(--input-border);color:var(--text-muted);transition:all 0.2s;white-space:nowrap; }
+  .venue-tab:hover { border-color:var(--gold);color:var(--gold); }
+  .venue-tab--active { background:var(--gold);border-color:var(--gold);color:#0a0f0a; }
+
+  /* ── Status chips ── */
+  .status-bar { display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem; }
+  .status-chip { position:relative;padding:0.3rem 0.9rem;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border:1px solid var(--input-border);color:var(--text-muted);transition:all 0.2s;white-space:nowrap; }
+  .status-chip:hover { border-color:var(--gold);color:var(--gold); }
+  .status-chip--active { background:var(--green-dark);border-color:var(--green-dark);color:#fff; }
+  .chip-badge { display:inline-flex;align-items:center;justify-content:center;margin-left:5px;background:#c9a84c;color:#0a0f0a;font-size:0.6rem;min-width:16px;height:16px;padding:0 4px;border-radius:2px;font-weight:700; }
+
+  /* ── Table rows ── */
+  .inq-row--pending > td:first-child { border-left:3px solid #c9a84c; }
+  .detail-row td { padding:0;background:var(--bg); }
+  .action-btns { display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap; }
+  .btn-sm { padding:0.3rem 0.7rem !important;font-size:0.65rem !important; }
+
+  /* ── Action buttons ── */
+  .btn-accept { background:rgba(39,174,96,0.12);color:#27ae60;border:1px solid rgba(39,174,96,0.3);padding:0.32rem 0.8rem;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:all 0.2s; }
+  .btn-accept:hover { background:rgba(39,174,96,0.22); }
+  .btn-reject { background:rgba(231,76,60,0.1);color:#e74c3c;border:1px solid rgba(231,76,60,0.3);padding:0.32rem 0.8rem;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:all 0.2s; }
+  .btn-reject:hover { background:rgba(231,76,60,0.2); }
+
+  .status-confirmed-label { font-size:0.72rem;color:#27ae60;letter-spacing:0.05em; }
+  .status-declined-label  { font-size:0.72rem;color:#e74c3c;letter-spacing:0.05em; }
+
+  /* ── Detail panel ── */
+  .detail-panel { padding:1.5rem 2rem;border-top:1px solid var(--border); }
+  .detail-panel__grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.8rem 2rem; }
+  .dp-item { display:flex;flex-direction:column;gap:2px; }
+  .dp-item--full { grid-column:1/-1; }
+  .dp-label { font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted); }
+  .dp-value { font-size:0.88rem;color:var(--text); }
+
+  /* ── Extra badge variants ── */
+  .badge-pending  { background:rgba(201,168,76,0.15);color:#c9a84c;padding:3px 10px;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase; }
+  .badge-accepted { background:rgba(39,174,96,0.12); color:#27ae60;padding:3px 10px;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase; }
+  .badge-rejected { background:rgba(231,76,60,0.12); color:#e74c3c;padding:3px 10px;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase; }
+
+  /* ── Workflow note ── */
+  .workflow-note { margin-top:2rem;background:var(--card-bg);padding:1.5rem 2rem;border-top:2px solid var(--gold);transition:background 0.3s; }
+  .workflow-note__title { font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem; }
+  .workflow-steps { display:flex;align-items:flex-start;flex-wrap:wrap;gap:0.5rem; }
+  .workflow-step { display:flex;align-items:flex-start;gap:0.8rem;flex:1;min-width:160px; }
+  .ws-num { width:28px;height:28px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:600;flex-shrink:0;margin-top:2px; }
+  .workflow-step strong { font-size:0.82rem;color:var(--text);display:block;margin-bottom:3px; }
+  .workflow-step p { font-size:0.75rem;color:var(--text-muted);line-height:1.5; }
+  .ws-arrow { color:var(--text-muted);font-size:1.2rem;padding-top:6px; }
+</style>
+
+<script>
+function toggleDetails(rowId, btn) {
+  var row = document.getElementById(rowId);
+  if (!row) return;
+  var isOpen = row.style.display !== 'none';
+  row.style.display = isOpen ? 'none' : 'table-row';
+  btn.textContent   = isOpen ? 'Details' : 'Hide';
+}
+</script>
+{% endblock %}

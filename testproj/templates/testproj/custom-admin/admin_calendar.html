@@ -9,31 +9,79 @@
   <div class="divider-line"></div>
 </div>
 
+<!-- Notice banner -->
+<div class="cal-notice">
+  <span class="cal-notice__icon">ℹ</span>
+  Only <strong>accepted</strong> bookings appear on this calendar.
+  Pending inquiries must be reviewed in
+  <a href="{% url 'custom_admin_bookings' %}" style="color:var(--gold);text-decoration:none;">Inquiries</a>
+  before they show here.
+  {% if pending_count %}
+    <a href="{% url 'custom_admin_bookings' %}?status=pending" class="cal-notice__badge">
+      {{ pending_count }} pending review
+    </a>
+  {% endif %}
+</div>
+
 <!-- Venue filter tabs -->
-<div class="venue-tabs" style="margin-bottom:1.5rem;">
+<div class="venue-tabs" id="venueTabs">
   <button class="venue-tab venue-tab--active" data-venue="">All Venues</button>
-  <button class="venue-tab" data-venue="birthday">Birthday & Private</button>
-  <button class="venue-tab" data-venue="wedding">Wedding & Romantic</button>
+  <button class="venue-tab" data-venue="birthday">Birthday &amp; Private</button>
+  <button class="venue-tab" data-venue="wedding">Wedding &amp; Romantic</button>
   <button class="venue-tab" data-venue="family">Family Milestones</button>
-  <button class="venue-tab" data-venue="academic">Academic & Youth</button>
-  <button class="venue-tab" data-venue="corporate">Corporate & Formal</button>
-  <button class="venue-tab" data-venue="entertainment">Entertainment & Special</button>
+  <button class="venue-tab" data-venue="academic">Academic &amp; Youth</button>
+  <button class="venue-tab" data-venue="corporate">Corporate &amp; Formal</button>
+  <button class="venue-tab" data-venue="entertainment">Entertainment &amp; Special</button>
 </div>
 
-<div class="calendar-card">
-  <div id="adminCalendar"></div>
+<!-- Main layout -->
+<div style="display:grid;grid-template-columns:1fr 300px;gap:2rem;align-items:start;">
+
+  <!-- Calendar column -->
+  <div>
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+      <button class="cal-nav-btn" id="prevMonth">&#8249;</button>
+      <h2 id="calTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--text);min-width:220px;text-align:center;"></h2>
+      <button class="cal-nav-btn" id="nextMonth">&#8250;</button>
+    </div>
+
+    <div style="background:var(--card-bg);padding:1.5rem;">
+      <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem;">
+      <div class="leg-item"><div class="leg-dot" style="background:#c9a84c;"></div>Booked</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e74c3c;"></div>Unavailable / Canceled</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#2980b9;"></div>Rescheduled</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#27ae60;"></div>Available / Ongoing</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#7f8c8d;"></div>Done</div>
+    </div>
+  </div>
+
+  <!-- Side panel -->
+  <div>
+    <div style="background:var(--card-bg);padding:1.5rem;">
+      <p class="side-eyebrow">This Month</p>
+      <div id="monthSummary" style="margin-bottom:1.2rem;"></div>
+      <p class="side-eyebrow">Events</p>
+      <div id="monthEvents"></div>
+    </div>
+  </div>
+
 </div>
 
-<!-- Event Detail Modal -->
-<div class="cal-modal-overlay" id="eventModal">
-  <div class="cal-modal">
-    <button class="cal-modal__close" id="eventModalClose">&times;</button>
-    <h3 id="evVenue" style="color:var(--gold); font-size:0.7rem; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:1px;"></h3>
-    <h2 id="evTitle" style="font-family:'Cormorant Garamond',serif; font-weight:400; margin-top:0; margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1rem; color:var(--text);"></h2>
-    <div class="cal-modal__grid" id="evGrid"></div>
-    <div style="margin-top:2rem; display:flex; gap:1rem;">
-      <a id="evEditLink" href="#" class="btn-primary" style="flex:1; text-align:center; padding:0.8rem;">Edit Booking</a>
-      <button id="evModalCancel" class="btn-ghost" style="flex:1; padding:0.8rem; cursor:pointer;">Close</button>
+<!-- Day Detail Modal -->
+<div id="dayModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+  <div style="background:var(--card-bg);color:var(--text);padding:2.5rem;max-width:540px;width:92%;position:relative;max-height:85vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.3);">
+    <button id="dayModalClose" style="position:absolute;top:1rem;right:1.2rem;font-size:1.5rem;background:none;border:none;cursor:pointer;color:var(--text-muted);">&times;</button>
+    <p style="font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem;">Day View</p>
+    <h2 id="modalDayTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--text);"></h2>
+    <div style="width:36px;height:1px;background:var(--gold);margin:0.8rem 0 1.2rem;"></div>
+    <div id="modalStats" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.4rem;"></div>
+    <div id="modalEventsList"></div>
+    <div style="margin-top:1.5rem;display:flex;gap:0.8rem;">
+      <a id="modalAddLink" href="{% url 'custom_admin_add_date' %}" class="btn-primary" style="padding:0.7rem 1.4rem;">+ Add Date</a>
+      <button id="dayModalCancel" class="btn-ghost" style="padding:0.7rem 1.4rem;cursor:pointer;">Close</button>
     </div>
   </div>
 </div>
@@ -41,156 +89,280 @@
 {{ bookings_json|json_script:"bookings-data" }}
 
 <style>
-  .calendar-card {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: background 0.3s;
-  }
-  #adminCalendar { min-height: 680px; }
+  .cal-notice { display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;background:var(--card-bg);border-left:3px solid var(--gold);padding:0.8rem 1.2rem;font-size:0.82rem;color:var(--text-muted);margin-bottom:1.5rem; }
+  .cal-notice__icon { color:var(--gold);font-size:1rem;flex-shrink:0; }
+  .cal-notice__badge { margin-left:auto;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:3px 10px;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap; }
 
-  /* FullCalendar dark-mode overrides */
-  body.dark .fc-theme-standard td,
-  body.dark .fc-theme-standard th,
-  body.dark .fc-theme-standard .fc-scrollgrid { border-color: var(--border); }
-  body.dark .fc .fc-daygrid-day { background: var(--card-bg); }
-  body.dark .fc .fc-toolbar-title,
-  body.dark .fc .fc-col-header-cell-cushion,
-  body.dark .fc .fc-daygrid-day-number { color: var(--text); }
-  body.dark .fc .fc-button { background: var(--green-mid); border-color: var(--border); color: #fff; }
-  body.dark .fc .fc-button-primary:not(:disabled).fc-button-active { background: var(--gold); border-color: var(--gold); color: #0a0f0a; }
-  body.dark .fc .fc-day-today { background: rgba(201,168,76,0.08) !important; }
+  .venue-tabs { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
+  .venue-tab { padding:0.45rem 1rem;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--input-border);color:var(--text-muted);background:transparent;cursor:pointer;font-family:'Jost',sans-serif;transition:all 0.2s;white-space:nowrap; }
+  .venue-tab:hover { border-color:var(--gold);color:var(--gold); }
+  .venue-tab--active { background:var(--gold);border-color:var(--gold);color:#0a0f0a; }
 
-  /* Modal */
-  .cal-modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.65); z-index: 9999;
-    align-items: center; justify-content: center;
-    backdrop-filter: blur(4px);
-  }
-  .cal-modal-overlay.open { display: flex; }
-  .cal-modal {
-    background: var(--card-bg); color: var(--text);
-    padding: 2.5rem; max-width: 480px; width: 92%;
-    position: relative;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  }
-  .cal-modal__close {
-    position: absolute; top: 1rem; right: 1.2rem;
-    font-size: 1.5rem; background: none; border: none;
-    cursor: pointer; color: var(--text-muted);
-  }
-  .cal-modal__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
-  .cal-modal__item span:first-child {
-    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-    color: var(--text-muted); display: block; margin-bottom: 2px; letter-spacing: 0.1em;
-  }
-  .cal-modal__item span:last-child { font-size: 0.9rem; color: var(--text); }
+  .cal-nav-btn { background:var(--card-bg);border:1px solid var(--input-border);color:var(--text);font-size:1.2rem;width:38px;height:38px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center; }
+  .cal-nav-btn:hover { border-color:var(--gold);color:var(--gold); }
 
-  /* Venue tabs */
-  .venue-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .venue-tab {
-    padding: 0.45rem 1rem; font-size: 0.7rem; letter-spacing: 0.12em;
-    text-transform: uppercase; border: 1px solid var(--input-border);
-    color: var(--text-muted); background: transparent;
-    cursor: pointer; font-family: 'Jost', sans-serif;
-    transition: all 0.2s; white-space: nowrap;
-  }
-  .venue-tab:hover { border-color: var(--gold); color: var(--gold); }
-  .venue-tab--active { background: var(--gold); border-color: var(--gold); color: #0a0f0a; }
+  /* Day name headers */
+  .cal-day-name { text-align:center;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);padding:0.3rem 0; }
+
+  /* Day cells — matching user_calendar.html exactly */
+  .cal-day { text-align:center;font-size:0.82rem;padding:0.5rem 0.2rem;min-height:44px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text);position:relative; }
+  .cal-day--today { background:rgba(201,168,76,0.12);font-weight:500;color:var(--gold); }
+  .cal-day--past { color:var(--text-muted);opacity:0.5; }
+  .cal-day--has-event { cursor:pointer; }
+  .cal-day--has-event:hover { background:rgba(201,168,76,0.08); }
+
+  .cal-dot { width:6px;height:6px;border-radius:50%; }
+
+  .leg-item { display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--text-muted); }
+  .leg-dot { width:9px;height:9px;border-radius:50%; }
+
+  .side-eyebrow { font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.7rem; }
+
+  .month-event-item { padding:0.7rem 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:0.8rem;cursor:pointer; }
+  .month-event-item:last-child { border-bottom:none; }
+  .month-event-item:hover .ev-title { color:var(--gold); }
+  .ev-date-box { width:38px;text-align:center;flex-shrink:0; }
+  .ev-date-num { font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--text);line-height:1;display:block; }
+  .ev-date-mon { font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);display:block; }
+  .ev-sep { width:1px;background:var(--border);align-self:stretch;flex-shrink:0; }
+  .ev-title { font-size:0.85rem;color:var(--text);transition:color 0.2s;display:block; }
+  .ev-meta { font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:block; }
+
+  .modal-stat-pill { padding:0.4rem 0.9rem;font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);color:var(--text-muted); }
+  .modal-stat-pill strong { color:var(--gold);font-size:1rem;font-family:'Cormorant Garamond',serif;font-weight:400; }
+  .modal-event-row { padding:1rem 0;border-bottom:1px solid var(--border); }
+  .modal-event-row:last-child { border-bottom:none; }
+  .modal-event-venue { font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px; }
+  .modal-event-name { font-size:1rem;color:var(--text);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-weight:400; }
+  .modal-event-meta { display:flex;flex-wrap:wrap;gap:0.5rem 1.2rem;font-size:0.72rem;color:var(--text-muted); }
+  .modal-event-meta span strong { color:var(--text);font-weight:500; }
+  .modal-event-actions { margin-top:0.6rem; }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script>
-function initCalendar() {
-  const dataEl = document.getElementById('bookings-data');
-  if (!dataEl) { console.error('bookings-data not found'); return; }
+(function () {
+  var dataEl = document.getElementById('bookings-data');
+  var RAW_BOOKINGS = [];
+  if (dataEl) {
+    try { RAW_BOOKINGS = JSON.parse(dataEl.textContent); }
+    catch (e) { console.error('bookings-data parse error', e); }
+  }
 
-  const rawData = JSON.parse(dataEl.textContent);
+  var STATUS_COLOR = {
+    booked:      '#c9a84c',
+    unavailable: '#e74c3c',
+    canceled:    '#e74c3c',
+    rescheduled: '#2980b9',
+    ongoing:     '#27ae60',
+    available:   '#27ae60',
+    done:        '#7f8c8d'
+  };
 
-  function buildEvents(data) {
-    return data.map(function(item) {
-      const s = (item.status || '').toLowerCase();
-      let color = '#888';
-      if      (s === 'booked')                           color = '#c9a84c';
-      else if (s === 'unavailable' || s === 'canceled')  color = '#e74c3c';
-      else if (s === 'rescheduled')                      color = '#2980b9';
-      else if (s === 'ongoing' || s === 'available')     color = '#27ae60';
-      else if (s === 'done')                             color = '#7f8c8d';
-      return {
-        id:    item.id,
-        title: item.event_name || 'Available',
-        start: item.date,
-        color: color,
-        extendedProps: {
-          venue:      item.venue,
-          venueLabel: item.venue_label,
-          status:     item.status,
-          pax:        item.pax,
-          timeSlot:   item.time_slot,
-          notes:      item.notes,
-          name:       item.name,
-          editUrl:    '/manage/dates/edit/' + item.id + '/',
-        }
-      };
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var currentDate = new Date();
+  var activeVenue = '';
+
+  function filtered() {
+    return activeVenue
+      ? RAW_BOOKINGS.filter(function(b){ return b.venue === activeVenue; })
+      : RAW_BOOKINGS;
+  }
+
+  function forMonth(y, m) {
+    return filtered().filter(function(b) {
+      var d = new Date(b.date);
+      return d.getFullYear() === y && d.getMonth() === m;
+    }).sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
+  }
+
+  function forDay(y, m, d) {
+    return filtered().filter(function(b) {
+      var dt = new Date(b.date);
+      return dt.getFullYear() === y && dt.getMonth() === m && dt.getDate() === d;
     });
   }
 
-  const ALL_EVENTS = buildEvents(rawData);
-  const calEl = document.getElementById('adminCalendar');
-  if (!calEl) { console.error('adminCalendar element not found'); return; }
+  function render() {
+    var y     = currentDate.getFullYear();
+    var m     = currentDate.getMonth();
+    var today = new Date();
 
-  const calendar = new FullCalendar.Calendar(calEl, {
-    initialView: 'dayGridMonth',
-    height: 'auto',
-    headerToolbar: {
-      left:   'prev,next today',
-      center: 'title',
-      right:  'dayGridMonth,listMonth'
-    },
-    events: ALL_EVENTS,
-    eventClick: function(info) {
-      const ev = info.event.extendedProps;
-      document.getElementById('evVenue').textContent = ev.venueLabel || 'Quartet Pavilion';
-      document.getElementById('evTitle').textContent = info.event.title;
-      document.getElementById('evEditLink').href     = ev.editUrl;
-      document.getElementById('evGrid').innerHTML = `
-        <div class="cal-modal__item"><span>Date</span><span>${info.event.startStr}</span></div>
-        <div class="cal-modal__item"><span>Status</span><span class="badge badge-${ev.status}">${ev.status}</span></div>
-        <div class="cal-modal__item"><span>Email</span><span>${ev.name || '—'}</span></div>
-        <div class="cal-modal__item"><span>Pax</span><span>${ev.pax || '—'}</span></div>
-        <div class="cal-modal__item"><span>Time Slot</span><span>${ev.timeSlot || '—'}</span></div>
-        <div class="cal-modal__item" style="grid-column:1/-1;"><span>Notes</span><span>${ev.notes || '—'}</span></div>
-      `;
-      document.getElementById('eventModal').classList.add('open');
-    }
-  });
-  calendar.render();
+    document.getElementById('calTitle').textContent = MONTHS[m] + ' ' + y;
 
-  // Modal close
-  const modal = document.getElementById('eventModal');
-  const closeModal = () => modal.classList.remove('open');
-  document.getElementById('eventModalClose').onclick = closeModal;
-  document.getElementById('evModalCancel').onclick   = closeModal;
-  window.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    var grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
 
-  // Venue filter tabs
-  document.querySelectorAll('.venue-tab').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.venue-tab').forEach(b => b.classList.remove('venue-tab--active'));
-      this.classList.add('venue-tab--active');
-      const venue = this.dataset.venue;
-      calendar.removeAllEvents();
-      calendar.addEventSource(venue ? ALL_EVENTS.filter(e => e.extendedProps.venue === venue) : ALL_EVENTS);
+    // Day name headers
+    DAYS.forEach(function(name) {
+      var el = document.createElement('div');
+      el.className = 'cal-day-name';
+      el.textContent = name;
+      grid.appendChild(el);
     });
-  });
-}
 
-// Run after DOM + FullCalendar are both ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCalendar);
-} else {
-  initCalendar();
-}
+    // Empty leading cells
+    var firstDay = new Date(y, m, 1).getDay();
+    for (var i = 0; i < firstDay; i++) {
+      var el = document.createElement('div');
+      el.className = 'cal-day';
+      grid.appendChild(el);
+    }
+
+    // Day cells
+    var daysInMonth = new Date(y, m + 1, 0).getDate();
+    for (var d = 1; d <= daysInMonth; d++) {
+      var el       = document.createElement('div');
+      var thisDay  = new Date(y, m, d);
+      var todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      var isPast   = thisDay < todayMid;
+      var isToday  = (d === today.getDate() && m === today.getMonth() && y === today.getFullYear());
+      var dayEvs   = forDay(y, m, d);
+
+      var cls = 'cal-day';
+      if (isToday)       cls += ' cal-day--today';
+      else if (isPast)   cls += ' cal-day--past';
+      if (dayEvs.length) cls += ' cal-day--has-event';
+      el.className = cls;
+
+      var num = document.createElement('span');
+      num.textContent = d;
+      el.appendChild(num);
+
+      // One dot per event — same as user calendar
+      dayEvs.forEach(function(ev) {
+        var dot = document.createElement('div');
+        dot.className = 'cal-dot';
+        dot.style.background = STATUS_COLOR[ev.status] || '#888';
+        el.appendChild(dot);
+      });
+
+      if (dayEvs.length) {
+        (function(evs, day) {
+          el.addEventListener('click', function() { openDayModal(y, m, day, evs); });
+        })(dayEvs, d);
+      }
+
+      grid.appendChild(el);
+    }
+
+    renderSidePanel(y, m);
+  }
+
+  function renderSidePanel(y, m) {
+    var events   = forMonth(y, m);
+    var totalPax = events.reduce(function(s, b) { return s + (parseInt(b.pax) || 0); }, 0);
+    var booked   = events.filter(function(b) { return b.status === 'booked'; }).length;
+
+    document.getElementById('monthSummary').innerHTML =
+      '<div style="padding:0.7rem 0.9rem;background:var(--bg);border-left:3px solid var(--gold);">' +
+        '<div style="display:flex;justify-content:space-between;">' +
+          '<span style="font-size:0.82rem;color:var(--text);font-weight:500;">' + MONTHS[m] + ' ' + y + '</span>' +
+          '<span style="font-size:0.75rem;color:var(--text-muted);">' + events.length + ' event' + (events.length !== 1 ? 's' : '') + '</span>' +
+        '</div>' +
+        '<div style="display:flex;gap:1.2rem;margin-top:0.5rem;">' +
+          '<span style="font-size:0.72rem;color:var(--text-muted);"><strong style="color:var(--gold);font-family:\'Cormorant Garamond\',serif;font-size:1.1rem;">' + booked + '</strong> booked</span>' +
+          '<span style="font-size:0.72rem;color:var(--text-muted);"><strong style="color:var(--gold);font-family:\'Cormorant Garamond\',serif;font-size:1.1rem;">' + totalPax + '</strong> pax</span>' +
+        '</div>' +
+      '</div>';
+
+    if (!events.length) {
+      document.getElementById('monthEvents').innerHTML =
+        '<p style="font-size:0.8rem;color:var(--text-muted);font-style:italic;padding:0.5rem 0;">No bookings this month.</p>';
+      return;
+    }
+
+    document.getElementById('monthEvents').innerHTML = events.map(function(b) {
+      var dt  = new Date(b.date);
+      var day = String(dt.getDate()).padStart(2, '0');
+      var mon = MONTHS[dt.getMonth()].substring(0, 3);
+      var col = STATUS_COLOR[b.status] || '#888';
+      return '<div class="month-event-item" onclick="openEventFromSide(\'' + b.id + '\')">' +
+        '<div class="ev-date-box">' +
+          '<span class="ev-date-num">' + day + '</span>' +
+          '<span class="ev-date-mon">' + mon + '</span>' +
+        '</div>' +
+        '<div class="ev-sep"></div>' +
+        '<div>' +
+          '<span class="ev-title">' + (b.event_name || 'Available') + '</span>' +
+          '<span class="ev-meta">' + (b.venue_label || 'Quartet Pavilion') + ' &middot; <span style="color:' + col + ';">' + b.status + '</span>' + (b.pax ? ' &middot; ' + b.pax + ' pax' : '') + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function openDayModal(y, m, d, evs) {
+    document.getElementById('modalDayTitle').textContent = MONTHS[m] + ' ' + d + ', ' + y;
+
+    var totalPax = evs.reduce(function(s, b) { return s + (parseInt(b.pax) || 0); }, 0);
+    var statuses = {};
+    evs.forEach(function(b) { statuses[b.status] = (statuses[b.status] || 0) + 1; });
+
+    var statsHtml = '<div class="modal-stat-pill"><strong>' + evs.length + '</strong> booking' + (evs.length !== 1 ? 's' : '') + '</div>';
+    if (totalPax) statsHtml += '<div class="modal-stat-pill"><strong>' + totalPax + '</strong> total pax</div>';
+    Object.keys(statuses).forEach(function(s) {
+      statsHtml += '<div class="modal-stat-pill"><span class="badge badge-' + s + '" style="padding:2px 8px;font-size:0.6rem;">' + s + '</span></div>';
+    });
+    document.getElementById('modalStats').innerHTML = statsHtml;
+
+    document.getElementById('modalEventsList').innerHTML = evs.map(function(b) {
+      return '<div class="modal-event-row">' +
+        '<div class="modal-event-venue">' + (b.venue_label || 'Quartet Pavilion') + '</div>' +
+        '<div class="modal-event-name">' + (b.event_name || 'Available') + '</div>' +
+        '<div class="modal-event-meta">' +
+          '<span><strong>' + (b.name || '—') + '</strong></span>' +
+          (b.pax ? '<span><strong>' + b.pax + '</strong> pax</span>' : '') +
+          (b.time_slot ? '<span>' + b.time_slot + '</span>' : '') +
+          '<span><span class="badge badge-' + b.status + '" style="padding:2px 8px;font-size:0.6rem;">' + b.status + '</span></span>' +
+        '</div>' +
+        (b.notes ? '<div style="margin-top:0.5rem;font-size:0.78rem;color:var(--text-muted);font-style:italic;">' + b.notes + '</div>' : '') +
+        '<div class="modal-event-actions"><a href="/manage/dates/edit/' + b.id + '/" class="btn-edit" style="font-size:0.75rem;">Edit booking →</a></div>' +
+      '</div>';
+    }).join('');
+
+    var mm = String(m + 1).padStart(2, '0');
+    var dd = String(d).padStart(2, '0');
+    document.getElementById('modalAddLink').href = '{% url "custom_admin_add_date" %}?date=' + y + '-' + mm + '-' + dd;
+
+    var modal = document.getElementById('dayModal');
+    modal.style.display = 'flex';
+  }
+
+  window.openEventFromSide = function(id) {
+    var b = RAW_BOOKINGS.find(function(x) { return String(x.id) === String(id); });
+    if (!b) return;
+    var dt = new Date(b.date);
+    openDayModal(dt.getFullYear(), dt.getMonth(), dt.getDate(), [b]);
+  };
+
+  function closeModal() {
+    document.getElementById('dayModal').style.display = 'none';
+  }
+
+  document.getElementById('dayModalClose').onclick = closeModal;
+  document.getElementById('dayModalCancel').onclick = closeModal;
+  document.getElementById('dayModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+  document.getElementById('prevMonth').addEventListener('click', function() {
+    currentDate.setMonth(currentDate.getMonth() - 1); render();
+  });
+  document.getElementById('nextMonth').addEventListener('click', function() {
+    currentDate.setMonth(currentDate.getMonth() + 1); render();
+  });
+
+  document.getElementById('venueTabs').addEventListener('click', function(e) {
+    var btn = e.target.closest('.venue-tab');
+    if (!btn) return;
+    document.querySelectorAll('.venue-tab').forEach(function(b) { b.classList.remove('venue-tab--active'); });
+    btn.classList.add('venue-tab--active');
+    activeVenue = btn.dataset.venue;
+    render();
+  });
+
+  render();
+})();
 </script>
 {% endblock %}

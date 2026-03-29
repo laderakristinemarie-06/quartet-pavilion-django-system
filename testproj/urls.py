@@ -14,7 +14,7 @@ urlpatterns = [
     path('booking/receipt/<int:pk>/', views.booking_receipt, name='booking_receipt'),
 
     # ── User Login / Logout ───────────────────────────────────────────────
-    path('login/',  views.log_in,  name='log_in'),
+    path('login/',  views.log_in,      name='log_in'),
     path('logout/', views.user_logout, name='user_logout'),
 
     # ── User Panel / My Account ───────────────────────────────────────────
@@ -25,20 +25,59 @@ urlpatterns = [
     path('my-account/bookings/<int:pk>/cancel/',             views.user_booking_cancel,     name='user_booking_cancel'),
     path('my-account/calendar/',                             views.user_calendar,           name='user_calendar'),
 
-    # ── Admin / Management Panel ──────────────────────────────────────────
-    path('manage/',                                          views.custom_admin_dashboard,       name='custom_admin_dashboard'),
-    path('manage/login/',                                    views.custom_admin_login,           name='custom_admin_login'),
-    path('manage/logout/',                                   views.custom_admin_logout,          name='custom_admin_logout'),
-    path('manage/dates/',                                    views.custom_admin_dates,           name='custom_admin_dates'),
-    path('manage/dates/add/',                                views.custom_admin_add_date,        name='custom_admin_add_date'),
-    path('manage/dates/edit/<int:pk>/',                      views.custom_admin_edit_date,       name='custom_admin_edit_date'),
-    path('manage/dates/delete/<int:pk>/',                    views.custom_admin_delete_date,     name='custom_admin_delete_date'),
-    path('manage/inquiries/',                                views.custom_admin_inquiries,       name='custom_admin_inquiries'),
-    path('manage/inquiries/<int:pk>/action/',                views.custom_admin_approve_inquiry, name='custom_admin_approve_inquiry'),
-    path('manage/bookings/',                                 views.custom_admin_bookings,        name='custom_admin_bookings'),
-    path('manage/calendar/',                                 views.custom_admin_calendar,        name='custom_admin_calendar'),
-    # Legacy path kept for team members using old prefix
-    path('admin-panel/calendar/',                            views.custom_admin_calendar,        name='custom_admin_calendar_legacy'),
+    # ── Admin Auth ────────────────────────────────────────────────────────
+    path('manage/login/',   views.custom_admin_login,  name='custom_admin_login'),
+    path('manage/logout/',  views.custom_admin_logout, name='custom_admin_logout'),
+
+    # ── Admin Dashboard ───────────────────────────────────────────────────
+    path('manage/', views.custom_admin_dashboard, name='custom_admin_dashboard'),
+
+    # ── Admin Dates ───────────────────────────────────────────────────────
+    path('manage/dates/',                   views.custom_admin_dates,       name='custom_admin_dates'),
+    path('manage/dates/add/',               views.custom_admin_add_date,    name='custom_admin_add_date'),
+    path('manage/dates/edit/<int:pk>/',     views.custom_admin_edit_date,   name='custom_admin_edit_date'),
+    path('manage/dates/delete/<int:pk>/',   views.custom_admin_delete_date, name='custom_admin_delete_date'),
+
+    # ── Admin Inquiries ───────────────────────────────────────────────────
+    # Main inquiries list
+    path('manage/inquiries/',
+         views.custom_admin_inquiries,
+         name='custom_admin_inquiries'),
+
+    # Accept (confirm) a single inquiry → creates/updates DateEntry as 'booked'
+    path('manage/inquiries/<int:pk>/confirm/',
+         views.custom_admin_confirm_inquiry,
+         name='custom_admin_confirm_inquiry'),
+
+    # Decline (reject) a single inquiry → removes DateEntry, marks declined
+    path('manage/inquiries/<int:pk>/decline/',
+         views.custom_admin_decline_inquiry,
+         name='custom_admin_decline_inquiry'),
+
+    # Save admin note on an inquiry
+    path('manage/inquiries/<int:pk>/note/',
+         views.custom_admin_inquiry_note,
+         name='custom_admin_inquiry_note'),
+
+    # Legacy combined action endpoint (kept for backwards compatibility)
+    path('manage/inquiries/<int:pk>/action/',
+         views.custom_admin_approve_inquiry,
+         name='custom_admin_approve_inquiry'),
+
+    # ── Admin Bookings (alias → inquiries) ───────────────────────────────
+    path('manage/bookings/',
+         views.custom_admin_bookings,
+         name='custom_admin_bookings'),
+
+    # ── Admin Calendar ────────────────────────────────────────────────────
+    path('manage/calendar/',
+         views.custom_admin_calendar,
+         name='custom_admin_calendar'),
+
+    # Legacy path kept for backwards compatibility
+    path('admin-panel/calendar/',
+         views.custom_admin_calendar,
+         name='custom_admin_calendar_legacy'),
 
     # ── Birthday Venue ────────────────────────────────────────────────────
     path('events/birthday/',              views.birthday_overview,     name='birthday_overview'),

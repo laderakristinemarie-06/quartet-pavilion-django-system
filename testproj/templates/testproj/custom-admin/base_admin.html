@@ -8,29 +8,124 @@
   <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
     :root {
-      --green-dark: #1a2e1a; --green-mid: #2d4a2d; --gold: #c9a84c;
-      --bg: #f5f2ea; --card-bg: #fff9f0; --text: #2a1f0e; --text-muted: #8a7a62;
-      --border: #e8e0d0; --row-hover: #fdf6ec; --input-bg: #fff9f0;
-      --input-border: #d8cdb8; --th-color: #b0a080; --cream: #f5f2ea;
+      --green-dark: #1a2e1a; 
+      --green-mid: #2d4a2d; 
+      --gold: #c9a84c;
+      --bg: #f5f2ea; 
+      --card-bg: #fff9f0; 
+      --text: #2a1f0e; 
+      --text-muted: #8a7a62;
+      --border: #e8e0d0; 
+      --row-hover: #fdf6ec; 
+      --input-bg: #fff9f0;
+      --input-border: #d8cdb8; 
+      --th-color: #b0a080; 
+      --cream: #f5f2ea;
     }
     body.dark {
-      --bg: #0b1510; --card-bg: #12211a; --text: #f0ece3; --text-muted: #7a9a82;
-      --border: #1e3028; --row-hover: #172a20; --input-bg: #0f1a14;
-      --input-border: #2a4030; --th-color: #5a8a6a; --cream: #0b1510;
+      --bg: #0b1510; 
+      --card-bg: #12211a; 
+      --text: #f0ece3; 
+      --text-muted: #7a9a82;
+      --border: #1e3028; 
+      --row-hover: #172a20; 
+      --input-bg: #0f1a14;
+      --input-border: #2a4030; 
+      --th-color: #5a8a6a; 
+      --cream: #0b1510;
     }
-    body { font-family: 'Jost', sans-serif; background: var(--bg); display: flex; min-height: 100vh; transition: background 0.3s, color 0.3s; color: var(--text); }
-    .sidebar { width: 240px; background: #0d1a0d; color: #fff; min-height: 100vh; padding: 0; display: flex; flex-direction: column; flex-shrink: 0; border-right: 1px solid rgba(201,168,76,0.12); }
-    .sidebar-brand { padding: 2.2rem 1.8rem 1.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .sidebar-brand .brand-top { font-size: 0.55rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 2px; }
-    .sidebar-brand .brand-main { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; letter-spacing: 0.1em; display: block; color: #fff; }
-    .sidebar-brand .brand-sub { font-size: 0.5rem; letter-spacing: 0.45em; text-transform: uppercase; color: rgba(255,255,255,0.4); display: block; margin-bottom: 6px; }
-    .sidebar-brand .brand-badge { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,0.12); padding: 3px 8px; display: inline-block; border: 1px solid rgba(201,168,76,0.2); }
-    .sidebar-nav { padding: 1.5rem 0; flex: 1; }
-    .sidebar-nav .nav-section { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0 1.8rem; margin-bottom: 0.5rem; margin-top: 1.2rem; }
-    .sidebar-nav a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.55); text-decoration: none; padding: 0.65rem 1.8rem; font-size: 0.82rem; letter-spacing: 0.04em; transition: all 0.2s; border-left: 2px solid transparent; }
-    .sidebar-nav a:hover { color: #fff; background: rgba(201,168,76,0.06); }
+    body { 
+      font-family: 'Jost', sans-serif; 
+      background: var(--bg); 
+      display: flex; 
+      min-height: 100vh; 
+      transition: background 0.3s, color 0.3s; 
+      color: var(--text); 
+    }
+    .sidebar { 
+      width: 240px; 
+      background: #0d1a0d; 
+      color: #fff; 
+      min-height: 100vh; 
+      padding: 0; 
+      display: flex; 
+      flex-direction: column; 
+      flex-shrink: 0; 
+      border-right: 1px solid rgba(201,168,76,0.12); 
+    }
+    .sidebar-brand { 
+      padding: 2.2rem 1.8rem 1.8rem; 
+      border-bottom: 1px solid rgba(255,255,255,0.06); 
+    }
+    .sidebar-brand .brand-top { 
+      font-size: 0.55rem; 
+      letter-spacing: 0.4em; 
+      text-transform: uppercase; 
+      color: var(--gold); 
+      display: block; 
+      margin-bottom: 2px; 
+    }
+    .sidebar-brand .brand-main { 
+      font-family: 'Cormorant Garamond', serif; 
+      font-size: 1.5rem; 
+      font-weight: 300; 
+      letter-spacing: 0.1em; 
+      display: block; 
+      color: #fff; 
+    }
+    .sidebar-brand .brand-sub { 
+      font-size: 0.5rem; 
+      letter-spacing: 0.45em; 
+      text-transform: uppercase; 
+      color: rgba(255,255,255,0.4); 
+      display: block; 
+      margin-bottom: 6px; 
+    }
+    .sidebar-brand .brand-badge { 
+      font-size: 0.6rem; 
+      letter-spacing: 0.2em; 
+      text-transform: uppercase; 
+      color: var(--gold); 
+      background: rgba(201,168,76,0.12); 
+      padding: 3px 8px; 
+      display: inline-block; 
+      border: 1px solid rgba(201,168,76,0.2); 
+    }
+    .sidebar-nav { 
+      padding: 1.5rem 0; 
+      flex: 1; 
+    }
+    .sidebar-nav .nav-section { 
+      font-size: 0.6rem; 
+      letter-spacing: 0.25em; 
+      text-transform: uppercase; 
+      color: rgba(255,255,255,0.25); 
+      padding: 0 1.8rem; 
+      margin-bottom: 0.5rem; 
+      margin-top: 1.2rem; 
+    }
+    .sidebar-nav a { 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+      color: rgba(255,255,255,0.55); 
+      text-decoration: none; 
+      padding: 0.65rem 1.8rem; 
+      font-size: 0.82rem; 
+      letter-spacing: 0.04em; 
+      transition: all 0.2s; 
+      border-left: 2px solid transparent; 
+    }
+    .sidebar-nav a:hover { 
+      color: #fff; 
+      background: rgba(201,168,76,0.06); 
+    }
     .sidebar-nav a.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,168,76,0.1); }
     .sidebar-nav a .icon { font-size: 0.9rem; width: 16px; text-align: center; }
     .sidebar-footer { padding: 1.5rem 1.8rem; border-top: 1px solid rgba(255,255,255,0.06); }
