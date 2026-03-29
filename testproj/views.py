@@ -57,11 +57,6 @@ def _build_bookings_json(queryset):
 
 
 def _venue_calendar_context(venue_slug):
-    """
-    Context for public venue calendar pages.
-    Only confirmed (booked) dates are shown as taken;
-    pending shows as a "under review" indicator to clients.
-    """
     booked = DateEntry.objects.filter(
         venue=venue_slug, status='booked'
     ).values('date', 'event_name', 'pax', 'time_slot')
@@ -129,14 +124,12 @@ def submit_booking(request):
         total_price      = request.POST.get('total_price', '0').strip()
         downpay_amount   = request.POST.get('downpay_amount', '0').strip()
 
-        # 1. Save inquiry (always pending until admin confirms)
         inquiry = BookingInquiry.objects.create(
             venue=venue, date=date_val, name=name, email=email,
             event_name=event_name, pax=pax, time_slot=time_slot,
             notes=notes, status='pending',
         )
 
-        # 2. Mark date as PENDING on the calendar — not booked yet
         DateEntry.objects.update_or_create(
             venue=venue, date=date_val,
             defaults={
@@ -152,7 +145,6 @@ def submit_booking(request):
 
         booking_id = f'QP-{inquiry.pk:05d}'
 
-        # 3. Email CLIENT — inquiry received
         try:
             send_mail(
                 subject=f'Booking Inquiry Received — Quartet Pavilion ({booking_id})',
@@ -192,7 +184,6 @@ Thank you for choosing Quartet Pavilion!
         except Exception as e:
             print(f"Client email error: {e}")
 
-        # 4. Email ADMIN — new inquiry alert
         try:
             send_mail(
                 subject=f'⚠️ New Booking Inquiry — {name} | {VENUE_NAMES.get(venue, venue)} | {date_val}',
@@ -260,11 +251,11 @@ def user_dashboard(request):
     bookings = DateEntry.objects.filter(email=email)
     upcoming = bookings.filter(status__in=['booked', 'rescheduled'], date__gte=today).order_by('date')
     return render(request, 'testproj/user-panel/user_dashboard.html', {
-        'bookings':         bookings,
-        'total_bookings':   bookings.count(),
-        'upcoming_count':   upcoming.count(),
-        'ongoing_count':    bookings.filter(status='ongoing').count(),
-        'done_count':       bookings.filter(status='done').count(),
+        'bookings':          bookings,
+        'total_bookings':    bookings.count(),
+        'upcoming_count':    upcoming.count(),
+        'ongoing_count':     bookings.filter(status='ongoing').count(),
+        'done_count':        bookings.filter(status='done').count(),
         'upcoming_bookings': upcoming[:5],
     })
 
@@ -440,7 +431,6 @@ def custom_admin_inquiries(request):
     if status_filter:
         qs = qs.filter(status=status_filter)
 
-    # Mark all fetched inquiries as read
     qs.filter(is_read=False).update(is_read=True)
 
     return render(request, 'testproj/custom-admin/inquiries.html', {
@@ -451,27 +441,24 @@ def custom_admin_inquiries(request):
         'pending_count':  BookingInquiry.objects.filter(status='pending').count(),
         'accepted_count': BookingInquiry.objects.filter(status='confirmed').count(),
         'rejected_count': BookingInquiry.objects.filter(status='declined').count(),
-        'new_bookings':   0,   # already read on this page
+        'new_bookings':   0,
     })
 
-# alias used by base_admin.html nav badge
 @admin_required
 def custom_admin_bookings(request):
     return redirect('custom_admin_inquiries')
 
-# ── ADMIN INQUIRIES — CONFIRM (ACCEPT) ───────────────────────────────────────
+# ── ADMIN INQUIRIES — CONFIRM ─────────────────────────────────────────────────
 @admin_required
 def custom_admin_confirm_inquiry(request, pk):
     inquiry = get_object_or_404(BookingInquiry, pk=pk)
     if request.method == 'POST':
         booking_id = f'QP-{inquiry.pk:05d}'
 
-        # 1. Update inquiry status → confirmed
         inquiry.status  = 'confirmed'
         inquiry.is_read = True
         inquiry.save()
 
-        # 2. Create/update DateEntry as 'booked' so it appears on the calendar
         DateEntry.objects.update_or_create(
             venue=inquiry.venue, date=inquiry.date,
             defaults={
@@ -485,7 +472,6 @@ def custom_admin_confirm_inquiry(request, pk):
             },
         )
 
-        # 3. Send CONFIRMATION email to client
         try:
             send_mail(
                 subject=f'✅ Booking Confirmed! — Quartet Pavilion ({booking_id})',
@@ -508,13 +494,6 @@ Time Slot    : {inquiry.time_slot}
 
 Your date is now officially reserved at Quartet Pavilion!
 
-If you chose walk-in downpayment, please visit us at your earliest convenience:
-Office hours: Monday – Saturday, 8:00 AM – 5:00 PM
-
-For any questions, reply to this email or contact us directly.
-
-We look forward to hosting your event!
-
 Warm regards,
 Quartet Pavilion Team
 ''',
@@ -525,40 +504,31 @@ Quartet Pavilion Team
         except Exception as e:
             print(f"Confirmation email error: {e}")
 
-        messages.success(
-            request,
-            f'✅ Booking confirmed! {inquiry.name} on {inquiry.date} is now on the calendar.'
-        )
+        messages.success(request, f'✅ Booking confirmed! {inquiry.name} on {inquiry.date} is now on the calendar.')
 
     return redirect('custom_admin_inquiries')
 
-# ── ADMIN INQUIRIES — DECLINE (REJECT) ───────────────────────────────────────
+# ── ADMIN INQUIRIES — DECLINE ─────────────────────────────────────────────────
 @admin_required
 def custom_admin_decline_inquiry(request, pk):
     inquiry = get_object_or_404(BookingInquiry, pk=pk)
     if request.method == 'POST':
         booking_id = f'QP-{inquiry.pk:05d}'
 
-        # 1. Update inquiry status → declined
         inquiry.status  = 'declined'
         inquiry.is_read = True
         inquiry.save()
 
-        # 2. Remove the pending DateEntry so the date opens back up
         DateEntry.objects.filter(
             venue=inquiry.venue, date=inquiry.date, status='pending'
         ).delete()
 
-        # 3. Send DECLINE email to client
         try:
             send_mail(
                 subject=f'Booking Update — Quartet Pavilion ({booking_id})',
                 message=f'''Hi {inquiry.name},
 
-Thank you for your interest in {VENUE_NAMES.get(inquiry.venue, inquiry.venue)}.
-
 Unfortunately, we are unable to confirm your booking for {inquiry.date} at this time.
-This may be due to the date no longer being available or other scheduling conflicts.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Booking ID   : {booking_id}
@@ -566,9 +536,7 @@ Date         : {inquiry.date}
 Status       : ❌ DECLINED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-We encourage you to check our calendar for other available dates and submit a new inquiry.
-
-We apologize for any inconvenience and hope to host your event soon!
+We encourage you to check our calendar for other available dates.
 
 Warm regards,
 Quartet Pavilion Team
@@ -580,10 +548,7 @@ Quartet Pavilion Team
         except Exception as e:
             print(f"Decline email error: {e}")
 
-        messages.success(
-            request,
-            f'Inquiry from {inquiry.name} declined. {inquiry.date} is available again.'
-        )
+        messages.success(request, f'Inquiry from {inquiry.name} declined. {inquiry.date} is available again.')
 
     return redirect('custom_admin_inquiries')
 
@@ -600,10 +565,6 @@ def custom_admin_inquiry_note(request, pk):
 # ── ADMIN INQUIRIES — LEGACY COMBINED ACTION ──────────────────────────────────
 @admin_required
 def custom_admin_approve_inquiry(request, pk):
-    """
-    Legacy endpoint kept for backwards compatibility.
-    Dispatches to confirm or decline based on POST 'action' field.
-    """
     if request.method == 'POST':
         action = request.POST.get('action', '')
         if action == 'confirmed':
@@ -615,14 +576,21 @@ def custom_admin_approve_inquiry(request, pk):
 # ── ADMIN CALENDAR ────────────────────────────────────────────────────────────
 @admin_required
 def custom_admin_calendar(request):
-    """
-    All DateEntry records are shown on the admin calendar with colour-coded dots.
-    Pending inquiry count still shows in the notice banner.
-    """
     all_dates = DateEntry.objects.all().order_by('date')
-
+    data = []
+    for d in all_dates:
+        data.append({
+            'id':         d.pk,
+            'date':       d.date.isoformat(),
+            'status':     d.status,
+            'venue':      d.venue,
+            'event_name': d.event_name or '',
+            'pax':        d.pax or '',
+            'time_slot':  d.time_slot or '',
+            'notes':      d.notes or '',
+        })
     return render(request, 'testproj/custom-admin/admin_calendar.html', {
-        'bookings_json': _build_bookings_json(all_dates),
+        'bookings_json': data,
         'pending_count': _pending_count(),
         'new_bookings':  _pending_count(),
     })
@@ -688,7 +656,7 @@ def user_booking_reschedule(request, pk):
         if new_date:
             old_date       = booking.date
             booking.date   = new_date
-            booking.status = 'pending'   # back to pending until admin re-confirms
+            booking.status = 'pending'
             booking.save()
 
             try:
