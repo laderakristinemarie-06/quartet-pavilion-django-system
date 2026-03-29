@@ -44,8 +44,10 @@
         {% if venue_filter %}{{ venue_filter|title }} —{% endif %}
         {% if status_filter %}{{ status_filter|title }}{% else %}All{% endif %} Bookings
       </h2>
-      <a href="{% url 'custom_admin_add_date' %}{% if venue_filter %}?venue={{ venue_filter }}{% endif %}"
-         class="btn-primary">+ Add Date</a>
+      {% if not is_moderator %}
+        <a href="{% url 'custom_admin_add_date' %}{% if venue_filter %}?venue={{ venue_filter }}{% endif %}"
+           class="btn-primary">+ Add Date</a>
+      {% endif %}
     </div>
     <table>
       <thead>
@@ -75,7 +77,9 @@
             {{ entry.notes|default:"—" }}
           </td>
           <td>
-            <a href="{% url 'custom_admin_edit_date' entry.pk %}" class="btn-edit">Edit</a>
+            <a href="{% url 'custom_admin_edit_date' entry.pk %}" class="btn-edit">
+              {% if is_moderator %}View / Edit Notes{% else %}Edit{% endif %}
+            </a>
           </td>
         </tr>
         {% empty %}
