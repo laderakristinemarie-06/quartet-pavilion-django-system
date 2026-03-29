@@ -14,7 +14,7 @@ urlpatterns = [
     path('booking/receipt/<int:pk>/', views.booking_receipt, name='booking_receipt'),
 
     # ── User Login / Logout ───────────────────────────────────────────────
-    path('login/',  views.user_login,  name='log_in'),
+    path('login/',  views.log_in,  name='log_in'),
     path('logout/', views.user_logout, name='user_logout'),
 
     # ── User Panel / My Account ───────────────────────────────────────────
