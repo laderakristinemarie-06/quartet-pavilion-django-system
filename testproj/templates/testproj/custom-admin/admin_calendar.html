@@ -101,20 +101,52 @@
   .cal-nav-btn { background:var(--card-bg);border:1px solid var(--input-border);color:var(--text);font-size:1.2rem;width:38px;height:38px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center; }
   .cal-nav-btn:hover { border-color:var(--gold);color:var(--gold); }
 
-  /* Day name headers */
   .cal-day-name { text-align:center;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);padding:0.3rem 0; }
 
-  /* Day cells — matching user_calendar.html exactly */
-  .cal-day { text-align:center;font-size:0.82rem;padding:0.5rem 0.2rem;min-height:44px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text);position:relative; }
+  /* Base day cell */
+  .cal-day {
+    text-align:center;font-size:0.82rem;padding:0.35rem 0.2rem;
+    min-height:54px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:2px;
+    color:var(--text);position:relative;
+  }
   .cal-day--today { background:rgba(201,168,76,0.12);font-weight:500;color:var(--gold); }
-  .cal-day--past { color:var(--text-muted);opacity:0.5; }
-  .cal-day--has-event { cursor:pointer; }
-  .cal-day--has-event:hover { background:rgba(201,168,76,0.08); }
+  .cal-day--past  { color:var(--text-muted);opacity:0.5; }
 
+  /* Booked cell — matches venue calendar style */
+  .cal-day--booked {
+    background:rgba(201,168,76,0.08);
+    border:1px dashed rgba(201,168,76,0.4);
+    cursor:pointer;
+  }
+  .cal-day--booked:hover { background:rgba(201,168,76,0.16); }
+  .cal-day--booked .booked-num   { font-size:0.85rem;font-weight:600;color:#c9a84c;line-height:1; }
+  .cal-day--booked .booked-event { font-size:0.52rem;letter-spacing:0.04em;text-transform:uppercase;color:#c9a84c;text-align:center;font-weight:500;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+  .cal-day--booked .booked-time  { font-size:0.46rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-muted);text-align:center; }
+  .cal-day--booked .booked-venue { font-size:0.42rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-muted);text-align:center;opacity:0.8; }
+
+  /* Status variants */
+  .cal-day--unavailable { opacity:0.45;cursor:not-allowed; }
+  .cal-day--canceled    { background:rgba(231,76,60,0.08);border:1px dashed rgba(231,76,60,0.3);cursor:pointer; }
+  .cal-day--canceled .booked-num   { color:#e74c3c; }
+  .cal-day--canceled .booked-event { color:#e74c3c; }
+  .cal-day--rescheduled { background:rgba(41,128,185,0.08);border:1px dashed rgba(41,128,185,0.3);cursor:pointer; }
+  .cal-day--rescheduled .booked-num   { color:#2980b9; }
+  .cal-day--rescheduled .booked-event { color:#2980b9; }
+  .cal-day--ongoing { background:rgba(39,174,96,0.08);border:1px dashed rgba(39,174,96,0.3);cursor:pointer; }
+  .cal-day--ongoing .booked-num   { color:#27ae60; }
+  .cal-day--ongoing .booked-event { color:#27ae60; }
+  .cal-day--done { opacity:0.6;cursor:pointer; }
+  .cal-day--done .booked-num   { color:var(--text-muted); }
+  .cal-day--done .booked-event { color:var(--text-muted); }
+
+  /* Multiple events on same day */
+  .cal-day--multi { cursor:pointer; }
+  .cal-day--multi:hover { background:rgba(201,168,76,0.08); }
   .cal-dot { width:6px;height:6px;border-radius:50%; }
 
   .leg-item { display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--text-muted); }
-  .leg-dot { width:9px;height:9px;border-radius:50%; }
+  .leg-dot  { width:9px;height:9px;border-radius:50%; }
 
   .side-eyebrow { font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.7rem; }
 
@@ -124,17 +156,17 @@
   .ev-date-box { width:38px;text-align:center;flex-shrink:0; }
   .ev-date-num { font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--text);line-height:1;display:block; }
   .ev-date-mon { font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);display:block; }
-  .ev-sep { width:1px;background:var(--border);align-self:stretch;flex-shrink:0; }
+  .ev-sep   { width:1px;background:var(--border);align-self:stretch;flex-shrink:0; }
   .ev-title { font-size:0.85rem;color:var(--text);transition:color 0.2s;display:block; }
-  .ev-meta { font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:block; }
+  .ev-meta  { font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:block; }
 
   .modal-stat-pill { padding:0.4rem 0.9rem;font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);color:var(--text-muted); }
   .modal-stat-pill strong { color:var(--gold);font-size:1rem;font-family:'Cormorant Garamond',serif;font-weight:400; }
   .modal-event-row { padding:1rem 0;border-bottom:1px solid var(--border); }
   .modal-event-row:last-child { border-bottom:none; }
   .modal-event-venue { font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px; }
-  .modal-event-name { font-size:1rem;color:var(--text);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-weight:400; }
-  .modal-event-meta { display:flex;flex-wrap:wrap;gap:0.5rem 1.2rem;font-size:0.72rem;color:var(--text-muted); }
+  .modal-event-name  { font-size:1rem;color:var(--text);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-weight:400; }
+  .modal-event-meta  { display:flex;flex-wrap:wrap;gap:0.5rem 1.2rem;font-size:0.72rem;color:var(--text-muted); }
   .modal-event-meta span strong { color:var(--text);font-weight:500; }
   .modal-event-actions { margin-top:0.6rem; }
 </style>
@@ -147,6 +179,15 @@
     try { RAW_BOOKINGS = JSON.parse(dataEl.textContent); }
     catch (e) { console.error('bookings-data parse error', e); }
   }
+
+  var VENUE_LABELS = {
+    birthday:      'Birthday & Private',
+    wedding:       'Wedding & Romantic',
+    family:        'Family Milestones',
+    academic:      'Academic & Youth',
+    corporate:     'Corporate & Formal',
+    entertainment: 'Entertainment & Special'
+  };
 
   var STATUS_COLOR = {
     booked:      '#c9a84c',
@@ -183,10 +224,26 @@
     });
   }
 
+  function getEventLabel(rawName) {
+    if (!rawName) return 'Private Event';
+    var lower = rawName.toLowerCase();
+    if (lower.includes('birthday'))    return 'Birthday';
+    if (lower.includes('anniversary')) return 'Anniversary';
+    if (lower.includes('wedding'))     return 'Wedding';
+    if (lower.includes('debut'))       return 'Debut';
+    if (lower.includes('christening') || lower.includes('baptis')) return 'Christening';
+    if (lower.includes('graduation'))  return 'Graduation';
+    if (lower.includes('corporate') || lower.includes('company'))  return 'Corporate';
+    if (lower.includes('reunion'))     return 'Reunion';
+    var words = rawName.trim().split(/\s+/);
+    return words.slice(0, 2).join(' ');
+  }
+
   function render() {
     var y     = currentDate.getFullYear();
     var m     = currentDate.getMonth();
     var today = new Date();
+    var todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     document.getElementById('calTitle').textContent = MONTHS[m] + ' ' + y;
 
@@ -212,32 +269,56 @@
     // Day cells
     var daysInMonth = new Date(y, m + 1, 0).getDate();
     for (var d = 1; d <= daysInMonth; d++) {
-      var el       = document.createElement('div');
-      var thisDay  = new Date(y, m, d);
-      var todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      var isPast   = thisDay < todayMid;
-      var isToday  = (d === today.getDate() && m === today.getMonth() && y === today.getFullYear());
-      var dayEvs   = forDay(y, m, d);
+      var el      = document.createElement('div');
+      var thisDay = new Date(y, m, d);
+      var isPast  = thisDay < todayMid;
+      var isToday = (d === today.getDate() && m === today.getMonth() && y === today.getFullYear());
+      var dayEvs  = forDay(y, m, d);
 
-      var cls = 'cal-day';
-      if (isToday)       cls += ' cal-day--today';
-      else if (isPast)   cls += ' cal-day--past';
-      if (dayEvs.length) cls += ' cal-day--has-event';
-      el.className = cls;
+      if (isToday) {
+        // Today — just show number with gold highlight
+        el.className = 'cal-day cal-day--today';
+        el.textContent = d;
 
-      var num = document.createElement('span');
-      num.textContent = d;
-      el.appendChild(num);
+      } else if (dayEvs.length === 0) {
+        // Empty day
+        el.className = 'cal-day' + (isPast ? ' cal-day--past' : '');
+        el.textContent = d;
 
-      // One dot per event — same as user calendar
-      dayEvs.forEach(function(ev) {
-        var dot = document.createElement('div');
-        dot.className = 'cal-dot';
-        dot.style.background = STATUS_COLOR[ev.status] || '#888';
-        el.appendChild(dot);
-      });
+      } else if (dayEvs.length === 1) {
+        // Single event — rich cell like venue calendar
+        var ev     = dayEvs[0];
+        var status = ev.status || 'booked';
+        var cls    = 'cal-day cal-day--' + status;
+        if (isPast && status !== 'done') cls += ' cal-day--past';
+        el.className = cls;
 
-      if (dayEvs.length) {
+        var label     = getEventLabel(ev.event_name);
+        var timeLabel = ev.time_slot || '';
+        var venueLabel = VENUE_LABELS[ev.venue] || ev.venue || '';
+
+        el.innerHTML =
+          '<span class="booked-num">' + d + '</span>' +
+          '<span class="booked-event">' + label + '</span>' +
+          (timeLabel   ? '<span class="booked-time">'  + timeLabel   + '</span>' : '') +
+          (venueLabel && !activeVenue ? '<span class="booked-venue">' + venueLabel + '</span>' : '');
+
+        (function(evs, day) {
+          el.addEventListener('click', function() { openDayModal(y, m, day, evs); });
+        })(dayEvs, d);
+
+      } else {
+        // Multiple events — show number + colored dots
+        el.className = 'cal-day cal-day--multi' + (isPast ? ' cal-day--past' : '');
+        var numSpan = document.createElement('span');
+        numSpan.textContent = d;
+        el.appendChild(numSpan);
+        dayEvs.forEach(function(ev) {
+          var dot = document.createElement('div');
+          dot.className = 'cal-dot';
+          dot.style.background = STATUS_COLOR[ev.status] || '#888';
+          el.appendChild(dot);
+        });
         (function(evs, day) {
           el.addEventListener('click', function() { openDayModal(y, m, day, evs); });
         })(dayEvs, d);
@@ -277,6 +358,7 @@
       var day = String(dt.getDate()).padStart(2, '0');
       var mon = MONTHS[dt.getMonth()].substring(0, 3);
       var col = STATUS_COLOR[b.status] || '#888';
+      var venueLabel = VENUE_LABELS[b.venue] || b.venue || 'Quartet Pavilion';
       return '<div class="month-event-item" onclick="openEventFromSide(\'' + b.id + '\')">' +
         '<div class="ev-date-box">' +
           '<span class="ev-date-num">' + day + '</span>' +
@@ -284,8 +366,8 @@
         '</div>' +
         '<div class="ev-sep"></div>' +
         '<div>' +
-          '<span class="ev-title">' + (b.event_name || 'Available') + '</span>' +
-          '<span class="ev-meta">' + (b.venue_label || 'Quartet Pavilion') + ' &middot; <span style="color:' + col + ';">' + b.status + '</span>' + (b.pax ? ' &middot; ' + b.pax + ' pax' : '') + '</span>' +
+          '<span class="ev-title">' + (b.event_name || 'Private Event') + '</span>' +
+          '<span class="ev-meta">' + venueLabel + ' &middot; <span style="color:' + col + ';">' + b.status + '</span>' + (b.pax ? ' &middot; ' + b.pax + ' pax' : '') + '</span>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -295,25 +377,21 @@
     document.getElementById('modalDayTitle').textContent = MONTHS[m] + ' ' + d + ', ' + y;
 
     var totalPax = evs.reduce(function(s, b) { return s + (parseInt(b.pax) || 0); }, 0);
-    var statuses = {};
-    evs.forEach(function(b) { statuses[b.status] = (statuses[b.status] || 0) + 1; });
 
     var statsHtml = '<div class="modal-stat-pill"><strong>' + evs.length + '</strong> booking' + (evs.length !== 1 ? 's' : '') + '</div>';
     if (totalPax) statsHtml += '<div class="modal-stat-pill"><strong>' + totalPax + '</strong> total pax</div>';
-    Object.keys(statuses).forEach(function(s) {
-      statsHtml += '<div class="modal-stat-pill"><span class="badge badge-' + s + '" style="padding:2px 8px;font-size:0.6rem;">' + s + '</span></div>';
-    });
     document.getElementById('modalStats').innerHTML = statsHtml;
 
     document.getElementById('modalEventsList').innerHTML = evs.map(function(b) {
+      var col = STATUS_COLOR[b.status] || '#888';
+      var venueLabel = VENUE_LABELS[b.venue] || b.venue || 'Quartet Pavilion';
       return '<div class="modal-event-row">' +
-        '<div class="modal-event-venue">' + (b.venue_label || 'Quartet Pavilion') + '</div>' +
-        '<div class="modal-event-name">' + (b.event_name || 'Available') + '</div>' +
+        '<div class="modal-event-venue">' + venueLabel + '</div>' +
+        '<div class="modal-event-name">' + (b.event_name || 'Private Event') + '</div>' +
         '<div class="modal-event-meta">' +
-          '<span><strong>' + (b.name || '—') + '</strong></span>' +
           (b.pax ? '<span><strong>' + b.pax + '</strong> pax</span>' : '') +
           (b.time_slot ? '<span>' + b.time_slot + '</span>' : '') +
-          '<span><span class="badge badge-' + b.status + '" style="padding:2px 8px;font-size:0.6rem;">' + b.status + '</span></span>' +
+          '<span style="color:' + col + ';text-transform:uppercase;font-size:0.62rem;letter-spacing:0.1em;">' + b.status + '</span>' +
         '</div>' +
         (b.notes ? '<div style="margin-top:0.5rem;font-size:0.78rem;color:var(--text-muted);font-style:italic;">' + b.notes + '</div>' : '') +
         '<div class="modal-event-actions"><a href="/manage/dates/edit/' + b.id + '/" class="btn-edit" style="font-size:0.75rem;">Edit booking →</a></div>' +
@@ -341,9 +419,7 @@
 
   document.getElementById('dayModalClose').onclick = closeModal;
   document.getElementById('dayModalCancel').onclick = closeModal;
-  document.getElementById('dayModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
+  document.getElementById('dayModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 
   document.getElementById('prevMonth').addEventListener('click', function() {
