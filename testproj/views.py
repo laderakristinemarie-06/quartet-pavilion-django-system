@@ -318,6 +318,8 @@ def custom_admin_login(request):
         if user is not None and user.is_staff:
             request.session['is_admin']       = True
             request.session['admin_username'] = user.username
+            # Superusers are moderators (limited access)
+            request.session['is_moderator']   = user.is_superuser
             return redirect('custom_admin_dashboard')
         else:
             messages.error(request, 'Invalid credentials or insufficient permissions.')
@@ -362,10 +364,15 @@ def custom_admin_dates(request):
         'venue_choices':  VENUE_CHOICES,
         'status_choices': DateEntry.STATUS_CHOICES,
         'new_bookings':   _pending_count(),
+        'is_moderator':   request.session.get('is_moderator', False),
     })
 
 @admin_required
 def custom_admin_add_date(request):
+    # Moderators cannot add dates
+    if request.session.get('is_moderator', False):
+        messages.error(request, 'You do not have permission to add dates.')
+        return redirect('custom_admin_dates')
     if request.method == 'POST':
         venue    = request.POST.get('venue', 'birthday')
         date_val = request.POST.get('date')
@@ -392,22 +399,29 @@ def custom_admin_add_date(request):
 @admin_required
 def custom_admin_edit_date(request, pk):
     entry = get_object_or_404(DateEntry, pk=pk)
+    is_moderator = request.session.get('is_moderator', False)
     if request.method == 'POST':
-        entry.venue      = request.POST.get('venue', entry.venue)
-        entry.date       = request.POST.get('date', entry.date)
-        entry.status     = request.POST.get('status', 'booked')
-        entry.event_name = request.POST.get('event_name', '').strip()
-        entry.name       = request.POST.get('name', '').strip()
-        entry.pax        = request.POST.get('pax') or None
-        entry.time_slot  = request.POST.get('time_slot', '').strip()
-        entry.notes      = request.POST.get('notes', '').strip()
+        if is_moderator:
+            # Moderators can only update pax and notes
+            entry.pax   = request.POST.get('pax') or None
+            entry.notes = request.POST.get('notes', '').strip()
+        else:
+            entry.venue      = request.POST.get('venue', entry.venue)
+            entry.date       = request.POST.get('date', entry.date)
+            entry.status     = request.POST.get('status', 'booked')
+            entry.event_name = request.POST.get('event_name', '').strip()
+            entry.name       = request.POST.get('name', '').strip()
+            entry.pax        = request.POST.get('pax') or None
+            entry.time_slot  = request.POST.get('time_slot', '').strip()
+            entry.notes      = request.POST.get('notes', '').strip()
         entry.save()
-        messages.success(request, f'Date {entry.date} updated.')
+        messages.success(request, 'Booking updated.')
         return redirect('custom_admin_dates')
     return render(request, 'testproj/custom-admin/edit_date.html', {
         'entry':         entry,
         'venue_choices': VENUE_CHOICES,
         'new_bookings':  _pending_count(),
+        'is_moderator':  is_moderator,
     })
 
 @admin_required
@@ -593,6 +607,7 @@ def custom_admin_calendar(request):
         'bookings_json': data,
         'pending_count': _pending_count(),
         'new_bookings':  _pending_count(),
+        'is_moderator':  request.session.get('is_moderator', False),
     })
 
 # ── VENUE VIEWS ───────────────────────────────────────────────────────────────
