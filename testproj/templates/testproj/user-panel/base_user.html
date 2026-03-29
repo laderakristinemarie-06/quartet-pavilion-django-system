@@ -15,39 +15,155 @@
     })();
   </script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
     :root {
-      --green-dark: #1a2e1a; --green-mid: #2d4a2d; --gold: #c9a84c;
-      --bg: #f5f2ea; --card-bg: #fff9f0; --text: #2a1f0e;
-      --text-muted: #8a7a62; --border: #e8e0d0; --row-hover: #fdf6ec;
-      --input-bg: #fff9f0; --input-border: #d8cdb8;
+      --green-dark: #1a2e1a; 
+      --green-mid: #2d4a2d; 
+      --gold: #c9a84c;
+      --bg: #f5f2ea; 
+      --card-bg: #fff9f0; 
+      --text: #2a1f0e;
+      --text-muted: #8a7a62; 
+      --border: #e8e0d0; 
+      --row-hover: #fdf6ec;
+      --input-bg: #fff9f0; 
+      --input-border: #d8cdb8;
     }
     body.dark {
-      --bg: #0b1510; --card-bg: #12211a; --text: #f0ece3; --text-muted: #7a9a82;
-      --border: #1e3028; --row-hover: #172a20; --input-bg: #0f1a14;
+      --bg: #0b1510; 
+      --card-bg: #12211a; 
+      --text: #f0ece3; 
+      --text-muted: #7a9a82;
+      --border: #1e3028; 
+      --row-hover: #172a20; 
+      --input-bg: #0f1a14;
       --input-border: #2a4030;
     }
-    body { font-family: 'Jost', sans-serif; background: var(--bg); display: flex; min-height: 100vh; color: var(--text); transition: background 0.3s, color 0.3s; }
-
+    body { 
+      font-family: 'Jost', sans-serif; 
+      background: var(--bg); 
+      display: flex; 
+      min-height: 100vh; 
+      color: var(--text); 
+      transition: background 0.3s, color 0.3s; 
+    }
     /* ── Sidebar ── */
-    .user-sidebar { width: 240px; background: #0d1a0d; color: #fff; min-height: 100vh; display: flex; flex-direction: column; flex-shrink: 0; border-right: 1px solid rgba(201,168,76,0.12); }
-    .us-brand { padding: 2.2rem 1.8rem 1.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .us-brand .b-top  { font-size: 0.55rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 2px; }
-    .us-brand .b-main { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; letter-spacing: 0.1em; display: block; color: #fff; }
-    .us-brand .b-sub  { font-size: 0.5rem; letter-spacing: 0.45em; text-transform: uppercase; color: rgba(255,255,255,0.4); display: block; margin-bottom: 6px; }
-    .us-brand .b-badge { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,0.12); padding: 3px 8px; display: inline-block; border: 1px solid rgba(201,168,76,0.2); }
-
-    .us-nav { padding: 1.5rem 0; flex: 1; }
-    .us-nav .nav-section { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0 1.8rem; margin-bottom: 0.5rem; margin-top: 1.2rem; }
-    .us-nav a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.55); text-decoration: none; padding: 0.65rem 1.8rem; font-size: 0.82rem; letter-spacing: 0.04em; transition: all 0.2s; border-left: 2px solid transparent; }
-    .us-nav a:hover { color: #fff; background: rgba(201,168,76,0.06); }
-    .us-nav a.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,168,76,0.1); }
-    .us-nav .icon { font-size: 0.9rem; width: 16px; text-align: center; }
-
+    .user-sidebar { 
+      width: 240px; 
+      background: #0d1a0d; 
+      color: #fff; 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      flex-shrink: 0; 
+      border-right: 1px solid rgba(201,168,76,0.12); 
+    }
+    .us-brand { 
+      padding: 2.2rem 1.8rem 1.8rem; 
+      border-bottom: 1px solid rgba(255,255,255,0.06); 
+    }
+    .us-brand .b-top  { 
+      font-size: 0.55rem; 
+      letter-spacing: 0.4em; 
+      text-transform: uppercase; 
+      color: var(--gold); 
+      display: block; 
+      margin-bottom: 2px; 
+    }
+    .us-brand .b-main { 
+      font-family: 'Cormorant Garamond', serif; 
+      font-size: 1.5rem; 
+      font-weight: 300; 
+      letter-spacing: 0.1em; 
+      display: block; 
+      color: #fff; 
+    }
+    .us-brand .b-sub  { 
+      font-size: 0.5rem; 
+      letter-spacing: 0.45em; 
+      text-transform: uppercase; 
+      color: rgba(255,255,255,0.4); 
+      display: block; 
+      margin-bottom: 6px; 
+    }
+    .us-brand .b-badge { 
+      font-size: 0.6rem; 
+      letter-spacing: 0.2em; 
+      text-transform: uppercase; 
+      color: var(--gold); 
+      background: rgba(201,168,76,0.12); 
+      padding: 3px 8px; 
+      display: inline-block; 
+      border: 1px solid rgba(201,168,76,0.2); 
+    }
+    .us-nav { 
+      padding: 1.5rem 0; 
+      flex: 1; 
+    }
+    .us-nav .nav-section { 
+      font-size: 0.6rem; 
+      letter-spacing: 0.25em; 
+      text-transform: uppercase; 
+      color: rgba(255,255,255,0.25); 
+      padding: 0 1.8rem; 
+      margin-bottom: 0.5rem; 
+      margin-top: 1.2rem; 
+    }
+    .us-nav a { 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+      color: rgba(255,255,255,0.55); 
+      text-decoration: none; 
+      padding: 0.65rem 1.8rem; 
+      font-size: 0.82rem; 
+      letter-spacing: 0.04em; 
+      transition: all 0.2s; 
+      border-left: 2px solid transparent; 
+    }
+    .us-nav a:hover { 
+      color: #fff; 
+      background: rgba(201,168,76,0.06); 
+    }
+    .us-nav a.active { 
+      color: var(--gold); 
+      border-left-color: var(--gold); 
+      background: rgba(201,168,76,0.1); 
+    }
+    .us-nav .icon { 
+      font-size: 0.9rem; 
+      width: 16px; 
+      text-align: center; 
+    }
     /* FIX: logout link properly inside sidebar footer */
-    .us-footer { padding: 1.2rem 1.8rem; border-top: 1px solid rgba(255,255,255,0.06); }
-    .us-footer .user-email { font-size: 0.68rem; color: rgba(255,255,255,0.3); letter-spacing: 0.03em; margin-bottom: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .us-footer a.logout-link { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: rgba(255,255,255,0.4); text-decoration: none; letter-spacing: 0.05em; padding: 0.4rem 0; transition: color 0.2s; }
+    .us-footer { 
+      padding: 1.2rem 1.8rem; 
+      border-top: 1px solid rgba(255,255,255,0.06); 
+    }
+    .us-footer .user-email { 
+      font-size: 0.68rem; 
+      color: rgba(255,255,255,0.3); 
+      letter-spacing: 0.03em; 
+      margin-bottom: 0.8rem; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+    }
+    .us-footer a.logout-link { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      font-size: 0.75rem; 
+      color: rgba(255,255,255,0.4); 
+      text-decoration: none; 
+      letter-spacing: 0.05em; 
+      padding: 0.4rem 0; 
+      transition: color 0.2s; 
+    }
     .us-footer a.logout-link:hover { color: #fff; }
 
     /* ── Main content ── */
