@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.mail import send_mail
 from django.conf import settings
+from django.db.models import Sum
 from testproj.models import DateEntry, BookingInquiry
 
 # ── CONSTANTS ─────────────────────────────────────────────────────────────────
@@ -78,7 +79,19 @@ def home(request):
     return render(request, 'testproj/home.html')
 
 def about(request):
-    return render(request, 'testproj/about.html')
+    done_qs = DateEntry.objects.filter(status='done')
+
+    total_events       = done_qs.count()
+    total_accommodated = done_qs.aggregate(total=Sum('pax'))['total'] or 0
+    venue_count        = done_qs.values('venue').distinct().count()
+    ongoing_count      = done_qs.filter(date__year=date.today().year).count()
+
+    return render(request, 'testproj/about.html', {
+        'total_events':       total_events,
+        'total_accommodated': total_accommodated,
+        'venue_count':        venue_count,
+        'ongoing_count':      ongoing_count,
+    })
 
 def events(request):
     return render(request, 'testproj/events.html')
