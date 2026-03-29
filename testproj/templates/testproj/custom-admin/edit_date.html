@@ -9,6 +9,12 @@
     <div class="divider-line"></div>
   </div>
 
+  {% if is_moderator %}
+  <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);padding:0.8rem 1.2rem;margin-bottom:1.5rem;font-size:0.8rem;color:var(--gold);">
+    ℹ You are logged in as a <strong>Moderator</strong>. You can only update Pax and Notes.
+  </div>
+  {% endif %}
+
   <div class="form-card">
     {# Read-only info panel #}
     <div style="background:var(--bg); border:1px solid var(--border); padding:1.2rem 1.5rem; margin-bottom:2rem;">
@@ -41,7 +47,9 @@
       </div>
     </div>
 
-    <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;">Admin-Editable Fields</p>
+    <p style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;">
+      {% if is_moderator %}Editable Fields{% else %}Admin-Editable Fields{% endif %}
+    </p>
 
     <form method="POST">
       {% csrf_token %}
@@ -57,7 +65,7 @@
         <textarea name="notes" rows="4"
           style="width:100%;padding:0.85rem 1rem;border:1px solid var(--input-border);background:var(--input-bg);font-family:'Jost',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color 0.2s,background 0.3s;resize:vertical;"
           placeholder="Internal notes: setup instructions, special requirements, reminders…">{{ entry.notes }}</textarea>
-        <p class="field-hint">Notes are visible to admins only and are never deleted — each save appends to the history below.</p>
+        <p class="field-hint">Notes are visible to admins only.</p>
       </div>
 
       {% if entry.notes_history %}
@@ -77,6 +85,14 @@
       <div class="form-actions">
         <button type="submit" class="btn-primary">Save Changes</button>
         <a href="{% url 'custom_admin_dates' %}" class="btn-ghost">Cancel</a>
+        {% if not is_moderator %}
+          <a href="{% url 'custom_admin_delete_date' entry.pk %}"
+             class="btn-ghost"
+             style="color:#e74c3c;border-color:#e74c3c;margin-left:auto;"
+             onclick="return confirm('Delete this booking permanently?')">
+            Delete
+          </a>
+        {% endif %}
       </div>
     </form>
   </div>
