@@ -80,7 +80,9 @@
     <div id="modalStats" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.4rem;"></div>
     <div id="modalEventsList"></div>
     <div style="margin-top:1.5rem;display:flex;gap:0.8rem;">
+      {% if not is_moderator %}
       <a id="modalAddLink" href="{% url 'custom_admin_add_date' %}" class="btn-primary" style="padding:0.7rem 1.4rem;">+ Add Date</a>
+      {% endif %}
       <button id="dayModalCancel" class="btn-ghost" style="padding:0.7rem 1.4rem;cursor:pointer;">Close</button>
     </div>
   </div>
@@ -400,7 +402,8 @@
 
     var mm = String(m + 1).padStart(2, '0');
     var dd = String(d).padStart(2, '0');
-    document.getElementById('modalAddLink').href = '{% url "custom_admin_add_date" %}?date=' + y + '-' + mm + '-' + dd;
+    var addLink = document.getElementById('modalAddLink');
+    if (addLink) addLink.href = '{% url "custom_admin_add_date" %}?date=' + y + '-' + mm + '-' + dd;
 
     var modal = document.getElementById('dayModal');
     modal.style.display = 'flex';
