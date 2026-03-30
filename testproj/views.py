@@ -5,8 +5,9 @@ from django.contrib import messages
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.mail import send_mail
 from django.conf import settings
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from testproj.models import DateEntry, BookingInquiry
+from django.utils import timezone
 
 # ── CONSTANTS ─────────────────────────────────────────────────────────────────
 VENUE_NAMES = {
@@ -79,19 +80,30 @@ def home(request):
     return render(request, 'testproj/home.html')
 
 def about(request):
-    done_qs = DateEntry.objects.filter(status='done')
-
-    total_events       = done_qs.count()
-    total_accommodated = done_qs.aggregate(total=Sum('pax'))['total'] or 0
-    venue_count        = done_qs.values('venue').distinct().count()
-    ongoing_count      = done_qs.filter(date__year=date.today().year).count()
-
-    return render(request, 'testproj/about.html', {
+    current_year = timezone.now().year
+    venue_count = len(VENUE_NAMES)
+    total_events = BookingInquiry.objects.filter(
+        status='confirmed'
+    ).count()
+    total_accommodated = (
+        BookingInquiry.objects
+        .filter(status='confirmed')
+        .aggregate(total=Sum('pax'))
+        ['total'] or 0
+    )
+    ongoing_count = BookingInquiry.objects.filter(
+        status='confirmed',
+        submitted_at__year=current_year,
+    ).count()
+ 
+    context = {
+        'venue_count':        venue_count,
         'total_events':       total_events,
         'total_accommodated': total_accommodated,
-        'venue_count':        venue_count,
         'ongoing_count':      ongoing_count,
-    })
+    }
+ 
+    return render(request, 'testproj/about.html', context)
 
 def events(request):
     return render(request, 'testproj/events.html')

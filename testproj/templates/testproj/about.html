@@ -152,31 +152,70 @@
         <div class="stats-sub">our farm at a glance</div>
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="number">4</div>
+                <div class="number" data-target="4">0</div>
                 <div class="label">Hectares of Farm</div>
             </div>
             <div class="stats-divider"></div>
             <div class="stat-item">
-                <div class="number">{{ venue_count }}</div>
+                <div class="number" data-target="{{ venue_count }}">0</div>
                 <div class="label">Event Venues</div>
             </div>
             <div class="stats-divider"></div>
             <div class="stat-item">
-                <div class="number">{{ total_events }}</div>
+                <div class="number" data-target="{{ total_events }}">0</div>
                 <div class="label">Events Hosted</div>
             </div>
             <div class="stats-divider"></div>
             <div class="stat-item">
-                <div class="number">{{ total_accommodated }}</div>
+                <div class="number" data-target="{{ total_accommodated }}">0</div>
                 <div class="label">Guests Accommodated</div>
             </div>
             <div class="stats-divider"></div>
             <div class="stat-item">
-                <div class="number">{{ ongoing_count }}</div>
+                <div class="number" data-target="{{ ongoing_count }}">0</div>
                 <div class="label">Events This Year</div>
             </div>
         </div>
     </section>
+
+    <script>
+    // ── Stats count-up animation (fires once when section enters viewport) ──
+    (function () {
+        const counters = document.querySelectorAll('.stats-section .number[data-target]');
+        if (!counters.length) return;
+
+        const duration = 1800; // ms
+
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target, 10);
+            if (isNaN(target) || target === 0) { el.textContent = '0'; return; }
+
+            const start    = performance.now();
+            const suffix   = target >= 100 ? '+' : ''; // add "+" for big numbers
+
+            function step(now) {
+                const elapsed  = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                // ease-out quad
+                const eased    = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.floor(eased * target) + (progress < 1 ? '' : suffix);
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        counters.forEach(el => observer.observe(el));
+    })();
+    </script>
 
     <!-- FILM & PRODUCTION SHOOTS -->
     <section class="film-section">

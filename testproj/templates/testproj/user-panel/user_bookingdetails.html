@@ -81,10 +81,10 @@
               value="{{ booking.requested_new_date|date:'Y-m-d'|default:'' }}">
           </div>
           <div class="field-group">
-            <label>Reason (optional)</label>
-            <textarea name="reschedule_reason" rows="2"
+            <label>Reason <span style="color:#c0392b;">*</span></label>
+            <textarea name="reschedule_reason" rows="2" required
               style="width:100%;padding:0.8rem 1rem;border:1px solid var(--input-border);background:var(--input-bg);font-family:'Jost',sans-serif;font-size:0.85rem;color:var(--text);outline:none;resize:vertical;transition:border-color 0.2s;"
-              placeholder="Let us know why you need to reschedule…">{{ booking.reschedule_reason|default:'' }}</textarea>
+              placeholder="Please tell us why you need to reschedule…">{{ booking.reschedule_reason|default:'' }}</textarea>
           </div>
           <button type="submit" class="btn-primary">Submit Reschedule Request</button>
         </form>
@@ -164,30 +164,101 @@
   </div>
 
   <style>
-    .status-banner { padding:1.5rem; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center; color:#fff; }
+    .status-banner { 
+      padding:1.5rem; 
+      margin-bottom:1.5rem; 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+      color:#fff; 
+    }
     .status-banner--booked      { background: #c9a84c; }
     .status-banner--canceled    { background: #c0392b; }
     .status-banner--rescheduled { background: #2980b9; }
     .status-banner--ongoing     { background: #1e8449; }
     .status-banner--done        { background: #7f8c8d; }
 
-    .detail-card { background: var(--card-bg); padding: 1.8rem; }
-    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
-    .detail-item { display: flex; flex-direction: column; gap: 3px; }
-    .detail-label { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
-    .detail-value { font-size: 0.9rem; color: var(--text); }
-
-    .action-card { background: var(--card-bg); padding: 1.5rem; }
+    .detail-card { 
+      background: var(--card-bg); 
+      padding: 1.8rem; 
+    }
+    .detail-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 1rem 2rem; 
+    }
+    .detail-item { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 3px; 
+    }
+    .detail-label { 
+      font-size: 0.62rem; 
+      letter-spacing: 0.15em; 
+      text-transform: uppercase; 
+      color: var(--text-muted); 
+    }
+    .detail-value { 
+      font-size: 0.9rem; 
+      color: var(--text); 
+    }
+    .action-card { 
+      background: var(--card-bg); 
+      padding: 1.5rem; 
+    }
     .field-group { margin-bottom: 1rem; }
-    .field-group label { display: block; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
-    .field-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--input-border); background: var(--input-bg); font-family: 'Jost', sans-serif; font-size: 0.88rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+    .field-group label { 
+      display: block; 
+      font-size: 0.65rem; 
+      letter-spacing: 0.12em; 
+      text-transform: uppercase; 
+      color: var(--text-muted); 
+      margin-bottom: 0.4rem; 
+    }
+    .field-group input { 
+      width: 100%; 
+      padding: 0.8rem 1rem; 
+      border: 1px solid var(--input-border); 
+      background: var(--input-bg); 
+      font-family: 'Jost', sans-serif; 
+      font-size: 0.88rem; 
+      color: var(--text); 
+      outline: none; 
+      transition: border-color 0.2s; 
+    }
     .field-group input:focus { border-color: var(--gold); }
 
-    .timeline { position: relative; padding-left: 1.2rem; }
-    .timeline::before { content: ''; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 1px; background: var(--border); }
-    .timeline-item { position: relative; margin-bottom: 1.2rem; padding-left: 1rem; }
-    .timeline-dot { position: absolute; left: -1.2rem; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--border); border: 2px solid var(--card-bg); }
-    .timeline-item--current .timeline-dot { background: var(--gold); }
+    .timeline { 
+      position: relative; 
+      padding-left: 1.2rem; 
+    }
+    .timeline::before { 
+      content: ''; 
+      position: absolute; 
+      left: 4px; 
+      top: 6px; 
+      bottom: 6px; 
+      width: 1px; 
+      background: var(--border); 
+    }
+    .timeline-item { 
+      position: relative; 
+      margin-bottom: 1.2rem; 
+      padding-left: 1rem; 
+    }
+    .timeline-dot { 
+      position: absolute; 
+      left: -1.2rem; 
+      top: 4px; 
+      width: 9px; 
+      height: 9px; 
+      border-radius: 50%; 
+      background: var(--border); 
+      border: 2px solid var(--card-bg); 
+    }
+    .timeline-item--current .timeline-dot { 
+      background: var(--gold); 
+    }
 
   </style>
 {% endblock %}
