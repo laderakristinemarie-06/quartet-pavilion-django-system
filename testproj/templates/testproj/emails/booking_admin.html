@@ -1,62 +1,160 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f4f4f4;font-family:'Helvetica Neue',Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:2rem 0;">
-  <tr><td align="center">
-    <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Booking Inquiry</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f1eb;font-family:'Georgia',serif;">
 
-      <tr><td style="background:#1a2e1a;padding:1.5rem;text-align:center;">
-        <h1 style="font-family:Georgia,serif;font-size:1.3rem;color:#c9a84c;margin:0;font-weight:400;">New Booking Inquiry</h1>
-        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9ab89a;margin:0.3rem 0 0;">Quartet Pavilion Admin</p>
-      </td></tr>
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1eb;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
-      <tr><td style="padding:2rem;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background:#1a2e1a;margin-bottom:1.5rem;">
-          <tr><td style="padding:1rem 1.5rem;display:flex;justify-content:space-between;">
-            <div>
-              <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9ab89a;margin:0 0 0.2rem;">Booking ID</p>
-              <p style="font-family:Georgia,serif;font-size:1.5rem;color:#c9a84c;margin:0;font-weight:400;">{{ booking_id }}</p>
-            </div>
-          </td></tr>
+          <!-- HEADER -->
+          <tr>
+            <td style="background:#1a2e1a;padding:36px 40px;text-align:center;">
+              <p style="margin:0 0 4px 0;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:#c9a84c;font-family:'Georgia',serif;">Est. 2026</p>
+              <h1 style="margin:0;font-size:32px;font-weight:400;color:#fff;letter-spacing:0.15em;text-transform:uppercase;font-family:'Georgia',serif;">QUARTET</h1>
+              <p style="margin:0;font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#c9a84c;font-family:'Georgia',serif;">PAVILION</p>
+              <div style="width:48px;height:1px;background:#c9a84c;margin:16px auto 12px;"></div>
+              <p style="margin:0;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#8aaa8a;font-family:'Georgia',serif;">New Booking Inquiry — Action Required</p>
+            </td>
+          </tr>
+
+          <!-- ALERT BANNER -->
+          <tr>
+            <td style="background:#c9a84c;padding:12px 40px;text-align:center;">
+              <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#1a2e1a;font-weight:bold;">⚠ New Inquiry Awaiting Your Approval</p>
+            </td>
+          </tr>
+
+          <!-- BODY -->
+          <tr>
+            <td style="background:#fffef9;padding:40px 40px 32px;">
+
+              <!-- Booking Reference -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+                <tr>
+                  <td style="background:#1a2e1a;padding:16px 20px;">
+                    <p style="margin:0 0 4px;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a84c;">Booking Reference</p>
+                    <p style="margin:0;font-size:24px;color:#c9a84c;letter-spacing:0.12em;font-family:'Georgia',serif;">{booking_id}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Client Info -->
+              <p style="margin:0 0 12px;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a84c;border-bottom:1px solid #e8e0d0;padding-bottom:8px;">Client Information</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                <tr>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Name</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{name}</p>
+                  </td>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Email</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{email}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" style="padding:8px 0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Phone</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{phone}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Reservation Details -->
+              <p style="margin:0 0 12px;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a84c;border-bottom:1px solid #e8e0d0;padding-bottom:8px;">Reservation Details</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                <tr>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Venue</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{venue_name}</p>
+                  </td>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Event</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{event_name}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Date</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{date_val}</p>
+                  </td>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Time</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{start_time} – {end_time}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" style="padding:8px 0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Guests</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{pax} pax</p>
+                  </td>
+                  <td width="50%" style="padding:8px 0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Time Slot</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{time_slot}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Payment Details -->
+              <p style="margin:0 0 12px;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#c9a84c;border-bottom:1px solid #e8e0d0;padding-bottom:8px;">Payment Details</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                <tr>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Method</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{payment}</p>
+                  </td>
+                  <td width="50%" style="padding:8px 0;border-bottom:1px solid #f0ebe0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Reference #</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">{reference_number}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" style="padding:8px 0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Estimated Total</p>
+                    <p style="margin:0;font-size:13px;color:#1a2e1a;">&#8369;{total_price}</p>
+                  </td>
+                  <td width="50%" style="padding:8px 0;vertical-align:top;">
+                    <p style="margin:0 0 2px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#999;">Downpayment</p>
+                    <p style="margin:0;font-size:13px;color:#c9a84c;font-weight:bold;">&#8369;{downpay_amount}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Notes -->
+              {notes_box}
+
+              <!-- CTA -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+                <tr>
+                  <td align="center">
+                    <a href="http://127.0.0.1:8000/manage/inquiries/"
+                       style="display:inline-block;background:#1a2e1a;color:#c9a84c;text-decoration:none;padding:14px 32px;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;">
+                      Review in Admin Panel →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background:#1a2e1a;padding:24px 40px;text-align:center;">
+              <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#8aaa8a;">QUARTET PAVILION · Est. 2026</p>
+              <a href="mailto:quartetpavilion@gmail.com" style="color:#c9a84c;font-size:11px;text-decoration:none;">quartetpavilion@gmail.com</a>
+            </td>
+          </tr>
+
         </table>
+      </td>
+    </tr>
+  </table>
 
-        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin:0 0 0.8rem;padding-bottom:0.4rem;border-bottom:1px solid #eee;">Customer</p>
-        <table width="100%" cellpadding="6" cellspacing="0" style="font-size:0.85rem;margin-bottom:1.5rem;">
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;width:40%;">Name</td><td style="color:#1a2e1a;font-weight:500;">{{ name }}</td></tr>
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Email</td><td style="color:#1a2e1a;font-weight:500;">{{ email }}</td></tr>
-          <tr><td style="color:#888;">Phone</td><td style="color:#1a2e1a;font-weight:500;">{{ phone }}</td></tr>
-        </table>
-
-        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin:0 0 0.8rem;padding-bottom:0.4rem;border-bottom:1px solid #eee;">Reservation</p>
-        <table width="100%" cellpadding="6" cellspacing="0" style="font-size:0.85rem;margin-bottom:1.5rem;">
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;width:40%;">Venue</td><td style="color:#1a2e1a;font-weight:500;">{{ venue_name }}</td></tr>
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Package</td><td style="color:#1a2e1a;font-weight:500;">{{ event_name }}</td></tr>
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Date</td><td style="color:#1a2e1a;font-weight:500;">{{ date }}</td></tr>
-          {% if start_time %}<tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Time</td><td style="color:#1a2e1a;font-weight:500;">{{ start_time }} – {{ end_time }}</td></tr>{% endif %}
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Guests</td><td style="color:#1a2e1a;font-weight:500;">{{ pax }} pax</td></tr>
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Estimated Total</td><td style="color:#1a2e1a;font-weight:500;">₱ {{ total_price }}</td></tr>
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Downpayment (30%)</td><td style="color:#c9a84c;font-weight:500;">₱ {{ downpay_amount }}</td></tr>
-          <tr style="border-bottom:1px solid #f5f5f5;"><td style="color:#888;">Payment Method</td><td style="color:#1a2e1a;font-weight:500;">{{ payment|upper }}</td></tr>
-          {% if reference_number %}<tr><td style="color:#888;">Reference #</td><td style="color:#1a2e1a;font-weight:500;">{{ reference_number }}</td></tr>{% endif %}
-        </table>
-
-        {% if notes %}
-        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin:0 0 0.5rem;">Client Notes</p>
-        <p style="font-size:0.82rem;color:#555;background:#f9f6f2;padding:0.8rem;margin:0 0 1.5rem;">{{ notes }}</p>
-        {% endif %}
-
-        <p style="text-align:center;margin-top:1rem;">
-          <a href="http://localhost:8000/manage/inquiries/" style="background:#1a2e1a;color:#fff;padding:0.8rem 1.5rem;text-decoration:none;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;">View in Admin Panel</a>
-        </p>
-      </td></tr>
-
-      <tr><td style="background:#1a2e1a;padding:1rem;text-align:center;">
-        <p style="font-size:0.65rem;color:#6b8c6b;margin:0;">QUARTET PAVILION ADMIN NOTIFICATION</p>
-      </td></tr>
-
-    </table>
-  </td></tr>
-</table>
 </body>
 </html>
