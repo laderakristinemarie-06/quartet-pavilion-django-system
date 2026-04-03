@@ -3,7 +3,7 @@ from datetime import date
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.serializers.json import DjangoJSONEncoder
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 from django.db.models import Sum, Count
 from testproj.models import DateEntry, BookingInquiry
@@ -32,15 +32,10 @@ def admin_required(view_func):
 
 
 def _pending_count():
-    """Helper: unread/pending inquiry count for sidebar badge."""
     return BookingInquiry.objects.filter(status='pending').count()
 
 
 def _build_bookings_json(queryset):
-    """
-    Serialize a DateEntry queryset into the JSON shape expected by
-    admin_calendar.html and user_calendar.html.
-    """
     data = []
     for d in queryset:
         data.append({
@@ -59,21 +54,22 @@ def _build_bookings_json(queryset):
 
 
 def _venue_calendar_context(venue_slug):
-    booked = DateEntry.objects.filter(
-        venue=venue_slug, status='booked'
-    ).values('date', 'event_name', 'pax', 'time_slot')
-    unavailable = DateEntry.objects.filter(
-        venue=venue_slug, status='unavailable'
-    ).values('date')
-    pending = DateEntry.objects.filter(
-        venue=venue_slug, status='pending'
-    ).values('date')
+    booked = DateEntry.objects.filter(venue=venue_slug, status='booked').values('date', 'event_name', 'pax', 'time_slot')
+    unavailable = DateEntry.objects.filter(venue=venue_slug, status='unavailable').values('date')
+    pending = DateEntry.objects.filter(venue=venue_slug, status='pending').values('date')
     return {
         'booked_dates':      json.dumps(list(booked),      cls=DjangoJSONEncoder),
         'unavailable_dates': json.dumps(list(unavailable), cls=DjangoJSONEncoder),
         'pending_dates':     json.dumps(list(pending),     cls=DjangoJSONEncoder),
         'venue_slug':        venue_slug,
     }
+
+
+def _read_email_template(filename):
+    import os
+    path = os.path.join(settings.BASE_DIR, 'testproj', 'templates', 'testproj', 'emails', filename)
+    with open(path, 'r', encoding='utf-8') as f:
+        return f.read()
 
 # ── GENERAL VIEWS ─────────────────────────────────────────────────────────────
 def home(request):
@@ -82,28 +78,19 @@ def home(request):
 def about(request):
     current_year = timezone.now().year
     venue_count = len(VENUE_NAMES)
-    total_events = BookingInquiry.objects.filter(
-        status='confirmed'
-    ).count()
+    total_events = BookingInquiry.objects.filter(status='confirmed').count()
     total_accommodated = (
-        BookingInquiry.objects
-        .filter(status='confirmed')
-        .aggregate(total=Sum('pax'))
-        ['total'] or 0
+        BookingInquiry.objects.filter(status='confirmed').aggregate(total=Sum('pax'))['total'] or 0
     )
     ongoing_count = BookingInquiry.objects.filter(
-        status='confirmed',
-        submitted_at__year=current_year,
+        status='confirmed', submitted_at__year=current_year,
     ).count()
- 
-    context = {
+    return render(request, 'testproj/about.html', {
         'venue_count':        venue_count,
         'total_events':       total_events,
         'total_accommodated': total_accommodated,
         'ongoing_count':      ongoing_count,
-    }
- 
-    return render(request, 'testproj/about.html', context)
+    })
 
 def events(request):
     return render(request, 'testproj/events.html')
@@ -169,87 +156,82 @@ def submit_booking(request):
         )
 
         booking_id = f'QP-{inquiry.pk:05d}'
+        venue_name = VENUE_NAMES.get(venue, venue)
 
-        try:
-            send_mail(
-                subject=f'Booking Inquiry Received — Quartet Pavilion ({booking_id})',
-                message=f'''Hi {name},
-
-Thank you for your interest in {VENUE_NAMES.get(venue, venue)}!
-
-We have received your booking inquiry and our team will review it within 24 hours.
-You will receive another email once your booking is confirmed or if we need more details.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-BOOKING INQUIRY DETAILS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Booking ID   : {booking_id}
-Venue        : {VENUE_NAMES.get(venue, venue)}
-Event        : {event_name}
-Date         : {date_val}
-Time         : {start_time} – {end_time}
-Guests       : {pax} pax
-Time Slot    : {time_slot}
-Payment      : {payment.upper()}
-Est. Total   : ₱{total_price}
-Downpayment  : ₱{downpay_amount}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Status: PENDING — Awaiting admin confirmation
-
-Please note: Your date is tentatively reserved but NOT yet confirmed.
-Do not make any final arrangements until you receive your confirmation email.
-
-Thank you for choosing Quartet Pavilion!
-''',
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[email],
-                fail_silently=False,
+        # ── HTML email helpers ────────────────────────────────────────────────
+        walkin_box = ''
+        if payment.lower() == 'walkin':
+            walkin_box = (
+                '<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">'
+                '<tr><td style="background:#f9f6f0;border-left:3px solid #c9a84c;padding:14px 16px;">'
+                '<p style="margin:0 0 4px;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;">Walk-In Downpayment</p>'
+                '<p style="margin:0;font-size:12px;color:#555;line-height:1.6;">'
+                'Please visit Quartet Pavilion to pay your downpayment in person.<br>'
+                'Office hours: Monday - Saturday, 8:00 AM - 5:00 PM<br>'
+                'Your booking is held for 3 days pending payment.<br>'
+                'Bring this email and a valid ID.'
+                '</p></td></tr></table>'
             )
+
+        notes_box_client = ''
+        if notes:
+            notes_box_client = (
+                '<p style="margin:20px 0 12px;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;'
+                'color:#c9a84c;border-bottom:1px solid #e8e0d0;padding-bottom:8px;">Your Notes</p>'
+                f'<p style="margin:0 0 20px;font-size:13px;color:#555;font-style:italic;">{notes}</p>'
+            )
+
+        notes_box_admin = ''
+        if notes:
+            notes_box_admin = (
+                '<p style="margin:0 0 12px;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;'
+                'color:#c9a84c;border-bottom:1px solid #e8e0d0;padding-bottom:8px;">Client Notes</p>'
+                f'<p style="margin:0 0 20px;font-size:13px;color:#555;font-style:italic;">{notes}</p>'
+            )
+
+        # ── CLIENT email ──────────────────────────────────────────────────────
+        try:
+            client_html = _read_email_template('booking_client.html')
+            client_html = client_html.format(
+                name=name, venue_name=venue_name, booking_id=booking_id,
+                event_name=event_name, date_val=date_val,
+                start_time=start_time or '—', end_time=end_time or '—',
+                pax=pax or '—', total_price=total_price,
+                downpay_amount=downpay_amount, payment=payment.upper(),
+                walkin_box=walkin_box, notes_box=notes_box_client,
+            )
+            msg = EmailMultiAlternatives(
+                subject=f'Booking Inquiry Received — Quartet Pavilion ({booking_id})',
+                body=f'Hi {name}, your booking inquiry {booking_id} has been received. We will confirm within 24 hours.',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[email],
+            )
+            msg.attach_alternative(client_html, 'text/html')
+            msg.send(fail_silently=False)
         except Exception as e:
             print(f"Client email error: {e}")
 
+        # ── ADMIN email ───────────────────────────────────────────────────────
         try:
-            send_mail(
-                subject=f'⚠️ New Booking Inquiry — {name} | {VENUE_NAMES.get(venue, venue)} | {date_val}',
-                message=f'''A new booking inquiry has been submitted and is waiting for your approval.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NEW BOOKING INQUIRY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Booking ID   : {booking_id}
-Status       : PENDING — Action Required
-
-CLIENT INFO
-Name         : {name}
-Email        : {email}
-Phone        : {phone}
-
-RESERVATION
-Venue        : {VENUE_NAMES.get(venue, venue)}
-Event        : {event_name}
-Date         : {date_val}
-Time         : {start_time} – {end_time}
-Guests       : {pax} pax
-Time Slot    : {time_slot}
-
-PAYMENT
-Method       : {payment.upper()}
-Reference #  : {reference_number}
-Est. Total   : ₱{total_price}
-Downpayment  : ₱{downpay_amount}
-
-NOTES
-{notes or 'None'}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Please log in to the admin panel to CONFIRM or DECLINE this booking:
-http://127.0.0.1:8000/manage/inquiries/
-''',
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.ADMIN_EMAIL],
-                fail_silently=False,
+            admin_html = _read_email_template('booking_admin.html')
+            admin_html = admin_html.format(
+                booking_id=booking_id, name=name, email=email,
+                phone=phone or '—', venue_name=venue_name,
+                event_name=event_name, date_val=date_val,
+                start_time=start_time or '—', end_time=end_time or '—',
+                pax=pax or '—', time_slot=time_slot or '—',
+                payment=payment.upper(), reference_number=reference_number or '—',
+                total_price=total_price, downpay_amount=downpay_amount,
+                notes_box=notes_box_admin,
             )
+            msg2 = EmailMultiAlternatives(
+                subject=f'New Booking Inquiry — {name} | {venue_name} | {date_val}',
+                body=f'New booking inquiry {booking_id} from {name} for {date_val}.',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[settings.ADMIN_EMAIL],
+            )
+            msg2.attach_alternative(admin_html, 'text/html')
+            msg2.send(fail_silently=False)
         except Exception as e:
             print(f"Admin email error: {e}")
 
@@ -343,7 +325,6 @@ def custom_admin_login(request):
         if user is not None and user.is_staff:
             request.session['is_admin']       = True
             request.session['admin_username'] = user.username
-            # Superusers are moderators (limited access)
             request.session['is_moderator']   = user.is_superuser
             return redirect('custom_admin_dashboard')
         else:
@@ -363,12 +344,8 @@ def custom_admin_dashboard(request):
         'pending_count':     BookingInquiry.objects.filter(status='pending').count(),
         'unavailable_count': DateEntry.objects.filter(status='unavailable').count(),
         'new_bookings':      BookingInquiry.objects.filter(status='pending').count(),
-        'upcoming':          DateEntry.objects.filter(
-                                 status='booked', date__gte=today
-                             ).order_by('date')[:10],
-        'recent_bookings':   BookingInquiry.objects.filter(
-                                 status='pending'
-                             ).order_by('-submitted_at')[:5],
+        'upcoming':          DateEntry.objects.filter(status='booked', date__gte=today).order_by('date')[:10],
+        'recent_bookings':   BookingInquiry.objects.filter(status='pending').order_by('-submitted_at')[:5],
     }
     return render(request, 'testproj/custom-admin/dashboard.html', context)
 
@@ -394,7 +371,6 @@ def custom_admin_dates(request):
 
 @admin_required
 def custom_admin_add_date(request):
-    # Moderators cannot add dates
     if request.session.get('is_moderator', False):
         messages.error(request, 'You do not have permission to add dates.')
         return redirect('custom_admin_dates')
@@ -427,7 +403,6 @@ def custom_admin_edit_date(request, pk):
     is_moderator = request.session.get('is_moderator', False)
     if request.method == 'POST':
         if is_moderator:
-            # Moderators can only update pax and notes
             entry.pax   = request.POST.get('pax') or None
             entry.notes = request.POST.get('notes', '').strip()
         else:
@@ -463,15 +438,12 @@ def custom_admin_delete_date(request, pk):
 def custom_admin_inquiries(request):
     venue_filter  = request.GET.get('venue', '')
     status_filter = request.GET.get('status', '')
-
     qs = BookingInquiry.objects.all()
     if venue_filter:
         qs = qs.filter(venue=venue_filter)
     if status_filter:
         qs = qs.filter(status=status_filter)
-
     qs.filter(is_read=False).update(is_read=True)
-
     return render(request, 'testproj/custom-admin/inquiries.html', {
         'bookings':       qs.order_by('-submitted_at'),
         'venue_filter':   venue_filter,
@@ -493,11 +465,9 @@ def custom_admin_confirm_inquiry(request, pk):
     inquiry = get_object_or_404(BookingInquiry, pk=pk)
     if request.method == 'POST':
         booking_id = f'QP-{inquiry.pk:05d}'
-
         inquiry.status  = 'confirmed'
         inquiry.is_read = True
         inquiry.save()
-
         DateEntry.objects.update_or_create(
             venue=inquiry.venue, date=inquiry.date,
             defaults={
@@ -510,41 +480,17 @@ def custom_admin_confirm_inquiry(request, pk):
                 'notes':      inquiry.notes,
             },
         )
-
         try:
             send_mail(
-                subject=f'✅ Booking Confirmed! — Quartet Pavilion ({booking_id})',
-                message=f'''Hi {inquiry.name},
-
-Great news! Your booking has been CONFIRMED by our team.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-BOOKING CONFIRMATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Booking ID   : {booking_id}
-Status       : ✅ CONFIRMED
-
-Venue        : {VENUE_NAMES.get(inquiry.venue, inquiry.venue)}
-Event        : {inquiry.event_name}
-Date         : {inquiry.date}
-Guests       : {inquiry.pax} pax
-Time Slot    : {inquiry.time_slot}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Your date is now officially reserved at Quartet Pavilion!
-
-Warm regards,
-Quartet Pavilion Team
-''',
+                subject=f'Booking Confirmed! — Quartet Pavilion ({booking_id})',
+                message=f'Hi {inquiry.name}, your booking {booking_id} has been confirmed!',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[inquiry.email],
                 fail_silently=False,
             )
         except Exception as e:
             print(f"Confirmation email error: {e}")
-
-        messages.success(request, f'✅ Booking confirmed! {inquiry.name} on {inquiry.date} is now on the calendar.')
-
+        messages.success(request, f'Booking confirmed! {inquiry.name} on {inquiry.date} is now on the calendar.')
     return redirect('custom_admin_inquiries')
 
 # ── ADMIN INQUIRIES — DECLINE ─────────────────────────────────────────────────
@@ -553,42 +499,21 @@ def custom_admin_decline_inquiry(request, pk):
     inquiry = get_object_or_404(BookingInquiry, pk=pk)
     if request.method == 'POST':
         booking_id = f'QP-{inquiry.pk:05d}'
-
         inquiry.status  = 'declined'
         inquiry.is_read = True
         inquiry.save()
-
-        DateEntry.objects.filter(
-            venue=inquiry.venue, date=inquiry.date, status='pending'
-        ).delete()
-
+        DateEntry.objects.filter(venue=inquiry.venue, date=inquiry.date, status='pending').delete()
         try:
             send_mail(
                 subject=f'Booking Update — Quartet Pavilion ({booking_id})',
-                message=f'''Hi {inquiry.name},
-
-Unfortunately, we are unable to confirm your booking for {inquiry.date} at this time.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Booking ID   : {booking_id}
-Date         : {inquiry.date}
-Status       : ❌ DECLINED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-We encourage you to check our calendar for other available dates.
-
-Warm regards,
-Quartet Pavilion Team
-''',
+                message=f'Hi {inquiry.name}, unfortunately we are unable to confirm your booking for {inquiry.date}.',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[inquiry.email],
                 fail_silently=False,
             )
         except Exception as e:
             print(f"Decline email error: {e}")
-
         messages.success(request, f'Inquiry from {inquiry.name} declined. {inquiry.date} is available again.')
-
     return redirect('custom_admin_inquiries')
 
 # ── ADMIN INQUIRIES — SAVE NOTE ───────────────────────────────────────────────
@@ -636,43 +561,36 @@ def custom_admin_calendar(request):
     })
 
 # ── VENUE VIEWS ───────────────────────────────────────────────────────────────
-
-# Birthday
 def birthday_overview(request):     return render(request, 'testproj/birthday_overview.html')
 def birthday_gallery(request):      return render(request, 'testproj/birthday_gallery.html')
 def birthday_room(request):         return render(request, 'testproj/birthday_room.html')
 def birthday_calendar(request):     return render(request, 'testproj/birthday_calendar.html', _venue_calendar_context('birthday'))
 def birthday_testimonials(request): return render(request, 'testproj/birthday_testimonials.html')
 
-# Wedding
 def wedding_overview(request):     return render(request, 'testproj/wedding_overview.html')
 def wedding_gallery(request):      return render(request, 'testproj/wedding_gallery.html')
 def wedding_room(request):         return render(request, 'testproj/wedding_room.html')
 def wedding_calendar(request):     return render(request, 'testproj/wedding_calendar.html', _venue_calendar_context('wedding'))
 def wedding_testimonials(request): return render(request, 'testproj/wedding_testimonials.html')
 
-# Family
 def family_overview(request):     return render(request, 'testproj/family_overview.html')
 def family_gallery(request):      return render(request, 'testproj/family_gallery.html')
 def family_room(request):         return render(request, 'testproj/family_room.html')
 def family_calendar(request):     return render(request, 'testproj/family_calendar.html', _venue_calendar_context('family'))
 def family_testimonials(request): return render(request, 'testproj/family_testimonials.html')
 
-# Academic
 def academic_overview(request):     return render(request, 'testproj/academic_overview.html')
 def academic_gallery(request):      return render(request, 'testproj/academic_gallery.html')
 def academic_room(request):         return render(request, 'testproj/academic_room.html')
 def academic_calendar(request):     return render(request, 'testproj/academic_calendar.html', _venue_calendar_context('academic'))
 def academic_testimonials(request): return render(request, 'testproj/academic_testimonials.html')
 
-# Corporate
 def corporate_overview(request):     return render(request, 'testproj/corporate_overview.html')
 def corporate_gallery(request):      return render(request, 'testproj/corporate_gallery.html')
 def corporate_room(request):         return render(request, 'testproj/corporate_room.html')
 def corporate_calendar(request):     return render(request, 'testproj/corporate_calendar.html', _venue_calendar_context('corporate'))
 def corporate_testimonials(request): return render(request, 'testproj/corporate_testimonials.html')
 
-# Entertainment
 def entertainment_overview(request):     return render(request, 'testproj/entertainment_overview.html')
 def entertainment_gallery(request):      return render(request, 'testproj/entertainment_gallery.html')
 def entertainment_room(request):         return render(request, 'testproj/entertainment_room.html')
@@ -690,7 +608,6 @@ def user_booking_reschedule(request, pk):
     if not email:
         return redirect('log_in')
     booking = get_object_or_404(DateEntry, pk=pk, email=email)
-
     if request.method == 'POST':
         new_date = request.POST.get('new_date')
         if new_date:
@@ -698,34 +615,19 @@ def user_booking_reschedule(request, pk):
             booking.date   = new_date
             booking.status = 'pending'
             booking.save()
-
             try:
                 send_mail(
                     subject=f'Reschedule Request — {booking.event_name} | {booking.venue}',
-                    message=f'''A client has requested to reschedule their booking.
-
-Client  : {email}
-Venue   : {VENUE_NAMES.get(booking.venue, booking.venue)}
-Event   : {booking.event_name}
-Old Date: {old_date}
-New Date: {new_date}
-
-Please review and confirm or decline in the admin panel:
-http://127.0.0.1:8000/manage/inquiries/
-''',
+                    message=f'Client {email} requested reschedule from {old_date} to {new_date}.\nReview: http://127.0.0.1:8000/manage/inquiries/',
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[settings.ADMIN_EMAIL],
                     fail_silently=True,
                 )
             except Exception as e:
                 print(f"Reschedule email error: {e}")
-
             messages.success(request, f'Reschedule request submitted for {new_date}. Awaiting admin approval.')
             return redirect('user_bookings')
-
-    return render(request, 'testproj/user-panel/user_reschedule.html', {
-        'booking': booking
-    })
+    return render(request, 'testproj/user-panel/user_reschedule.html', {'booking': booking})
 
 # ── USER BOOKING CANCEL ───────────────────────────────────────────────────────
 def user_booking_cancel(request, pk):
@@ -733,55 +635,30 @@ def user_booking_cancel(request, pk):
     if not email:
         return redirect('log_in')
     booking = get_object_or_404(DateEntry, pk=pk, email=email)
-
     if request.method == 'POST':
         venue_name     = VENUE_NAMES.get(booking.venue, booking.venue)
         cancelled_date = booking.date
         booking.delete()
-
         try:
             send_mail(
                 subject=f'Booking Cancelled — {email} | {venue_name} | {cancelled_date}',
-                message=f'''A client has cancelled their booking.
-
-Client : {email}
-Venue  : {venue_name}
-Date   : {cancelled_date}
-
-The date is now available again on the calendar.
-''',
+                message=f'Client {email} cancelled booking for {venue_name} on {cancelled_date}.',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[settings.ADMIN_EMAIL],
                 fail_silently=True,
             )
         except Exception as e:
             print(f"Cancel email error: {e}")
-
         try:
             send_mail(
                 subject='Booking Cancellation Confirmed — Quartet Pavilion',
-                message=f'''Hi,
-
-Your booking has been successfully cancelled.
-
-Venue : {venue_name}
-Date  : {cancelled_date}
-
-If you would like to rebook, please visit our website.
-
-Regards,
-Quartet Pavilion Team
-''',
+                message=f'Your booking for {venue_name} on {cancelled_date} has been successfully cancelled.',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[email],
                 fail_silently=True,
             )
         except Exception as e:
             print(f"Cancel client email error: {e}")
-
         messages.success(request, 'Your booking has been cancelled successfully.')
         return redirect('user_bookings')
-
-    return render(request, 'testproj/user-panel/user_cancel_confirm.html', {
-        'booking': booking
-    })
+    return render(request, 'testproj/user-panel/user_cancel_confirm.html', {'booking': booking})
