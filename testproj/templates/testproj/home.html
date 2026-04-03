@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quartet Pavilion</title>
-    <link rel="icon" href="{% static 'testproj/images/quartetlogo.png' %}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'testproj/css/styles.css' %}">
-    <script src="{% static 'js/scripts.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'testproj/css/homestyles.css' %}">
+    <script src="{% static 'testproj/js/homescripts.js' %}" defer></script>
 </head>
 <body>
     <div class="top-image">
@@ -54,7 +53,7 @@
     </div>
 
     <div class="second-image">
-        <img src="{% static 'testproj/images/f5.jpg' %}">
+        <img src="{% static 'testproj/images/f5.jpg' %}" alt="Story Image 5">
     </div>
 
     <div class="green-page">
@@ -87,7 +86,7 @@
             Enjoy a lavish gardens and beautiful architecture throughout our 4-hectare farm.<br>
             Quartet pavilion's amenities were designed to help you rest, inspire you to create and make your celebrations even more unforgettable.
         </div>
-        <a href="{% url 'events' %}" class="white-button">Explore Quartet Pavilion</a>
+        <a href="#" class="white-button">Explore Quartet Pavilion</a>
     </div>
 
     <footer class="footer-image">
@@ -96,17 +95,15 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <h2 class="logo-small">QUARTET <br><small style="font-size: 0.4em; letter-spacing: 8px;">PAVILION</small></h2>
-                <p>We share news, stories & promos on our newsletter.<br>Nothing but sweet notes - no spam, ever.</p>
+                <p>We share news, stories & promos on our newsletter.<br>Message here for your feedback- no spam, ever.</p>
                 
-                <form class="newsletter-form" action="https://formspree.io/f/mvzbeavr" method="POST" id="signupForm" style="display: flex; flex-direction: column; gap: 10px;">
+                <form class="newsletter-form" action="https://formspree.io/f/mreoyeog" method="POST" id="signupForm" style="display: flex; flex-direction: column; gap: 10px;">
     
-                    <input type="email" name="email" placeholder="Enter your email" required 
+                    <input type="text" name="name" placeholder="Enter your name (optional)" 
                         style="width: 100%; padding: 12px; border: 1px solid #ccc;">
-                
-                    <!-- <textarea name="message" placeholder="Write your feedback/message here..." 
-                        style="width: 100%; height: 80px; padding: 12px; border: 1px solid #c25353; font-family: 'Montserrat', sans-serif;"></textarea> -->
+            
                     
-                    <button type="submit" class="btn-signup" style="width: fit-content;">Sign Up & Send</button>
+                    <button type="submit" class="btn-signup" style="width: fit-content;">Send Message</button>
                 </form>
 
                 <div class="social-links">
@@ -121,7 +118,6 @@
                     <ul>
                         <li><a href="#">Superior Rooms</a></li>
                         <li><a href="#">Deluxe Rooms</a></li>
-                        <li><a href="#">Pet Policy</a></li>
                         <li><a href="#">Plan your visit</a></li>
                     </ul>
                 </div>
