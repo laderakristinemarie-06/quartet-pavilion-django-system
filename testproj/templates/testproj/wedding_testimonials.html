@@ -6,7 +6,6 @@
 {% block page_layout %}
 <div class="page-layout">
 
-  <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
     <h1 class="sidebar__title">Wedding<br>Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
@@ -18,10 +17,8 @@
     </nav>
   </aside>
 
-  <!-- CENTER: Testimonials -->
   <main class="center-panel center-panel--testimonials">
 
-    <!-- Rating summary -->
     <div class="rating-bar">
       <span class="rating-bar__score">4.9</span>
       <div class="rating-bar__right">
@@ -48,7 +45,6 @@
       </div>
     </div>
 
-    <!-- Review cards -->
     <div class="testimonial-card">
       <p class="testimonial-card__quote">
         We always dreamed of a garden wedding, and Quartet Pavilion gave us exactly that — and so much more.
@@ -57,7 +53,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Isabella &amp; Marco Santos</span>
+          <span class="testimonial-card__name">Verified Couple</span>
           <span class="testimonial-card__event">Wedding Reception · February 2026</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -72,7 +68,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Sofia &amp; Daniel Reyes</span>
+          <span class="testimonial-card__name">Verified Couple</span>
           <span class="testimonial-card__event">Garden Wedding · January 2026</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -87,7 +83,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Carla &amp; James Villanueva</span>
+          <span class="testimonial-card__name">Verified Couple</span>
           <span class="testimonial-card__event">Intimate Wedding · December 2025</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -102,7 +98,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Patricia &amp; Miguel Cruz</span>
+          <span class="testimonial-card__name">Verified Couple</span>
           <span class="testimonial-card__event">Intimate Wedding · November 2025</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -117,7 +113,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Ana &amp; Luis Garcia</span>
+          <span class="testimonial-card__name">Verified Couple</span>
           <span class="testimonial-card__event">Wedding · October 2025</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -126,13 +122,13 @@
 
   </main>
 
-  <!-- RIGHT PANEL -->
   <aside class="right-panel">
     <p class="right-panel__eyebrow">Couple Reviews</p>
     <h2 class="right-panel__heading">Love Stories Told by the Couples Themselves</h2>
     <div class="right-panel__divider" aria-hidden="true"></div>
     <p class="right-panel__body">
-      Our wedding couples are our greatest testament. From intimate ceremonies to grand receptions, each couple trusted us with their most important day — and we are honoured to share their words.
+      Our wedding couples are our greatest testament. From intimate ceremonies to grand receptions, each couple
+      trusted us with their most important day — and we are honoured to share their words.
     </p>
     <div class="stat-list">
       <div class="stat-item">
@@ -150,7 +146,7 @@
     </div>
     <div class="cta-group">
       <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
-      <a class="btn--ghost"   href="{% url 'wedding_overview' %}">← Back to Overview</a>
+      <a class="btn--ghost" href="{% url 'wedding_overview' %}">← Back to Overview</a>
     </div>
   </aside>
 
