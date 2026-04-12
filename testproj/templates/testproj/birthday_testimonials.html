@@ -6,7 +6,6 @@
 {% block page_layout %}
 <div class="page-layout">
 
-  <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
     <h1 class="sidebar__title">Birthday<br>Venue</h1>
     <nav class="sidebar__nav" aria-label="Venue sections">
@@ -18,10 +17,8 @@
     </nav>
   </aside>
 
-  <!-- CENTER: Testimonials -->
   <main class="center-panel center-panel--testimonials">
 
-    <!-- Rating summary -->
     <div class="rating-bar">
       <span class="rating-bar__score">4.9</span>
       <div class="rating-bar__right">
@@ -48,7 +45,6 @@
       </div>
     </div>
 
-    <!-- Review cards -->
     <div class="testimonial-card">
       <p class="testimonial-card__quote">
         Quartet Pavilion exceeded every expectation. The garden was breathtaking, the staff was attentive,
@@ -57,7 +53,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Isabella &amp; Marco Santos</span>
+          <span class="testimonial-card__name">Verified Guest</span>
           <span class="testimonial-card__event">Wedding Reception · February 2026</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -71,7 +67,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Maricel Reyes</span>
+          <span class="testimonial-card__name">Verified Guest</span>
           <span class="testimonial-card__event">18th Birthday · January 2026</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -85,7 +81,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">James &amp; Carla Villanueva</span>
+          <span class="testimonial-card__name">Verified Guest</span>
           <span class="testimonial-card__event">Anniversary Dinner · December 2025</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -99,7 +95,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Rafael Cruz</span>
+          <span class="testimonial-card__name">Verified Guest</span>
           <span class="testimonial-card__event">Corporate Event · November 2025</span>
         </div>
         <span class="testimonial-card__stars">★★★★☆</span>
@@ -113,7 +109,7 @@
       </p>
       <div class="testimonial-card__footer">
         <div class="testimonial-card__author">
-          <span class="testimonial-card__name">Ana &amp; Luis Garcia</span>
+          <span class="testimonial-card__name">Verified Guest</span>
           <span class="testimonial-card__event">Wedding · October 2025</span>
         </div>
         <span class="testimonial-card__stars">★★★★★</span>
@@ -122,7 +118,6 @@
 
   </main>
 
-  <!-- RIGHT PANEL -->
   <aside class="right-panel">
     <p class="right-panel__eyebrow">Guest Reviews</p>
     <h2 class="right-panel__heading">Celebrated by Those Who Matter Most</h2>
@@ -147,7 +142,7 @@
     </div>
     <div class="cta-group">
       <a class="btn--primary" href="{% url 'book' %}">Book This Venue</a>
-      <a class="btn--ghost"   href="{% url 'birthday_overview' %}">← Back to Overview</a>
+      <a class="btn--ghost" href="{% url 'birthday_overview' %}">← Back to Overview</a>
     </div>
   </aside>
 
