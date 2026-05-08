@@ -154,6 +154,8 @@ import dj_database_url
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://quartet-pavilion-django-system-production.up.railway.app']
+
 # Static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
