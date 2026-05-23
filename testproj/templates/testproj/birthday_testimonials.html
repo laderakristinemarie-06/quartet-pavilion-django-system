@@ -116,6 +116,56 @@
       </div>
     </div>
 
+    <div class="venue-faq">
+  <h3 class="venue-faq__title">Common Questions</h3>
+
+  <div class="faq-item">
+    <button class="faq-item__question" aria-expanded="false">
+      How do I reserve this venue?
+      <span class="faq-item__icon" aria-hidden="true"></span>
+    </button>
+    <div class="faq-item__answer" hidden>
+      <p>Fill out our <a href="{% url 'book' %}">booking form</a> or message us on Facebook.
+      Once we confirm availability we'll send a reservation agreement and payment instructions.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-item__question" aria-expanded="false">
+      How far in advance should I book?
+      <span class="faq-item__icon" aria-hidden="true"></span>
+    </button>
+    <div class="faq-item__answer" hidden>
+      <p>For weddings and large events, 6–12 months ahead is ideal. For smaller gatherings,
+      2–3 months is usually enough — though earlier is always safer for peak-season dates.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-item__question" aria-expanded="false">
+      What is included in the venue package?
+      <span class="faq-item__icon" aria-hidden="true"></span>
+    </button>
+    <div class="faq-item__answer" hidden>
+      <p>All packages include tables, chairs, linens, general lighting, and a dedicated coordinator.
+      Florals, AV, and catering are available as add-ons.</p>
+    </div>
+  </div>
+
+    <div class="faq-item">
+      <button class="faq-item__question" aria-expanded="false">
+        What is your cancellation policy?
+        <span class="faq-item__icon" aria-hidden="true"></span>
+      </button>
+      <div class="faq-item__answer" hidden>
+        <p>Reservation fees are non-refundable. One complimentary reschedule is allowed with at
+        least 60 days' notice. Full details are in your reservation agreement.</p>
+      </div>
+    </div>
+
+    <a class="venue-faq__more" href="{% url 'faq' %}">See all FAQs →</a>
+  </div>
+
   </main>
 
   <aside class="right-panel">

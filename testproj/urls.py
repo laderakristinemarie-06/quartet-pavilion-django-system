@@ -121,4 +121,6 @@ urlpatterns = [
     path('events/entertainment/calendar/',     views.entertainment_calendar,     name='entertainment_calendar'),
     path('events/entertainment/testimonials/', views.entertainment_testimonials, name='entertainment_testimonials'),
 
+    path('faq/', views.faq, name='faq')
+
 ]

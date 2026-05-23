@@ -1,0 +1,610 @@
+{% extends 'testproj/base.html' %}
+{% load static %}
+
+{% block title %}FAQ — Quartet Pavilion{% endblock %}
+
+{% block page_layout %}
+<div class="page-layout">
+
+  <aside class="sidebar">
+    <h1 class="sidebar__title">Frequently<br>Asked<br>Questions</h1>
+    <nav class="sidebar__nav" aria-label="FAQ categories">
+      <a class="sidebar__nav-link sidebar__nav-link--active" href="#booking">Booking</a>
+      <a class="sidebar__nav-link" href="#venue">Venue & Capacity</a>
+      <a class="sidebar__nav-link" href="#catering">Catering</a>
+      <a class="sidebar__nav-link" href="#accommodation">Accommodation</a>
+      <a class="sidebar__nav-link" href="#policies">Policies</a>
+    </nav>
+  </aside>
+
+  <main class="center-panel center-panel--faq">
+
+    <!-- ── Booking ─────────────────────────────────────────── -->
+    <section class="faq-section" id="booking">
+      <h2 class="faq-section__title">Booking</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          How do I reserve a date?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            You can send us an inquiry through our <a href="{% url 'book' %}">booking form</a>, or reach
+            us directly via our Facebook page or email. Once we confirm availability, we'll send you a
+            reservation agreement and payment instructions to secure your date.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          How far in advance should I book?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            For weddings and large events, we recommend booking at least 6–12 months in advance, especially
+            for peak season dates (December–February). For intimate gatherings and smaller events, 2–3 months
+            lead time is generally sufficient — though earlier is always better.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Is a deposit required to hold a date?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes. A non-refundable reservation fee is required to officially hold your chosen date. The
+            remaining balance is settled in agreed installments leading up to your event. Full payment
+            details are outlined in your reservation agreement.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Can I do an ocular visit before booking?
+          <span class="faq-item__icon" aria-expanded="false"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Absolutely — we welcome and encourage site visits. Contact us to schedule a walkthrough with
+            one of our event coordinators, who will personally show you the venues and answer any questions
+            you have on-site.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Can I book multiple venues for the same event?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes. Many clients book multiple areas — for example, a garden ceremony space paired with an
+            indoor reception hall. We offer combined packages and can coordinate seamlessly across areas.
+            Reach out to discuss a setup that fits your event flow.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Venue & Capacity ────────────────────────────────── -->
+    <section class="faq-section" id="venue">
+      <h2 class="faq-section__title">Venue &amp; Capacity</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          How many guests can each venue accommodate?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>Capacity varies by venue and setup style:</p>
+          <ul>
+            <li><strong>Birthday &amp; Private Venue</strong> — up to 150 guests</li>
+            <li><strong>Wedding &amp; Romantic Venue</strong> — up to 200 guests</li>
+            <li><strong>Family Milestones Venue</strong> — up to 250 guests</li>
+            <li><strong>Academic &amp; Youth Venue</strong> — up to 180 guests</li>
+            <li><strong>Corporate &amp; Formal Venue</strong> — up to 200 guests</li>
+            <li><strong>Entertainment &amp; Special Venue</strong> — up to 300 guests</li>
+          </ul>
+          <p>Exact capacities depend on your chosen layout (banquet, cocktail, theatre, etc.).</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Is the venue indoor, outdoor, or both?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Quartet Pavilion features a mix of lush open gardens and covered indoor spaces spread across
+            our 4-hectare property. Most event packages can be tailored to use either or both, giving you
+            flexibility depending on the occasion and weather.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Is there a contingency plan for bad weather?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes. All outdoor venue bookings include access to covered backup spaces. Our team monitors
+            weather leading up to your event and will coordinate with you in advance if an indoor
+            configuration is recommended.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Are decorations and styling included?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Basic venue setup — tables, chairs, linens, and general lighting — is included in the venue
+            package. Florals, themed décor, and specialty lighting arrangements can be arranged through
+            our in-house team or approved partner suppliers for an additional fee.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Is there parking on-site?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes, we have ample on-site parking for guests. For very large events, our team can coordinate
+            additional parking arrangements and shuttle service if needed. Please discuss your guest count
+            with us at the time of booking.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Catering ────────────────────────────────────────── -->
+    <section class="faq-section" id="catering">
+      <h2 class="faq-section__title">Catering</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Does Quartet Pavilion provide in-house catering?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes. We offer in-house catering with a range of menu packages suited to different event types
+            and budgets. Our menus feature a mix of Filipino and international cuisine, and can be customised
+            to your preferences and dietary requirements.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Can we bring our own caterer?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Outside catering is allowed on a case-by-case basis and may be subject to a corkage or
+            coordination fee. All outside caterers must be pre-approved by our team. Please discuss this
+            with us early in the planning process.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Can you accommodate dietary restrictions or allergies?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes. Our kitchen team can accommodate common dietary requirements including vegetarian,
+            vegan, gluten-free, and allergy-specific requests. Please inform us at least two weeks
+            before your event so we can prepare accordingly.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Is a food tasting available before the event?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Food tastings are available for qualified bookings (typically weddings and large corporate
+            events). Please coordinate with your assigned event coordinator to schedule a tasting session
+            once your package is confirmed.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Accommodation ──────────────────────────────────── -->
+    <section class="faq-section" id="accommodation">
+      <h2 class="faq-section__title">Accommodation</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Do you have rooms for overnight stays?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes. We offer Superior and Deluxe rooms designed for a restful, Provence-inspired staycation
+            experience. Rooms can be booked independently or bundled with an event package. Visit our
+            <a href="{% url 'birthday_room' %}">Rooms page</a> to explore options.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Can the wedding couple or event host stay on-site?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Absolutely. Many couples and hosts choose to stay overnight before or after their event.
+            Room availability is subject to your event date, so we recommend reserving accommodation
+            at the same time as your venue.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Is early check-in or late check-out available?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Early check-in and late check-out can be arranged subject to room availability and may
+            incur an additional fee. Please let us know your preferred schedule when booking your room.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Policies ────────────────────────────────────────── -->
+    <section class="faq-section" id="policies">
+      <h2 class="faq-section__title">Policies</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          What is your cancellation and rescheduling policy?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Reservation fees are non-refundable. If you need to reschedule, we allow one complimentary
+            date change provided at least 60 days' notice is given and the new date is available.
+            Cancellations within 30 days of the event are subject to the full balance being owed.
+            Full terms are detailed in your reservation agreement.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          What time do events typically start and end?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Standard event time slots run from morning to midnight. Events are expected to wrap up by
+            12:00 AM to respect our neighbors and permit conditions. Extended hours may be available
+            for select venues upon request.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Are pets allowed on the property?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Well-behaved pets on leash are welcome in outdoor areas of the property. Pets are not
+            permitted inside indoor venues or accommodation rooms. Please inform us in advance if
+            you plan to bring a pet to your event.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Is alcohol permitted?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Alcohol is permitted at events. In-house bar packages are available for an additional fee.
+            Outside alcohol is allowed with a corkage fee applied per bottle. Responsible service of
+            alcohol is observed; we reserve the right to stop service if necessary.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__question" aria-expanded="false">
+          Can we do a creative shoot or prenup session at the venue?
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__answer" hidden>
+          <p>
+            Yes — Quartet Pavilion is a popular location for prenup shoots, music videos, content
+            creation, and editorial photography. Shoot packages are available separately from event
+            bookings. Contact us to check availability and rates.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="right-panel">
+    <p class="right-panel__eyebrow">Still Have Questions?</p>
+    <h2 class="right-panel__heading">We're Happy to Help You Plan</h2>
+    <div class="right-panel__divider" aria-hidden="true"></div>
+    <p class="right-panel__body">
+      Can't find what you're looking for? Our team is available to answer any questions you have —
+      from venue details to custom packages. Reach out and we'll get back to you promptly.
+    </p>
+    <div class="stat-list">
+      <div class="stat-item">
+        <span class="stat-item__number">6</span>
+        <span class="stat-item__label">Distinct event venues</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">4 ha</span>
+        <span class="stat-item__label">Sprawling property</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item__number">4.9 / 5</span>
+        <span class="stat-item__label">Average guest rating</span>
+      </div>
+    </div>
+    <div class="cta-group">
+      <a class="btn--primary" href="{% url 'book' %}">Book a Venue</a>
+      <a class="btn--ghost" href="{% url 'events' %}">← Explore Venues</a>
+    </div>
+  </aside>
+
+</div>
+
+<style>
+/* ── FAQ page layout ──────────────────────────────────────── */
+
+.center-panel--faq {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding-block: 2.5rem;
+}
+
+.faq-section {
+  scroll-margin-top: 1.5rem;
+}
+
+/* ── Section title — uses site gold token ─────────────────── */
+.faq-section__title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dm-gold);          /* gold in dark mode */
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--dm-border);
+}
+body.light .faq-section__title {
+  color: var(--lm-gold);
+  border-bottom-color: var(--lm-border);
+}
+
+/* ── Accordion item divider ───────────────────────────────── */
+.faq-item {
+  border-bottom: 1px solid var(--dm-border);
+}
+body.light .faq-item {
+  border-bottom-color: var(--lm-border);
+}
+
+/* ── Question button ──────────────────────────────────────── */
+.faq-item__question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 0;           /* more vertical breathing room */
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.92rem;
+  color: var(--dm-text);        /* clearly visible on dark bg */
+  line-height: 1.6;
+  transition: color 0.2s;
+}
+body.light .faq-item__question {
+  color: var(--lm-text);
+}
+
+.faq-item__question:hover {
+  color: var(--dm-gold);
+}
+body.light .faq-item__question:hover {
+  color: var(--lm-gold);
+}
+
+/* ── Plus / minus icon ────────────────────────────────────── */
+.faq-item__icon {
+  flex-shrink: 0;
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* horizontal bar */
+.faq-item__icon::before {
+  width: 14px;
+  height: 1.5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* vertical bar — collapses when open */
+.faq-item__icon::after {
+  width: 1.5px;
+  height: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.faq-item__question[aria-expanded="true"] .faq-item__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+/* ── Answer panel ─────────────────────────────────────────── */
+.faq-item__answer {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+.faq-item__answer:not([hidden]) {
+  max-height: 600px;
+}
+
+.faq-item__answer p,
+.faq-item__answer ul {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.83rem;
+  font-weight: 300;
+  color: var(--dm-text-muted);   /* readable but secondary */
+  line-height: 1.8;
+  padding-bottom: 1.1rem;
+  margin: 0;
+}
+body.light .faq-item__answer p,
+body.light .faq-item__answer ul {
+  color: var(--lm-text-muted);
+}
+
+.faq-item__answer p + p {
+  padding-top: 0;
+}
+
+.faq-item__answer ul {
+  padding-left: 1.25rem;
+  padding-bottom: 1.1rem;
+}
+
+.faq-item__answer li {
+  margin-bottom: 0.35rem;
+}
+
+.faq-item__answer a {
+  color: var(--dm-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+body.light .faq-item__answer a {
+  color: var(--lm-gold);
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Accordion toggle */
+  document.querySelectorAll('.faq-item__question').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var answer = btn.nextElementSibling;
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      /* Close all others */
+      document.querySelectorAll('.faq-item__question').forEach(function (other) {
+        if (other !== btn) {
+          other.setAttribute('aria-expanded', 'false');
+          other.nextElementSibling.setAttribute('hidden', '');
+        }
+      });
+
+      /* Toggle this one */
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      if (isOpen) {
+        answer.setAttribute('hidden', '');
+      } else {
+        answer.removeAttribute('hidden');
+        answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+
+  /* Sidebar smooth-scroll & active state on scroll */
+  var navLinks = document.querySelectorAll('.sidebar__nav-link');
+  var sections = document.querySelectorAll('.faq-section');
+
+  navLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        var target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* Update active nav link on scroll */
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var id = entry.target.id;
+        navLinks.forEach(function (link) {
+          var active = link.getAttribute('href') === '#' + id;
+          link.classList.toggle('sidebar__nav-link--active', active);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(function (s) { observer.observe(s); });
+}());
+</script>
+
+{% endblock %}
