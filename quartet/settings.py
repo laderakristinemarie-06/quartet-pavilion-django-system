@@ -148,3 +148,16 @@ ADMIN_EMAIL         = 'quartetpavilion@gmail.com'        # ← where admin notif
 # 4. Select "Mail" and "Windows Computer" → Generate
 # 5. Copy the 16-character password and paste it above
 # ─────────────────────────────────────────────────────────────────────────────
+
+import os
+import dj_database_url
+
+ALLOWED_HOSTS = ['*']
+
+# Static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Database — Railway sets DATABASE_URL automatically
+if os.environ.get('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600) 
