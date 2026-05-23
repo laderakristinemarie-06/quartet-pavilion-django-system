@@ -227,6 +227,100 @@
       background: rgba(184,146,46,0.22) !important;
       box-shadow: 0 0 10px rgba(184,146,46,0.3) !important;
     }
+
+    /* ── FAQ Styles ─────────────────────────────── */
+.venue-faq {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-divider, #e5ddd3);
+}
+.venue-faq__title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent, #7a6a52);
+  margin-bottom: 1rem;
+}
+.venue-faq__more {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  color: var(--color-accent, #7a6a52);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+.venue-faq__more:hover { opacity: 0.7; }
+
+.faq-section { scroll-margin-top: 1.5rem; }
+.faq-section__title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent, #7a6a52);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-divider, #e5ddd3);
+}
+.faq-item { border-bottom: 1px solid var(--color-divider, #e5ddd3); }
+.faq-item__question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.875rem;
+  color: var(--color-text, #2a2118);
+  line-height: 1.5;
+  transition: color 0.2s;
+}
+.faq-item__question:hover { color: var(--color-accent, #7a6a52); }
+.faq-item__icon {
+  flex-shrink: 0;
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.faq-item__icon::before { width:14px; height:1.5px; top:50%; left:50%; transform:translate(-50%,-50%); }
+.faq-item__icon::after  { width:1.5px; height:14px; top:50%; left:50%; transform:translate(-50%,-50%); }
+.faq-item__question[aria-expanded="true"] .faq-item__icon::after {
+  transform: translate(-50%,-50%) rotate(90deg);
+  opacity: 0;
+}
+.faq-item__answer { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+.faq-item__answer:not([hidden]) { max-height: 500px; }
+.faq-item__answer p, .faq-item__answer ul {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--color-muted, #6b5e4e);
+  line-height: 1.75;
+  padding-bottom: 1rem;
+  margin: 0;
+}
+.faq-item__answer ul { padding-left: 1.25rem; }
+.faq-item__answer li { margin-bottom: 0.3rem; }
+.faq-item__answer a { color: var(--color-accent, #7a6a52); text-decoration: underline; text-underline-offset: 3px; }
   </style>
 
   <script>
@@ -243,6 +337,24 @@
       }
       /* If '1' or null → dark mode (default, no class needed) */
     })();
+
+    (function () {
+      document.querySelectorAll('.faq-item__question').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var answer = btn.nextElementSibling;
+          var isOpen = btn.getAttribute('aria-expanded') === 'true';
+          document.querySelectorAll('.faq-item__question').forEach(function (o) {
+            if (o !== btn) {
+              o.setAttribute('aria-expanded', 'false');
+              o.nextElementSibling.setAttribute('hidden', '');
+            }
+          });
+          btn.setAttribute('aria-expanded', String(!isOpen));
+          if (isOpen) { answer.setAttribute('hidden', ''); }
+          else { answer.removeAttribute('hidden'); }
+        });
+      });
+    }());
   </script>
 
 </head>
@@ -263,6 +375,7 @@
             <div class="dropdown-menu">
               <a href="{% url 'about' %}">About Us</a>
               <a href="{% url 'events' %}">Events</a>
+              <a href="{% url 'faq' %}">FAQ</a>
               <a href="{% url 'log_in' %}">Login</a>
             </div>
           </li>

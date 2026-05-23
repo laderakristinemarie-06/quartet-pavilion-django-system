@@ -662,3 +662,6 @@ def user_booking_cancel(request, pk):
         messages.success(request, 'Your booking has been cancelled successfully.')
         return redirect('user_bookings')
     return render(request, 'testproj/user-panel/user_cancel_confirm.html', {'booking': booking})
+
+def faq(request):
+    return render(request, 'testproj/faq.html')
