@@ -207,7 +207,7 @@ def submit_booking(request):
                 to=[email],
             )
             msg.attach_alternative(client_html, 'text/html')
-            msg.send(fail_silently=False)
+            msg.send(fail_silently=True)
         except Exception as e:
             print(f"Client email error: {e}")
 
