@@ -189,8 +189,20 @@ def submit_booking(request):
                 f'<p style="margin:0 0 20px;font-size:13px;color:#555;font-style:italic;">{notes}</p>'
             )
 
-        # ── CLIENT email ──────────────────────────────────────────────────────
+       # ── Send emails ───────────────────────────────────────────────────────
         try:
+            from django.core.mail import get_connection
+            connection = get_connection(
+                backend='django.core.mail.backends.smtp.EmailBackend',
+                host=settings.EMAIL_HOST,
+                port=settings.EMAIL_PORT,
+                username=settings.EMAIL_HOST_USER,
+                password=settings.EMAIL_HOST_PASSWORD,
+                use_ssl=True,
+                timeout=10,
+            )
+
+            # CLIENT email
             client_html = _read_email_template('booking_client.html')
             client_html = client_html.format(
                 name=name, venue_name=venue_name, booking_id=booking_id,
@@ -205,14 +217,12 @@ def submit_booking(request):
                 body=f'Hi {name}, your booking inquiry {booking_id} has been received. We will confirm within 24 hours.',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[email],
+                connection=connection,
             )
             msg.attach_alternative(client_html, 'text/html')
             msg.send(fail_silently=True)
-        except Exception as e:
-            print(f"Client email error: {e}")
 
-        # ── ADMIN email ───────────────────────────────────────────────────────
-        try:
+            # ADMIN email
             admin_html = _read_email_template('booking_admin.html')
             admin_html = admin_html.format(
                 booking_id=booking_id, name=name, email=email,
@@ -229,14 +239,15 @@ def submit_booking(request):
                 body=f'New booking inquiry {booking_id} from {name} for {date_val}.',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[settings.ADMIN_EMAIL],
+                connection=connection,
             )
             msg2.attach_alternative(admin_html, 'text/html')
-            msg2.send(fail_silently=False)
+            msg2.send(fail_silently=True)
+
         except Exception as e:
-            print(f"Admin email error: {e}")
+            print(f"Email error: {e}")
 
         messages.success(request, "Your inquiry has been submitted successfully.")
-        return redirect('booking_receipt', pk=inquiry.pk)
 
     return redirect('home')
 
