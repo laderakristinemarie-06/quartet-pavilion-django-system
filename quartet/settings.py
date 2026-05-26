@@ -158,7 +158,7 @@ import dj_database_url
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://Quartetpavilion.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://quartetpavilion.up.railway.app']
 
 # Static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -169,5 +169,5 @@ if os.environ.get('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.config(conn_max_age=600) 
 
     CSRF_TRUSTED_ORIGINS = [
-    'https://Quartetpavilion.up.railway.app',
+    'https://quartetpavilion.up.railway.app',
 ]
