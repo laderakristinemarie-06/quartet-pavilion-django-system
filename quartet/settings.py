@@ -136,10 +136,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Email Configuration (Gmail SMTP)
 EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST          = 'smtp.gmail.com'
-EMAIL_PORT          = 587
-EMAIL_USE_TLS       = True
-EMAIL_HOST_USER     = 'quartetpavilion@gmail.com'        # ← your Gmail address
-EMAIL_HOST_PASSWORD = 'ymvi eehq yjof xzqh'         # ← Gmail App Password (NOT your real password)
+EMAIL_PORT          = 465
+EMAIL_USE_TLS       = False
+EMAIL_USE_SSL       = True
+EMAIL_HOST_USER     = 'quartetpavilion@gmail.com'
+EMAIL_HOST_PASSWORD = 'ymvi eehq yjof xzqh'
 DEFAULT_FROM_EMAIL  = 'Quartet Pavilion <quartetpavilion@gmail.com>'
 ADMIN_EMAIL         = 'quartetpavilion@gmail.com'        # ← where admin notifications go
 
