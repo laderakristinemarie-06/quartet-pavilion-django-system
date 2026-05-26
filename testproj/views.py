@@ -231,12 +231,11 @@ def submit_booking(request):
                 to=[settings.ADMIN_EMAIL],
             )
             msg2.attach_alternative(admin_html, 'text/html')
-            msg2.send(fail_silently=False)
+            msg2.send(fail_silently=True)
         except Exception as e:
             print(f"Admin email error: {e}")
 
         messages.success(request, "Your inquiry has been submitted successfully.")
-        return redirect('booking_receipt', pk=inquiry.pk)
 
     return redirect('home')
 
