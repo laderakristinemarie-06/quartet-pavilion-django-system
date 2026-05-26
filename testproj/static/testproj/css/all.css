@@ -1561,12 +1561,12 @@ body { font-family: 'Jost', sans-serif; background: var(--green-dark); color: #f
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Start from top to allow scrolling */
+    align-items: flex-start;
     padding: 40px 20px;
     background-color: #f5f5f5;
-    background-image: radial-gradient(#c4b210 0.5px, transparent 0.5px); /* Subtle pattern */
+    background-image: radial-gradient(#c4b210 0.5px, transparent 0.5px);
     background-size: 20px 20px;
-    overflow-y: auto;
+    overflow-y: visible;
 }
 
 .booking-card {
